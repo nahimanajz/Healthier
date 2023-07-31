@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:healthier/screens/home.dart';
+import 'package:healthier/screens/prescribe.screen.dart';
 
 import 'utils/color_schemes.g.dart';
 
@@ -9,7 +9,9 @@ void main() {
       theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
       darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
       themeMode: ThemeMode.system,
-      home: const HomeScreen(),
+      debugShowCheckedModeBanner: false,
+      //home: const HomeScreen(),
+      home: const PrescribeScreen(),
     ),
   );
 }

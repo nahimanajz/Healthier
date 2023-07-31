@@ -7,16 +7,17 @@ class CustomIconButton extends StatelessWidget {
   final Widget icon;
   final void Function() onNavigateTo;
 
-  CustomIconButton(
-      {required this.userType, required this.icon, required this.onNavigateTo});
+  const CustomIconButton(
+      {super.key,
+      required this.userType,
+      required this.icon,
+      required this.onNavigateTo});
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      padding: EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
-      onPressed: () => {
-        // TODO: handle navigation logic here
-      },
+      padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
+      onPressed: onNavigateTo,
       icon: Container(
           decoration: BoxDecoration(
               shape: BoxShape.rectangle, color: lightColorScheme.surface),
@@ -27,10 +28,11 @@ class CustomIconButton extends StatelessWidget {
                 child: icon,
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
+                padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
                 child: Text(
-                  userType ?? " ",
-                  style: TextStyle(color: Color(0xFF046E00), fontSize: 16),
+                  userType,
+                  style:
+                      const TextStyle(color: Color(0xFF046E00), fontSize: 16),
                 ),
               )
             ],
