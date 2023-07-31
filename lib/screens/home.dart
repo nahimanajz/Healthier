@@ -41,22 +41,16 @@ class HomeScreen extends StatelessWidget {
             ),
             CustomIconButton(
               userType: "Clinician",
-              icon: FaIcon(
-                FontAwesomeIcons.pills,
-                size: 96,
-                color: lightColorScheme.primary,
-              ),
+              icon: Icon(Icons.local_hospital,
+                  color: lightColorScheme.primary, size: 90.0),
               onNavigateTo: () {
                 print("Navigating to a screen 2...");
               },
             ),
             CustomIconButton(
               userType: "Patient",
-              icon: FaIcon(
-                FontAwesomeIcons.userNurse,
-                size: 96,
-                color: lightColorScheme.primary,
-              ),
+              icon: Icon(Icons.hotel_sharp,
+                  color: lightColorScheme.primary, size: 90.0),
               onNavigateTo: () {
                 print("Navigating to a screen 3...");
               },
