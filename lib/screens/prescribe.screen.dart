@@ -3,8 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthier/utils/color_schemes.g.dart';
 import 'package:healthier/widgets/styles/gradient.decoration.dart';
 
+import '../utils/data/data.dart';
+import '../utils/data/medicines.dart';
 import '../widgets/custom_textFormField.dart';
-import '../widgets/search.dart';
 import '../widgets/styles/KTextStyle.dart';
 
 class PrescribeScreen extends StatefulWidget {
@@ -20,6 +21,11 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
   final _fullNamesController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _residencyCityController = TextEditingController();
+  final _medicineNameController = TextEditingController();
+  final _medicineTypeController = TextEditingController();
+
+  String prescriptionTitle = "Patient Address";
+  int activeTab = 1;
   String districtQuery = "";
 
   @override
@@ -55,52 +61,21 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                     child: SvgPicture.asset('assets/images/clinic.svg'),
                   ),
                 ),
-                Flexible(
-                  flex: 3,
-                  child: Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          KTextStyle(
-                            text: 'Patient Address',
-                            color: lightColorScheme.onSurface,
-                            size: 16.0,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          buildTextFormField(
-                              "Full Names", _fullNamesController),
-                          buildTextFormField(
-                              "Phone Number", _phoneNumberController,
-                              keyboardType: TextInputType.phone),
-                          // TODO: search box
-                          buildSearch()
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        debugPrint(_fullNamesController.text);
-                        debugPrint(_phoneNumberController.text);
-                        debugPrint(districtQuery);
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: lightColorScheme.primary),
-                      child: Text(
-                        "Continue",
-                        style: TextStyle(color: lightColorScheme.surface),
-                      ),
-                    ),
-                  ),
-                )
+                showActiveStep(),
+                buildStepperButton(() {
+                  if (activeTab == 2) {
+                    debugPrint(_medicineTypeController.text);
+                    /**
+                    *  TODO: 1. get temperature
+                    *  2. save this record in database
+                      3. navigate to prescription form
+                    *
+                    */
+                  }
+                  setState(() {
+                    activeTab += 1;
+                  });
+                })
               ],
             ),
           ),
@@ -109,22 +84,87 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
     );
   }
 
-  Widget buildSearch() => SearchWidget(
-      text: 'Residency District',
-      hintText: 'District',
-      onChanged: searchDistrict);
-  void searchDistrict(String query) {
-    //TODO: Call country api to get temperature or patient residency location
-    print(query);
+  Flexible buildStepOne() {
+    return Flexible(
+      flex: 3,
+      child: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              KTextStyle(
+                text: prescriptionTitle,
+                color: lightColorScheme.onSurface,
+                size: 16.0,
+                fontWeight: FontWeight.w500,
+              ),
+              buildTextFormField("Full Names", _fullNamesController),
+              buildTextFormField("Phone Number", _phoneNumberController,
+                  keyboardType: TextInputType.phone),
+              buildSelectFormField(_residencyCityController, districtsData,
+                  labelText: 'Districts',
+                  searchHint: 'Search District',
+                  dialogTitle: 'Residence City'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-    // final filteredDistrict = districts.where((d) {
-    //   final districtToLower = d.toLowerCase();
-    //   final queryToLower = query.toLowerCase();
-    //   return districtToLower.contains(queryToLower);
-    // }).toString();
-    // setState(() {
-    //   districtQuery = query;
-    // });
-    // debugPrint(districtQuery);
+  Flexible buildStepTwo() {
+    return Flexible(
+      flex: 3,
+      child: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              KTextStyle(
+                text: prescriptionTitle,
+                color: lightColorScheme.onSurface,
+                size: 16.0,
+                fontWeight: FontWeight.w500,
+              ),
+              buildTextFormField("Medicine Name", _medicineNameController),
+              buildSelectFormField(_medicineTypeController, medicines,
+                  labelText: 'Medicine Type',
+                  dialogTitle: ' Medicine type',
+                  searchHint: 'Search medicine')
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Flexible buildStepperButton(Function() onPressed,
+      {String title = 'Continue'}) {
+    return Flexible(
+      flex: 1,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+              backgroundColor: lightColorScheme.primary),
+          child: Text(
+            title,
+            style: TextStyle(color: lightColorScheme.surface),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget showActiveStep() {
+    if (activeTab == 1) {
+      return buildStepOne();
+    }
+    return buildStepTwo();
   }
 }
