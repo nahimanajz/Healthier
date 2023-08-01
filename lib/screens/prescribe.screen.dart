@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthier/utils/color_schemes.g.dart';
 import 'package:healthier/widgets/styles/gradient.decoration.dart';
 
+import '../widgets/custom_textFormField.dart';
+import '../widgets/search.dart';
 import '../widgets/styles/KTextStyle.dart';
 
 class PrescribeScreen extends StatefulWidget {
@@ -18,6 +20,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
   final _fullNamesController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _residencyCityController = TextEditingController();
+  String districtQuery = "";
 
   @override
   void initState() {
@@ -70,9 +73,10 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                           buildTextFormField(
                               "Full Names", _fullNamesController),
                           buildTextFormField(
-                              "Phone Number", _phoneNumberController),
-                          buildTextFormField(
-                              "Residency City", _residencyCityController),
+                              "Phone Number", _phoneNumberController,
+                              keyboardType: TextInputType.phone),
+                          // TODO: search box
+                          buildSearch()
                         ],
                       ),
                     ),
@@ -86,7 +90,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                       onPressed: () {
                         debugPrint(_fullNamesController.text);
                         debugPrint(_phoneNumberController.text);
-                        debugPrint(_residencyCityController.text);
+                        debugPrint(districtQuery);
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: lightColorScheme.primary),
@@ -105,19 +109,22 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
     );
   }
 
-  TextFormField buildTextFormField(
-      String title, TextEditingController controller) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: lightColorScheme.background,
-        labelText: title,
-        labelStyle: TextStyle(
-            color: lightColorScheme.scrim,
-            fontSize: 14,
-            decorationColor: lightColorScheme.scrim),
-      ),
-    );
+  Widget buildSearch() => SearchWidget(
+      text: 'Residency District',
+      hintText: 'District',
+      onChanged: searchDistrict);
+  void searchDistrict(String query) {
+    //TODO: Call country api to get temperature or patient residency location
+    print(query);
+
+    // final filteredDistrict = districts.where((d) {
+    //   final districtToLower = d.toLowerCase();
+    //   final queryToLower = query.toLowerCase();
+    //   return districtToLower.contains(queryToLower);
+    // }).toString();
+    // setState(() {
+    //   districtQuery = query;
+    // });
+    // debugPrint(districtQuery);
   }
 }
