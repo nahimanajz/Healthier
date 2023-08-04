@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:healthier/screens/rate.medicine.screen.dart';
+import 'package:healthier/screens/verify.patient.records.dart';
 
 import 'utils/color_schemes.g.dart';
 
@@ -11,12 +11,12 @@ void main() {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       //home: const HomeScreen(),
-
       // home: const PrescribeScreen(),
       // home: const DosageScreen(),
       //home: const ViewPrescriptionScreen(),
-
-      home: const RateMedicineScreen(),
+      // home: const RateMedicineScreen(),
+      //home: PharmacyDetailScreen(),
+      home: const VerifyPatientRecordsScreen(),
     ),
   );
 }
