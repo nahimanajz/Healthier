@@ -7,9 +7,7 @@ class PrescriptionItem extends StatelessWidget {
   const PrescriptionItem({
     super.key,
   });
-  onNavigate(String id) {
-    //TODO: Navigate to prescription detail
-  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +26,10 @@ class PrescriptionItem extends StatelessWidget {
               color: lightColorScheme.scrim,
               size: 14),
           IconButton(
-              onPressed: onNavigate("example id"),
+              onPressed: () {
+                Navigator.pushNamed(context,
+                    "/prescription/detail"); //better to pass prescription Id
+              },
               icon: Icon(Icons.info, color: lightColorScheme.surfaceTint))
         ],
       ),

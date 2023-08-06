@@ -147,7 +147,7 @@ class _DosageState extends State<DosageScreen> {
         leading: IconButton(
           onPressed: () {
             //TODO: this back works after implementing navigations
-            Navigator.pop(context);
+            Navigator.pop(context, 2);
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),

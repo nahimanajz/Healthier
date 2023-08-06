@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthier/utils/color_schemes.g.dart';
 
+import '../widgets/back.to.home.button.dart';
 import '../widgets/custom_textFormField.dart';
 
 class VerifyPatientRecordsScreen extends StatefulWidget {
@@ -28,13 +29,17 @@ class _VerifyPatientRecordsScreenState
   }
 
   handleVerify() {
-    //TODO: handle verify from database
+    //TODO: handle verify from database then redirect to view list with all related prescriptions
+
+    Navigator.pushNamed(context, "/prescriptionsList");
   }
 
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      floatingActionButton: buildBackToHomeButton(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       backgroundColor: lightColorScheme.secondary,
       body: SafeArea(
         child: ListView(

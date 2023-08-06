@@ -5,6 +5,7 @@ import 'package:healthier/widgets/styles/gradient.decoration.dart';
 
 import '../utils/data/data.dart';
 import '../utils/data/medicines.dart';
+import '../widgets/back.to.home.button.dart';
 import '../widgets/custom_textFormField.dart';
 import '../widgets/styles/KTextStyle.dart';
 
@@ -16,6 +17,7 @@ class PrescribeScreen extends StatefulWidget {
 }
 
 class _PrescribeScreenState extends State<PrescribeScreen> {
+  final _formKeyOne = GlobalKey<FormState>();
   final _formKey = GlobalKey<FormState>();
 
   final _fullNamesController = TextEditingController();
@@ -45,6 +47,8 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: buildBackToHomeButton(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: ListView(
         children: [
           Container(
@@ -62,7 +66,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                   ),
                 ),
                 showActiveStep(),
-                buildStepperButton(() {
+                buildStepperButton(() async {
                   if (activeTab == 2) {
                     debugPrint(_medicineTypeController.text);
                     /**
@@ -71,10 +75,11 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                       3. navigate to prescription form
                     *
                     */
+
+                    await Navigator.pushNamed(context, "/dosage");
                   }
-                  setState(() {
-                    activeTab += 1;
-                  });
+                  setState(
+                      () => activeTab = activeTab == 1 ? activeTab += 1 : 1);
                 })
               ],
             ),
@@ -90,7 +95,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
       child: Padding(
         padding: EdgeInsets.all(20.0),
         child: Form(
-          key: _formKey,
+          key: _formKeyOne,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[

@@ -81,30 +81,31 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
               iconColor: lightColorScheme.primary,
             ),
             //TODO: if is patient show provide feedback button,elseif user== pharmacist show approve availability
-            OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                backgroundColor: lightColorScheme.onPrimary,
-              ),
-              child: KTextStyle(
-                text: 'Approve availability',
-                color: lightColorScheme.primary,
-                size: 14.0,
-              ),
-            ),
-            /*
-            OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                backgroundColor: lightColorScheme.onPrimary,
-              ),
-              child: KTextStyle(
-                text: 'Provide Feedback',
-                color: lightColorScheme.primary,
-                size: 14.0,
-              ),
-            ),
-            */
+            1 == 0
+                ? OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: lightColorScheme.onPrimary,
+                    ),
+                    child: KTextStyle(
+                      text: 'Approve availability',
+                      color: lightColorScheme.primary,
+                      size: 14.0,
+                    ),
+                  )
+                : OutlinedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/rate-medicine");
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: lightColorScheme.onPrimary,
+                    ),
+                    child: KTextStyle(
+                      text: 'Provide Feedback',
+                      color: lightColorScheme.primary,
+                      size: 14.0,
+                    ),
+                  ),
           ],
         ),
       ),
