@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:healthier/repositories/patient.repository.dart';
 import 'package:healthier/screens/dosage.secreen.dart';
 import 'package:healthier/screens/home.dart';
 import 'package:healthier/screens/pharmacy.detail.screen.dart';
@@ -14,6 +15,7 @@ import 'utils/color_schemes.g.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  PatientRepository.getAllPatients();
   runApp(
     MaterialApp(
       routes: {

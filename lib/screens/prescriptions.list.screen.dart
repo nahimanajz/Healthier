@@ -12,6 +12,19 @@ class PrescriptionsListScreen extends StatefulWidget {
       _PrescriptionsListScreenState();
 }
 
+@override
+void initState() {
+  // Your code here, similar to componentDidMount()
+  // This code will run when the widget is inserted into the widget tree.
+
+  print("Getdata....");
+}
+
+@override
+void dispose() {
+  // Your cleanup code here, similar to componentWillUnmount()
+}
+
 class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
   @override
   Widget build(BuildContext context) {
