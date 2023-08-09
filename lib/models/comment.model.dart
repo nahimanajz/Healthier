@@ -1,11 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class CommentModel {
   late final String rate;
   late final String text;
 
-  CommentModel(this.rate, this.text);
+  CommentModel({rate, text});
 
-  Map<String, dynamic> toMap() => {
-        "rate": rate,
-        "text": text,
-      };
+  factory CommentModel.fromFireStore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot,
+      SnapshotOptions? options) {
+    final data = snapshot.data();
+
+    return CommentModel(
+      rate: data?["rate"],
+      text: data?["text"],
+    );
+  }
+
+  Map<String, dynamic> toFireStore() {
+    return {
+      if (rate != null) "rate": rate,
+      if (text != null) "text": text,
+    };
+  }
 }

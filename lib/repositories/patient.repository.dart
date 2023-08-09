@@ -21,4 +21,15 @@ class PatientRepository {
           onError: (e) => print("Error completing $e"),
         );
   }
+
+  static Future<void> create(PatientModel patient) async {
+    return db
+        .collection("patients")
+        .withConverter(
+            fromFirestore: PatientModel.fromFireStore,
+            toFirestore: (PatientModel patient, _) => patient.toFireStore())
+        .add(patient)
+        .then((documentSnapshot) =>
+            print("patient is saved Id${documentSnapshot.id}"));
+  }
 }
