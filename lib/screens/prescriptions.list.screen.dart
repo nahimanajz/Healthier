@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../main.dart';
 import '../utils/color_schemes.g.dart';
+import '../utils/local.notification.dart';
 import '../widgets/prescription.item.dart';
 import '../widgets/styles/KTextStyle.dart';
 
@@ -12,20 +14,17 @@ class PrescriptionsListScreen extends StatefulWidget {
       _PrescriptionsListScreenState();
 }
 
-@override
-void initState() {
-  // Your code here, similar to componentDidMount()
-  // This code will run when the widget is inserted into the widget tree.
-
-  print("Getdata....");
-}
-
-@override
-void dispose() {
-  // Your cleanup code here, similar to componentWillUnmount()
-}
-
 class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    LocalNotification.showNotification(
+        title: "Pill reminder",
+        body: "Please remember to take your medicine",
+        fln: flutterLocalNotificationsPlugin);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

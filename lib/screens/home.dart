@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
               icon: Icon(Icons.local_hospital,
                   color: lightColorScheme.primary, size: 90.0),
               onNavigateTo: () {
-                Navigator.pushNamed(context, "/prescribe");
+                Navigator.pushNamed(context, "/dashboard");
               },
             ),
             CustomIconButton(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:healthier/services/country.service.dart';
 import 'package:healthier/utils/color_schemes.g.dart';
 import 'package:healthier/widgets/styles/gradient.decoration.dart';
 
 import '../utils/data/data.dart';
 import '../utils/data/medicines.dart';
-import '../widgets/back.to.home.button.dart';
 import '../widgets/custom_textFormField.dart';
 import '../widgets/styles/KTextStyle.dart';
 
@@ -33,6 +33,9 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
   @override
   void initState() {
     super.initState();
+    CountryService.getTemperature();
+
+    print("get weather${CountryService.getTemperature()}");
     _fullNamesController.addListener(() => setState(() {}));
   }
 
@@ -47,8 +50,17 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: buildBackToHomeButton(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            //TODO: this back works after implementing navigations
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios, color: lightColorScheme.primary),
+        ),
+        backgroundColor: lightColorScheme.secondary,
+        centerTitle: true,
+      ),
       body: ListView(
         children: [
           Container(
