@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "352384205015",
+    "project_id": "healthier2-90e64",
+    "storage_bucket": "healthier2-90e64.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352384205015:android:dc458674c5afbf758e7092",
+        "android_client_info": {
+          "package_name": "com.example.healthier2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352384205015-nlc9oqd54ul805l84i0usdjddjmk71pk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAcyd1r09EHle8xCFULccItRJ1-SpWCzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352384205015-nlc9oqd54ul805l84i0usdjddjmk71pk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
