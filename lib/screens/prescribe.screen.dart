@@ -47,7 +47,6 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            //TODO: this back works after implementing navigations
             Navigator.pop(context);
           },
           icon: Icon(Icons.arrow_back_ios, color: lightColorScheme.primary),

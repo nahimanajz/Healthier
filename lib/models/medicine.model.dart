@@ -8,10 +8,11 @@ class MedicineModel {
   bool? isAvailable;
   int? lostCounts;
   String? dosage;
+  int? duration;
   String? timeOfTheDay;
   String? tobeTakenAt;
   String? repeat;
-  DateTime today = DateTime.now();
+  DateTime date = DateTime.now();
   DateTime? endDate;
   List<ObedienceModel>? obediences;
 
@@ -21,6 +22,7 @@ class MedicineModel {
       this.isAvailable = false,
       this.lostCounts = 0,
       this.dosage,
+      this.duration,
       this.timeOfTheDay,
       this.tobeTakenAt,
       this.repeat,
@@ -36,12 +38,13 @@ class MedicineModel {
       medicineType: data?["medicineType"],
       name: data?["name"],
       dosage: data?["dosage"],
+      duration: data?["duration"],
       timeOfTheDay: data?["timeOfTheDay"],
       tobeTakenAt: data?["tobeTakenAt"],
       repeat: data?["repeat"],
       isAvailable: data?["isAvailable"],
       lostCounts: data?["lostCounts"],
-      endDate: data?["endDate"],
+      //endDate: data?["endDate"],
       obediences: data?["obediences"] is Iterable
           ? List.from(data?["obediences"])
           : null,
@@ -56,7 +59,8 @@ class MedicineModel {
       "timeOfTheDay": timeOfTheDay,
       "tobeTakenAt": tobeTakenAt,
       "repeat": repeat,
-      "today": today,
+      "duration": duration,
+      "date": date,
       "lostCounts": lostCounts,
       "endDate": endDate,
       "obediences": obediences

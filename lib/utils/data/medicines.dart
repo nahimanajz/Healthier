@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:healthier2/models/medicine.model.dart';
 
 final List<Map<String, dynamic>> medicines = [
   {
@@ -52,4 +53,8 @@ String formatDuration(int repeat) {
     return "weeks";
   }
   return "months";
+}
+
+String formatDescription(MedicineModel medicine) {
+  return "${medicine.dosage} ${medicine.medicineType} for ${medicine.duration} ${medicine.repeat} in ${medicine.timeOfTheDay}  ${medicine.tobeTakenAt}";
 }

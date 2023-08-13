@@ -28,19 +28,18 @@ class MedicineRepository {
     return document;
   }
 
-  static Future<List<MedicineModel>> getAll(
-      {required String phone, required String prescriptionId, r}) async {
-    var document = await db
+  static Stream<List<MedicineModel>> getAll(
+      {String phone = "08", String prescriptionId = "gY9MrVC1c1wWyvOrWBAn"}) {
+    var docsSnapshot = db
         .collection("patients")
         .doc(phone)
         .collection("prescriptions")
         .doc(prescriptionId)
         .collection("medicines")
-        .withConverter(
-            fromFirestore: MedicineModel.fromFireStore,
-            toFirestore: (MedicineModel medicine, _) => medicine.toFireStore())
-        .get();
-
-    return document as List<MedicineModel>;
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((document) => MedicineModel.fromFireStore(document, null))
+            .toList());
+    return docsSnapshot;
   }
 }

@@ -30,25 +30,32 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: lightColorScheme.primary,
-          title: KTextStyle(
-              text: "My prescriptions",
-              color: lightColorScheme.surface,
-              fontWeight: FontWeight.w700,
-              size: 20),
-        ),
-        body: StreamBuilder(
-          stream: PrescriptionRepository.getAll(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final prescriptions = snapshot.data!;
-              return ListView(
-                  children: prescriptions.map(buildPrescriptionItem).toList());
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
-        ));
+      appBar: AppBar(
+        backgroundColor: lightColorScheme.primary,
+        title: KTextStyle(
+            text: "My prescriptions",
+            color: lightColorScheme.surface,
+            fontWeight: FontWeight.w700,
+            size: 20),
+      ),
+      body: StreamBuilder(
+        stream: PrescriptionRepository.getAll(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final prescriptions = snapshot.data!;
+
+            return ListView.builder(
+              itemCount: prescriptions.length,
+              itemBuilder: (context, index) {
+                return buildPrescriptionItem(context, prescriptions[index]);
+              },
+            );
+            // children: prescriptions.map(buildPrescriptionItem).toList());
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+    );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:healthier2/repositories/medicine.repository.dart';
+import 'package:healthier2/utils/data/medicines.dart';
 
 import '../utils/color_schemes.g.dart';
 import '../widgets/styles/KTextStyle.dart';
@@ -17,6 +19,9 @@ class ViewPrescriptionScreen extends StatefulWidget {
 class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic>? args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -28,32 +33,27 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
         ),
         backgroundColor: lightColorScheme.primary,
       ),
-      body: SafeArea(
-          child: Container(
-        color: lightColorScheme.primary,
-        padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
-        child: ListView(
-          children: [
-            Flexible(
-              flex: 1,
-              //TODO: put every state value at appropriate location in below long text
-              child: Container(
-                child: KTextStyle(
-                  text: 'Your prescription for [IllNess]',
-                  color: lightColorScheme.surface,
-                  fontWeight: FontWeight.w700,
-                  size: 20.0,
-                ),
-              ),
-            ),
-            //TODO: loop from list of prescriptions
-            buildPresciptionItem(
-                description:
-                    '1 Tablet everyday for 1 week in morning, noon after food',
-                title: 'Aspirin'),
-          ],
-        ),
-      )),
+      body: StreamBuilder(
+        stream: MedicineRepository.getAll(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final medicines = snapshot.data!;
+
+            return ListView.builder(
+              itemCount: medicines.length,
+              itemBuilder: (context, index) {
+                return buildPresciptionItem(
+                    description: formatDescription(medicines[index]),
+                    title: medicines[index].name as String);
+              },
+            );
+          } else if (!snapshot.hasError) {
+            return Center(child: Text("${snapshot.error}"));
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
 
