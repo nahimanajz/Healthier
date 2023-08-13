@@ -2,13 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:healthier2/models/prescription.model.dart';
 
 class PatientModel {
-  late final String addressCity;
-  late final String name;
-  late final String phone;
-  late final int temp;
-  late final List<PrescriptionModel>? prescriptions;
+  final String? addressCity;
+  final String? name;
+  final String? phone;
+  final int? temp;
+  final List<PrescriptionModel>? prescriptions;
 
-  PatientModel({addressCity, name, phone, temp, prescription, prescriptions});
+  PatientModel({
+    this.addressCity,
+    this.name,
+    this.phone,
+    this.temp,
+    this.prescriptions,
+  });
 
   factory PatientModel.fromFireStore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,

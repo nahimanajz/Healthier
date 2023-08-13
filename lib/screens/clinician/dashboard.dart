@@ -1,22 +1,53 @@
+import 'dart:math';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:healthier2/repositories/patient.repository.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
+import 'package:healthier2/widgets/back.to.home.button.dart';
+import 'package:healthier2/widgets/custom_textFormField.dart';
 import 'package:healthier2/widgets/styles/KTextStyle.dart';
 import '../../widgets/styles/gradient.decoration.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+  @override
+  State<StatefulWidget> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  final phoneTxt = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text("Dashboard"),
-          backgroundColor: Colors.amber.shade100),
+          title: const Text("Quick Prescription"),
+          backgroundColor: const Color.fromARGB(255, 98, 80, 27)),
       body: Container(
         decoration: gradientDecoration,
-        child: Image.asset("assets/images/clinicians.png"),
+        padding: EdgeInsets.all(20),
+        child: Center(
+          child: buildTextFormField("Phone Number", phoneTxt),
+        ),
       ),
       drawer: const NavigationDrawer(),
+      floatingActionButton: buildFaButton(
+        context,
+        () async {
+          //TODO: HANDLE search,
+          var patient = await PatientRepository.getPhoneNumber(phoneTxt.text);
+          if (patient?.name != null) {
+            debugPrint("patient not found");
+          }
+          print(patient?.name);
+          Navigator.pushNamed(context, "/prescribe", arguments: {
+            "patientName": patient?.name,
+            "patientPhoneNumber": patient?.phone
+          });
+        },
+        Icon(Icons.arrow_forward, color: lightColorScheme.background),
+      ),
     );
   }
 }
@@ -88,7 +119,7 @@ class NavigationDrawer extends StatelessWidget {
               fontWeight: FontWeight.w400,
             ),
             onTap: () {
-              Navigator.of(context).pushNamed("/prescribe");
+              Navigator.of(context).pushNamed("/patientInfo");
             },
           ),
           ListTile(

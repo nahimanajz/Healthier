@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:healthier2/models/medicine.model.dart';
 import 'package:healthier2/models/patient.model.dart';
-import 'package:healthier2/models/prescription.model.dart';
-import 'package:healthier2/repositories/prescription.repository.dart';
-
+import 'package:healthier2/repositories/patient.repository.dart';
+import 'package:healthier2/services/country.service.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/widgets/styles/gradient.decoration.dart';
-import '../utils/data/medicines.dart';
+
+import '../utils/data/data.dart';
 import '../widgets/custom_textFormField.dart';
 import '../widgets/styles/KTextStyle.dart';
 
-class PrescribeScreen extends StatefulWidget {
-  const PrescribeScreen({super.key});
+class PatientInfoScreen extends StatefulWidget {
+  const PatientInfoScreen({super.key});
 
   @override
-  State<PrescribeScreen> createState() => _PrescribeScreenState();
+  State<PatientInfoScreen> createState() => _PrescribeInfoScreenState();
 }
 
-class _PrescribeScreenState extends State<PrescribeScreen> {
-  final _formKey = GlobalKey<FormState>();
+class _PrescribeInfoScreenState extends State<PatientInfoScreen> {
+  final _formKeyOne = GlobalKey<FormState>();
 
-  final _medicineNameController = TextEditingController();
-  final _illnessText = TextEditingController();
-  final _medicineTypeController = TextEditingController();
+  final _fullNamesController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
+  final _residencyCityController = TextEditingController();
+  final _residenceTempController = TextEditingController();
 
-  String prescriptionTitle = "Prescribe";
-  String districtQuery = "kigali";
+  String prescriptionTitle = "Patient Address";
+  String districtQuery = "";
 
   @override
   void initState() {
@@ -40,9 +40,6 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic>? patientArgs =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -71,20 +68,26 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                     child: SvgPicture.asset('assets/images/clinic.svg'),
                   ),
                 ),
-                buildMedicineInfoForm(),
+                buildPatientAddressForm(),
                 buildStepperButton(() async {
-                  var presciption =
-                      PrescriptionModel(illness: _illnessText.text);
-                  var createdPres = await PrescriptionRepository.create(
-                      phone: patientArgs?["patientPhoneNumber"],
-                      prescriptionData: presciption);
+                  /**
+                    *  TODO: 1. get temperature
+                    *  2. save this record in database
+                      3. navigate to prescription form
+                    *
+                    */
+                  var patient = PatientModel(
+                    addressCity: _residencyCityController.text,
+                    name: _fullNamesController.text,
+                    phone: _phoneNumberController.text,
+                    temp: int.tryParse(
+                      _residenceTempController.text,
+                    ),
+                  );
 
-                  await Navigator.pushNamed(context, "/dosage", arguments: {
-                    "prescriptionId": createdPres?.id,
-                    "medicineName": _medicineNameController.text,
-                    "medicineType": _medicineTypeController.text,
-                    "phone": patientArgs?["patientPhoneNumber"]
-                  });
+                  PatientRepository.create(patient);
+
+                  // await Navigator.pushNamed(context, "/dosage");
                 })
               ],
             ),
@@ -94,13 +97,13 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
     );
   }
 
-  Flexible buildMedicineInfoForm() {
+  Flexible buildPatientAddressForm() {
     return Flexible(
       flex: 3,
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.0),
         child: Form(
-          key: _formKey,
+          key: _formKeyOne,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -110,15 +113,19 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                 size: 16.0,
                 fontWeight: FontWeight.w500,
               ),
-              buildTextFormField("Illness", _illnessText),
-              buildTextFormField("Medicine Name", _medicineNameController),
-              buildSelectFormField(
-                _medicineTypeController,
-                medicines,
-                labelText: 'Medicine Type',
-                dialogTitle: ' Medicine type',
-                searchHint: 'Search medicine',
-              )
+              buildTextFormField("Full Names", _fullNamesController),
+              buildTextFormField("Phone Number", _phoneNumberController,
+                  keyboardType: TextInputType.phone),
+              buildSelectFormField(_residencyCityController, districtsData,
+                  labelText: 'Districts',
+                  searchHint: 'Search District',
+                  dialogTitle: 'Residence City', onChanged: (value) async {
+                double temp = await CountryService.getTemperature(city: value);
+                //TODO:
+                // if (temp) {
+                //   temp = await CountryService.getTemperature();
+                // }
+              })
             ],
           ),
         ),

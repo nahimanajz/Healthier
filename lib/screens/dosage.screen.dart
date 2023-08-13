@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:healthier2/models/medicine.model.dart';
+import 'package:healthier2/repositories/medicine.repository.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
+import 'package:healthier2/utils/data/medicines.dart';
+import 'package:healthier2/utils/main.util.dart';
 import 'package:healthier2/widgets/styles/gradient.decoration.dart';
 
 import '../widgets/styles/KTextStyle.dart';
@@ -28,13 +32,13 @@ class _DosageState extends State<DosageScreen> {
     });
   }
 
-  setMonthlyRepeat() {
+  setWeeklylyRepeat() {
     setState(() {
       repeat = 2;
     });
   }
 
-  setYearlyRepeat() {
+  setMonthlyRepeat() {
     setState(() {
       repeat = 3;
     });
@@ -124,6 +128,33 @@ class _DosageState extends State<DosageScreen> {
     });
   }
 
+  onAddMedicine(BuildContext context) {
+    final Map<String, dynamic>? arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    debugPrint(arguments.toString()); //ok
+
+    var dailyTimes = formatTimeOfDay(
+        isMorningActive, isNoonActive, isEveningActive, isNightActive);
+    var repeatType = formatDuration(repeat);
+    //
+    var medicine = MedicineModel(
+        medicineType: arguments?["medicineType"],
+        name: arguments?["medicineName"],
+        dosage: dosage.toString(),
+        timeOfTheDay: dailyTimes,
+        tobeTakenAt: formatTobeTaken(foodCorrelation),
+        repeat: repeatType,
+        endDate: calculateEndDate(DateTime.now(), duration, repeatType));
+
+    debugPrint((medicine.toFireStore()).toString()); //ok
+
+    // MedicineR
+    MedicineRepository.create(
+        phone: arguments?["phone"],
+        prescriptionId: arguments?["prescriptionId"],
+        medicineData: medicine);
+  }
+
   @override
   Widget build(BuildContext context) {
     var dayTimes = [
@@ -139,8 +170,8 @@ class _DosageState extends State<DosageScreen> {
     ];
     var repeats = [
       buildElevatedButton(setDailyRepeat, repeat == 1, "Daily"),
-      buildElevatedButton(setMonthlyRepeat, repeat == 2, "Weekly"),
-      buildElevatedButton(setYearlyRepeat, repeat == 3, "Monthly"),
+      buildElevatedButton(setWeeklylyRepeat, repeat == 2, "Weekly"),
+      buildElevatedButton(setMonthlyRepeat, repeat == 3, "Monthly"),
     ];
     return Scaffold(
       appBar: AppBar(
@@ -152,7 +183,7 @@ class _DosageState extends State<DosageScreen> {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: KTextStyle(
-          text: 'Prescription for [Medicine Name]',
+          text: 'Prescription for',
           color: lightColorScheme.surface,
           size: 14.0,
         ),
@@ -186,12 +217,15 @@ class _DosageState extends State<DosageScreen> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment
-                            .spaceBetween, //TODO:wrap in padding
+                            .spaceAround, // TODO: wrap in padding
                         children: [
                           buildColumn("Dosage", '${dosage} Tablet',
                               onDosageDecrement, onDosageIncrement),
-                          buildColumn("Duration", '${duration} Week',
-                              onDurationDecrement, onDurationIncrement)
+                          buildColumn(
+                              "Duration",
+                              '${duration} ${formatDuration(repeat)}',
+                              onDurationDecrement,
+                              onDurationIncrement)
                         ],
                       ),
                       buildWrap("Time of the day", dayTimes),
@@ -204,33 +238,23 @@ class _DosageState extends State<DosageScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             ElevatedButton(
-                              //TODO: Add new medicine to prescriptions array
-                              onPressed: () {},
+                              // TODO: Add new medicine to prescriptions array
+                              onPressed: () {
+                                onAddMedicine(context);
+                              },
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  shape: StadiumBorder(
-                                      side: BorderSide(
-                                          color: lightColorScheme.primary))),
+                                backgroundColor: Colors.white,
+                                shape: StadiumBorder(
+                                  side: BorderSide(
+                                      color: lightColorScheme.primary),
+                                ),
+                              ),
                               child: KTextStyle(
                                 text: "Add Medicine",
                                 color: lightColorScheme.primary,
                                 size: 14.0,
                               ),
                             ),
-                            ElevatedButton(
-                              //TODO: save prescription to database
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: lightColorScheme.primary,
-                                  shape: StadiumBorder(
-                                      side: BorderSide(
-                                          color: lightColorScheme.primary))),
-                              child: KTextStyle(
-                                text: "Prescribe",
-                                color: lightColorScheme.onPrimary,
-                                size: 14.0,
-                              ),
-                            )
                           ],
                         ),
                       )
@@ -297,7 +321,7 @@ class _DosageState extends State<DosageScreen> {
             KTextStyle(
               text: medValueAndType,
               color: Color(0xFF333333),
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w300,
               size: 16.0,
             ),
             IconButton(

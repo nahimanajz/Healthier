@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ObedienceModel {
-  late final String status;
-  ObedienceModel({status});
+  String? status;
+  ObedienceModel({this.status});
 
   factory ObedienceModel.fromFireStore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -16,7 +16,7 @@ class ObedienceModel {
 
   Map<String, dynamic> toFireStore() {
     return {
-      if (status != null) "rate": status,
+      if (status != null) "status": status,
     };
   }
 }

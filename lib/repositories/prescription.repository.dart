@@ -1,10 +1,28 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:healthier2/utils/firebase.instance.dart';
-
 import '../models/prescription.model.dart';
 
-class PrescriptionRepository {
-  static Future<PrescriptionModel?> getPatientById(
+final class PrescriptionRepository {
+  static Future<dynamic> create(
+      {required String phone,
+      required PrescriptionModel prescriptionData}) async {
+    var document = await db
+        .collection("patients")
+        .doc(phone)
+        .collection("prescriptions")
+        .withConverter(
+            fromFirestore: PrescriptionModel.fromFireStore,
+            toFirestore: (PrescriptionModel patient, _) =>
+                patient.toFireStore())
+        .add(prescriptionData)
+        .then((documentSnapshot) => documentSnapshot);
+
+    return document;
+  }
+
+  static Future<PrescriptionModel?> getPrescriptionById(
       String patientId, prescriptionId) async {
     final ref = db
         .collection("patients")
@@ -32,17 +50,6 @@ class PrescriptionRepository {
               .docs, //TODO: Object.data to get single prescription records on UI
           onError: (e) => print("Error completing $e"),
         );
-  }
-
-  static Future<void> create(
-      String patientId, PrescriptionModel newPrescription) async {
-    return db
-        .collection("patients")
-        .doc(patientId)
-        .collection("prescriptions")
-        .add(newPrescription as Map<String, dynamic>)
-        .then((documentSnapshot) =>
-            print("newPrescription Id${documentSnapshot.id}"));
   }
 
   static Future<void> approveMedicine(

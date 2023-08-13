@@ -24,7 +24,8 @@ SelectFormField buildSelectFormField(
     TextEditingController controller, var items,
     {required String labelText,
     required String dialogTitle,
-    required String searchHint}) {
+    required String searchHint,
+    Function(String)? onChanged}) {
   return SelectFormField(
     controller: controller,
     enableSearch: true,
@@ -44,11 +45,6 @@ SelectFormField buildSelectFormField(
           fontSize: 14,
           decorationColor: lightColorScheme.scrim),
     ),
-    onChanged: (value) async {
-      // double temp = await CountryService.getTemperature(city: value);
-      // if (temp) {
-      //   temp = await CountryService.getTemperature();
-      // }
-    },
+    onChanged: onChanged,
   );
 }

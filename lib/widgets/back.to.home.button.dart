@@ -14,3 +14,9 @@ FloatingActionButton buildBackToHomeButton(BuildContext context) {
     ),
   );
 }
+
+FloatingActionButton buildFaButton(
+    BuildContext context, void Function() onPressed, Widget child) {
+  return FloatingActionButton(
+      onPressed: onPressed, shape: OvalBorder(), child: child);
+}
