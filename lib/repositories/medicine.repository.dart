@@ -27,4 +27,20 @@ class MedicineRepository {
 
     return document;
   }
+
+  static Future<List<MedicineModel>> getAll(
+      {required String phone, required String prescriptionId, r}) async {
+    var document = await db
+        .collection("patients")
+        .doc(phone)
+        .collection("prescriptions")
+        .doc(prescriptionId)
+        .collection("medicines")
+        .withConverter(
+            fromFirestore: MedicineModel.fromFireStore,
+            toFirestore: (MedicineModel medicine, _) => medicine.toFireStore())
+        .get();
+
+    return document as List<MedicineModel>;
+  }
 }

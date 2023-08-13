@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:healthier2/models/prescription.model.dart';
+import 'package:healthier2/repositories/prescription.repository.dart';
 
 import '../main.dart';
 import '../utils/color_schemes.g.dart';
@@ -28,48 +30,25 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: lightColorScheme.primary,
-      body: SafeArea(
-        child: ListView(
-          children: [
-            Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 40),
-                  //height: ,
-                  child: Wrap(
-                    runSpacing: 0,
-                    alignment: WrapAlignment.spaceEvenly,
-                    children: [
-                      KTextStyle(
-                          text: "Hello, Patient Name",
-                          color: lightColorScheme.surface,
-                          fontWeight: FontWeight.w700,
-                          size: 20),
-                      KTextStyle(
-                          text: "These are your prescriptions",
-                          color: lightColorScheme.surface,
-                          size: 20),
-                      //TODO: add prescription then navigate to prescriptiondetail when user taps i
-                    ],
-                  ),
-                ),
-                PrescriptionItem(),
-                PrescriptionItem(),
-                PrescriptionItem(),
-                PrescriptionItem(),
-                PrescriptionItem(),
-                PrescriptionItem(),
-                PrescriptionItem(),
-                PrescriptionItem(),
-                PrescriptionItem(),
-                PrescriptionItem(),
-                PrescriptionItem(),
-              ],
-            ),
-          ],
+        appBar: AppBar(
+          backgroundColor: lightColorScheme.primary,
+          title: KTextStyle(
+              text: "My prescriptions",
+              color: lightColorScheme.surface,
+              fontWeight: FontWeight.w700,
+              size: 20),
         ),
-      ),
-    );
+        body: StreamBuilder(
+          stream: PrescriptionRepository.getAll(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final prescriptions = snapshot.data!;
+              return ListView(
+                  children: prescriptions.map(buildPrescriptionItem).toList());
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        ));
   }
 }

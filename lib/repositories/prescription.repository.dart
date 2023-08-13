@@ -38,18 +38,17 @@ final class PrescriptionRepository {
     return docSnap.data();
   }
 
-  static Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getAll(
-      String patientId) async {
-    return db
+  static Stream<List<PrescriptionModel>> getAll({String patientId = "08"}) {
+    var docsSnapshots = db
         .collection("patients")
         .doc(patientId)
         .collection("prescriptions")
-        .get()
-        .then(
-          (querySnapshot) => querySnapshot
-              .docs, //TODO: Object.data to get single prescription records on UI
-          onError: (e) => print("Error completing $e"),
-        );
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((document) => PrescriptionModel.fromFireStore(document, null))
+            .toList());
+
+    return docsSnapshots;
   }
 
   static Future<void> approveMedicine(
