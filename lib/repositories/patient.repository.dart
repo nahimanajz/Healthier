@@ -49,6 +49,7 @@ class PatientRepository {
             toFirestore: (PatientModel patient, _) => patient.toFireStore())
         .doc(patient.phone)
         .set(patient)
-        .then((documentSnapshot) => log("patient is saved Id}"));
+        .then((documentSnapshot) => documentSnapshot,
+            onError: (e) => throw Exception("something went wrong $e"));
   }
 }

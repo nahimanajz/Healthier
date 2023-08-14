@@ -6,15 +6,16 @@ class PatientModel {
   final String? name;
   final String? phone;
   final int? temp;
+  final String? documentId;
   final List<PrescriptionModel>? prescriptions;
 
-  PatientModel({
-    this.addressCity,
-    this.name,
-    this.phone,
-    this.temp,
-    this.prescriptions,
-  });
+  PatientModel(
+      {this.addressCity,
+      this.name,
+      this.phone,
+      this.temp,
+      this.prescriptions,
+      this.documentId});
 
   factory PatientModel.fromFireStore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -22,6 +23,7 @@ class PatientModel {
     final data = snapshot.data();
 
     return PatientModel(
+      documentId: snapshot.id,
       name: data?["name"],
       phone: data?["phone"],
       temp: data?["temp"],
@@ -38,7 +40,6 @@ class PatientModel {
       if (phone != null) "phone": phone,
       if (temp != null) "temp": temp,
       if (addressCity != null) "addressCity": addressCity,
-      "prescriptions": prescriptions
     };
   }
 }

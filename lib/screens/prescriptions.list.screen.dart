@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:healthier2/models/prescription.model.dart';
 import 'package:healthier2/repositories/prescription.repository.dart';
 
 import '../main.dart';
@@ -19,12 +18,14 @@ class PrescriptionsListScreen extends StatefulWidget {
 class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
   @override
   void initState() {
-    // TODO: implement initState
+    // TODO: implement local notification
     super.initState();
+    /*
     LocalNotification.showNotification(
         title: "Pill reminder",
         body: "Please remember to take your medicine",
         fln: flutterLocalNotificationsPlugin);
+        */
   }
 
   @override
@@ -50,7 +51,6 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
                 return buildPrescriptionItem(context, prescriptions[index]);
               },
             );
-            // children: prescriptions.map(buildPrescriptionItem).toList());
           } else {
             return Center(child: CircularProgressIndicator());
           }

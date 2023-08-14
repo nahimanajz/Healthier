@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:healthier2/repositories/medicine.repository.dart';
@@ -43,11 +45,13 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
               itemCount: medicines.length,
               itemBuilder: (context, index) {
                 return buildPresciptionItem(
+                    prescriptionId: args?["prescriptionId"],
+                    illness: args?["illness"],
                     description: formatDescription(medicines[index]),
-                    title: medicines[index].name as String);
+                    title: "${medicines[index].name as String}");
               },
             );
-          } else if (!snapshot.hasError) {
+          } else if (snapshot.hasError) {
             return Center(child: Text("${snapshot.error}"));
           } else {
             return Center(child: CircularProgressIndicator());
@@ -58,7 +62,10 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
   }
 
   Flexible buildPresciptionItem(
-      {required String title, required String description}) {
+      {required String title,
+      required String illness,
+      required String description,
+      required String prescriptionId}) {
     return Flexible(
       child: Card(
         color: lightColorScheme.onPrimary,
@@ -95,7 +102,12 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
                   )
                 : OutlinedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/rate-medicine");
+                      Navigator.pushNamed(context, "/rate-medicine",
+                          arguments: {
+                            "prescriptionId": prescriptionId,
+                            "illness": illness,
+                            "medicineName": title
+                          });
                     },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: lightColorScheme.onPrimary,

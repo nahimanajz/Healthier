@@ -32,3 +32,12 @@ ElevatedButton(
                               ),
                             )
 ```
+Feedback
+--------
+- Clinician should see pdf report of patient using App between two dates, along with their  comments and prescriptions 
+- Report should should be able to filtered based on keys like, medicine name, illness, delayed prescriptios
+- Implementing Notifications 
+- App should be downloaded on playstore
+- Call Katende once everything is ready
+- Preparing full tools for presenting my project `personal internet, mobile phone`
+- Auntentication 

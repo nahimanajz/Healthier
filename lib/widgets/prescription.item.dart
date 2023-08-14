@@ -27,8 +27,10 @@ Widget buildPrescriptionItem(
             size: 14),
         IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, "/prescription/detail",
-                  arguments: {"prescription": prescription});
+              Navigator.pushNamed(context, "/prescription/detail", arguments: {
+                "prescriptionId": prescription.documentId,
+                "illness": prescription.illness
+              });
             },
             icon: Icon(Icons.info, color: lightColorScheme.surfaceTint))
       ],

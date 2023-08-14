@@ -4,11 +4,13 @@ import 'package:healthier2/models/medicine.model.dart';
 import 'comment.model.dart';
 
 class PrescriptionModel {
+  String? documentId;
   String? illness;
   List<MedicineModel>? medicines;
   List<CommentModel>? comments;
 
   PrescriptionModel({
+    this.documentId = "",
     this.illness,
     this.comments,
     this.medicines,
@@ -20,6 +22,7 @@ class PrescriptionModel {
     final data = snapshot.data();
 
     return PrescriptionModel(
+      documentId: snapshot.id,
       illness: data?["illness"],
       comments:
           data?["comments"] is Iterable ? List.from(data?["comments"]) : null,

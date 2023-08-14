@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'obedience.model.dart';
 
 class MedicineModel {
+  String? documentId;
   String? medicineType;
   String? name;
   bool? isAvailable;
@@ -17,7 +18,8 @@ class MedicineModel {
   List<ObedienceModel>? obediences;
 
   MedicineModel(
-      {this.medicineType,
+      {this.documentId = "",
+      this.medicineType,
       this.name,
       this.isAvailable = false,
       this.lostCounts = 0,
@@ -35,6 +37,7 @@ class MedicineModel {
     final data = snapshot.data();
 
     return MedicineModel(
+      documentId: snapshot.id,
       medicineType: data?["medicineType"],
       name: data?["name"],
       dosage: data?["dosage"],

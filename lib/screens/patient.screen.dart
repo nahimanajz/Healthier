@@ -27,6 +27,7 @@ class _PrescribeInfoScreenState extends State<PatientInfoScreen> {
 
   String prescriptionTitle = "Patient Address";
   String districtQuery = "";
+  double residenceTemp = 0.0;
 
   @override
   void initState() {
@@ -80,12 +81,10 @@ class _PrescribeInfoScreenState extends State<PatientInfoScreen> {
                     addressCity: _residencyCityController.text,
                     name: _fullNamesController.text,
                     phone: _phoneNumberController.text,
-                    temp: int.tryParse(
-                      _residenceTempController.text,
-                    ),
+                    temp: residenceTemp.toInt(),
                   );
 
-                  PatientRepository.create(patient);
+                  await PatientRepository.create(patient);
 
                   // await Navigator.pushNamed(context, "/dosage");
                 })
@@ -121,10 +120,12 @@ class _PrescribeInfoScreenState extends State<PatientInfoScreen> {
                   searchHint: 'Search District',
                   dialogTitle: 'Residence City', onChanged: (value) async {
                 double temp = await CountryService.getTemperature(city: value);
-                //TODO:
-                // if (temp) {
-                //   temp = await CountryService.getTemperature();
-                // }
+                if (temp == 0.0) {
+                  temp = await CountryService.getTemperature();
+                }
+                setState(() {
+                  residenceTemp = temp;
+                });
               })
             ],
           ),

@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CommentModel {
-  late final String rate;
-  late final String text;
+  String? rate;
+  String? text;
+  String? medicineName;
 
-  CommentModel({rate, text});
+  CommentModel({this.rate, this.text, this.medicineName});
 
   factory CommentModel.fromFireStore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -12,15 +13,16 @@ class CommentModel {
     final data = snapshot.data();
 
     return CommentModel(
-      rate: data?["rate"],
-      text: data?["text"],
-    );
+        rate: data?["rate"],
+        text: data?["text"],
+        medicineName: data?["medicineName"]);
   }
 
   Map<String, dynamic> toFireStore() {
     return {
       if (rate != null) "rate": rate,
       if (text != null) "text": text,
+      if (medicineName != null) "medicineName": medicineName,
     };
   }
 }
