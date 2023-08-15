@@ -46,3 +46,14 @@ Feedback
 it happens when user taps on texfield to fetch temperature
 #achievements
 by entering phone prescription is saved to correct patient 🆗
+
+
+verify
+-----
+Pharmacist phone
+Patient phone
+
+Then pharmacist has to be saved in db
+Secondly, related prescriptions to given patient number  are retrieved from db 
+finally pharmacist can
+

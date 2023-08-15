@@ -52,14 +52,14 @@ final class PrescriptionRepository {
   }
 
   static Future<void> approveMedicine(
-      String patientId, String prescriptionId) async {
+      {String? patientId, String? prescriptionId}) async {
     final prescriptionRef = db
         .collection("patients")
         .doc(patientId)
         .collection("prescriptions")
         .doc(prescriptionId);
 
-    prescriptionRef.update({"isMedecineAvailable": true}).then(
+    prescriptionRef.update({"isMedicineAvailable": true}).then(
         (documentSnapshot) => print(
             "medicine is approved"), //TODO: THIS MESSAGE WILL BE SHOWN IN A DIALOG
         onError: (e) => print("Error approving medicine availability $e"));

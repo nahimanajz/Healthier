@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:healthier2/utils/preferences.dart';
 
 import '../utils/color_schemes.g.dart';
 import '../widgets/back.to.home.button.dart';
@@ -16,7 +17,7 @@ class PharmacyDetailScreen extends StatefulWidget {
 
 class _PharmacyDetailScreenState extends State<PharmacyDetailScreen> {
   final _nameController = TextEditingController();
-  final _prescriptionCodeController = TextEditingController();
+  final _patientIdCtl = TextEditingController();
   final _pharmacyFormKey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -73,8 +74,8 @@ class _PharmacyDetailScreenState extends State<PharmacyDetailScreen> {
                             _nameController,
                           ),
                           buildTextFormField(
-                              "Prescription Code", _prescriptionCodeController,
-                              keyboardType: TextInputType.number),
+                              "Patient Phone Number", _patientIdCtl,
+                              keyboardType: TextInputType.phone),
                         ],
                       ),
                     ),
@@ -82,8 +83,14 @@ class _PharmacyDetailScreenState extends State<PharmacyDetailScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    //TODO: save info and then navigate to prescription
-                    Navigator.pushNamed(context, "/prescription/detail");
+                    savePrescriptionPrefs(
+                        _nameController.text, _patientIdCtl.text);
+
+                    Navigator.pushNamed(context, "/prescriptionsList",
+                        arguments: {
+                          "patientId": _patientIdCtl.text,
+                          "pharmacyName": _nameController.text
+                        });
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: lightColorScheme.primary),

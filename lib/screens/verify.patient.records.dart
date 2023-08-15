@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:healthier2/repositories/prescription.repository.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 
 import '../widgets/back.to.home.button.dart';
@@ -31,7 +32,9 @@ class _VerifyPatientRecordsScreenState
   handleVerify() {
     //TODO: handle verify from database then redirect to view list with all related prescriptions
 
-    Navigator.pushNamed(context, "/prescriptionsList");
+    Navigator.pushNamed(context, "/prescriptionsList", arguments: {
+      "patientId": _phoneNumberController.text,
+    });
   }
 
   @override

@@ -9,7 +9,8 @@ import 'package:healthier2/widgets/styles/KTextStyle.dart';
 import '../utils/color_schemes.g.dart';
 
 Widget buildPrescriptionItem(
-    BuildContext context, PrescriptionModel prescription) {
+    BuildContext context, PrescriptionModel prescription,
+    {required String patientId, bool isPharmacist = false}) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
     decoration: BoxDecoration(
@@ -29,7 +30,9 @@ Widget buildPrescriptionItem(
             onPressed: () {
               Navigator.pushNamed(context, "/prescription/detail", arguments: {
                 "prescriptionId": prescription.documentId,
-                "illness": prescription.illness
+                "illness": prescription.illness,
+                "patientId": patientId,
+                "isPharmacist": isPharmacist
               });
             },
             icon: Icon(Icons.info, color: lightColorScheme.surfaceTint))
