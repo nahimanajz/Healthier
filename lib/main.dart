@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:healthier2/repositories/patient.repository.dart';
-import 'package:healthier2/repositories/prescription.repository.dart';
 import 'package:healthier2/screens/clinician/dashboard.dart';
 import 'package:healthier2/screens/dosage.screen.dart';
 import 'package:healthier2/screens/home.dart';
@@ -13,7 +12,6 @@ import 'package:healthier2/screens/prescriptions.list.screen.dart';
 import 'package:healthier2/screens/rate.medicine.screen.dart';
 import 'package:healthier2/screens/verify.patient.records.dart';
 import 'package:healthier2/screens/view.prescription.dart';
-import 'package:healthier2/utils/local.notification.dart';
 
 import 'utils/color_schemes.g.dart';
 

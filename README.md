@@ -41,3 +41,8 @@ Feedback
 - Call Katende once everything is ready
 - Preparing full tools for presenting my project `personal internet, mobile phone`
 - Auntentication 
+
+## Errors
+it happens when user taps on texfield to fetch temperature
+#achievements
+by entering phone prescription is saved to correct patient 🆗

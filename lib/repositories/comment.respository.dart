@@ -4,7 +4,7 @@ import 'package:healthier2/utils/firebase.instance.dart';
 class CommentRepository {
   static Future<void> create(
       CommentModel comment, String patientId, String prescriptionId) async {
-    var docSnap = await db
+    await db
         .collection(
             "/patients/$patientId/prescriptions/$prescriptionId/comments")
         .withConverter(

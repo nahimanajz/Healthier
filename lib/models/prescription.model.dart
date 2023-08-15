@@ -32,10 +32,6 @@ class PrescriptionModel {
   }
 
   Map<String, dynamic> toFireStore() {
-    return {
-      if (illness != null) "illness": illness,
-      "comments": comments,
-      "medicines": medicines,
-    };
+    return {if (illness != null) "illness": illness};
   }
 }

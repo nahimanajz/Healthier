@@ -21,7 +21,7 @@ final List<Map<String, dynamic>> medicines = [
 ];
 
 String formatTimeOfDay(bool morning, bool noon, bool evening, bool night) {
-  var result;
+  var result = "";
   if (morning) {
     result = "Morning";
   }
@@ -57,4 +57,8 @@ String formatDuration(int repeat) {
 
 String formatDescription(MedicineModel medicine) {
   return "${medicine.dosage} ${medicine.medicineType} for ${medicine.duration} ${medicine.repeat} in ${medicine.timeOfTheDay}  ${medicine.tobeTakenAt}";
+}
+
+String formatDoseMeasure(String medicineType) {
+  return medicineType == "Liquid" ? "ML" : medicineType;
 }

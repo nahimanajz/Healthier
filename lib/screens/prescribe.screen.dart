@@ -82,6 +82,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                     "prescriptionId": createdPres?.id,
                     "medicineName": _medicineNameController.text,
                     "medicineType": _medicineTypeController.text,
+                    "illness": _illnessText.text,
                     "phone": patientArgs?["patientPhoneNumber"]
                   });
                 })

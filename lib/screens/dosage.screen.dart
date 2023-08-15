@@ -4,6 +4,7 @@ import 'package:healthier2/repositories/medicine.repository.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/utils/data/medicines.dart';
 import 'package:healthier2/utils/main.util.dart';
+import 'package:healthier2/widgets/custom_textFormField.dart';
 import 'package:healthier2/widgets/styles/gradient.decoration.dart';
 
 import '../widgets/styles/KTextStyle.dart';
@@ -26,6 +27,9 @@ class _DosageState extends State<DosageScreen> {
   //
   int foodCorrelation = 0;
   int repeat = 0;
+  final _medicineTxtController = TextEditingController();
+  final _medicineTypeController = TextEditingController();
+
   setDailyRepeat() {
     setState(() {
       repeat = 1;
@@ -94,6 +98,8 @@ class _DosageState extends State<DosageScreen> {
   @override
   void dispose() {
     super.dispose();
+    _medicineTxtController.dispose();
+    _medicineTypeController.dispose();
   }
 
   void onDosageIncrement() {
@@ -128,27 +134,24 @@ class _DosageState extends State<DosageScreen> {
     });
   }
 
-  onAddMedicine(BuildContext context) {
-    final Map<String, dynamic>? arguments =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-    debugPrint(arguments.toString()); //ok
-
-    var dailyTimes = formatTimeOfDay(
-        isMorningActive, isNoonActive, isEveningActive, isNightActive);
+  onAddMedicine(Map<String, dynamic>? arguments, String dailyTimes) {
     var repeatType = formatDuration(repeat);
     //
+    if (arguments?["medicineType"] != null) {
+      _medicineTxtController.text = arguments?["medicineName"];
+      _medicineTypeController.text = arguments?["medicineType"];
+    }
+
     var medicine = MedicineModel(
-        medicineType: arguments?["medicineType"],
-        name: arguments?["medicineName"],
+        medicineType: _medicineTypeController.text,
+        name: _medicineTxtController.text,
         dosage: dosage.toString(),
         timeOfTheDay: dailyTimes,
         tobeTakenAt: formatTobeTaken(foodCorrelation),
         repeat: repeatType,
         endDate: calculateEndDate(DateTime.now(), duration, repeatType));
 
-    debugPrint((medicine.toFireStore()).toString()); //ok
-
-    // MedicineR
+    //MedicineR
     MedicineRepository.create(
         phone: arguments?["phone"],
         prescriptionId: arguments?["prescriptionId"],
@@ -157,6 +160,11 @@ class _DosageState extends State<DosageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic>? arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    var dailyTimes = formatTimeOfDay(
+        isMorningActive, isNoonActive, isEveningActive, isNightActive);
+
     var dayTimes = [
       buildElevatedButton(toggleMorning, isMorningActive, "Morning"),
       buildElevatedButton(toggleNoon, isNoonActive, "Noon"),
@@ -177,13 +185,12 @@ class _DosageState extends State<DosageScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            //TODO: this back works after implementing navigations
             Navigator.pop(context, 2);
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: KTextStyle(
-          text: 'Prescription for',
+          text: 'Prescription for ${arguments?["illness"]}',
           color: lightColorScheme.surface,
           size: 14.0,
         ),
@@ -196,15 +203,14 @@ class _DosageState extends State<DosageScreen> {
             children: [
               Flexible(
                 flex: 1,
-                //TODO: put every state value at appropriate location in below long text
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
                   child: KTextStyle(
                     text:
-                        '''1 Tablet everyday for 1 week in morning, noon after food ''',
+                        '''${dosage} ${arguments?["medicineType"]} everyday for ${duration} ${formatDuration(repeat)} in ${dailyTimes} ${formatTobeTaken(foodCorrelation)} ''',
                     color: lightColorScheme.surface,
                     fontWeight: FontWeight.w700,
-                    size: 20.0,
+                    size: 16.0,
                   ),
                 ),
               ),
@@ -219,8 +225,11 @@ class _DosageState extends State<DosageScreen> {
                         mainAxisAlignment: MainAxisAlignment
                             .spaceAround, // TODO: wrap in padding
                         children: [
-                          buildColumn("Dosage", '${dosage} Tablet',
-                              onDosageDecrement, onDosageIncrement),
+                          buildColumn(
+                              "Dosage",
+                              '${dosage} ${formatDoseMeasure(arguments?["medicineType"])}',
+                              onDosageDecrement,
+                              onDosageIncrement),
                           buildColumn(
                               "Duration",
                               '${duration} ${formatDuration(repeat)}',
@@ -240,7 +249,7 @@ class _DosageState extends State<DosageScreen> {
                             ElevatedButton(
                               // TODO: Add new medicine to prescriptions array
                               onPressed: () {
-                                onAddMedicine(context);
+                                _showFullModal(context);
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white,
@@ -255,6 +264,23 @@ class _DosageState extends State<DosageScreen> {
                                 size: 14.0,
                               ),
                             ),
+                            ElevatedButton(
+                              onPressed: () {
+                                onAddMedicine(arguments, dailyTimes);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: lightColorScheme.primary,
+                                shape: StadiumBorder(
+                                  side: BorderSide(
+                                      color: lightColorScheme.primary),
+                                ),
+                              ),
+                              child: KTextStyle(
+                                text: "Prescribe",
+                                color: lightColorScheme.onPrimary,
+                                size: 14.0,
+                              ),
+                            )
                           ],
                         ),
                       )
@@ -332,6 +358,65 @@ class _DosageState extends State<DosageScreen> {
           ],
         ),
       ],
+    );
+  }
+
+  _showFullModal(context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (builder) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: Center(
+            child: Container(
+              padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: lightColorScheme.scrim,
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: Wrap(
+                runSpacing: 20,
+                spacing: 20,
+                alignment: WrapAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: lightColorScheme.primary,
+                          shape: StadiumBorder(
+                            side: BorderSide(color: lightColorScheme.primary),
+                          ),
+                        ),
+                        child: KTextStyle(
+                          text: "Add",
+                          color: lightColorScheme.onPrimary,
+                          size: 14.0,
+                        ),
+                      )
+                    ],
+                  ),
+                  buildTextFormField("Medicine Name", _medicineTxtController),
+                  buildSelectFormField(
+                    _medicineTypeController,
+                    medicines,
+                    labelText: 'Medicine Type',
+                    dialogTitle: ' Medicine type',
+                    searchHint: 'Search medicine',
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
