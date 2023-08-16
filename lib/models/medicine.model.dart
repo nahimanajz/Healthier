@@ -66,6 +66,7 @@ class MedicineModel {
       "date": date,
       "lostCounts": lostCounts,
       "endDate": endDate,
+      "isAvailable": isAvailable
     };
   }
 }

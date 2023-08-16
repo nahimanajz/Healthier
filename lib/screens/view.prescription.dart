@@ -2,9 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:healthier2/models/medicine.model.dart';
 import 'package:healthier2/repositories/medicine.repository.dart';
 import 'package:healthier2/repositories/prescription.repository.dart';
 import 'package:healthier2/utils/data/medicines.dart';
+import 'package:healthier2/widgets/alert.dart';
+import 'package:healthier2/widgets/empty.list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/color_schemes.g.dart';
@@ -24,10 +27,14 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-    log(args.toString());
 
     return Scaffold(
       appBar: AppBar(
+        title: KTextStyle(
+          text: " ${args?['illness']}",
+          color: lightColorScheme.background,
+          size: 16,
+        ),
         leading: IconButton(
           onPressed: () {
             //TODO: this back works after implementing navigations
@@ -43,21 +50,24 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final medicines = snapshot.data!;
-
+            if (medicines.isEmpty) {
+              return buildEmptyList();
+            }
             return ListView.builder(
               itemCount: medicines.length,
               itemBuilder: (context, index) {
                 return buildPresciptionItem(
+                    medicine: medicines[index],
+                    medicineId: medicines[index].documentId as String,
+                    isAvailable: medicines[index].isAvailable as bool,
                     patientId: args?["patientId"],
                     prescriptionId: args?["prescriptionId"],
                     illness: args?["illness"],
                     description: formatDescription(medicines[index]),
-                    title: "${medicines[index].name as String}",
+                    title: "${medicines[index].name as String ?? " "}",
                     isPharmacist: args?["isPharmacist"]);
               },
             );
-          } else if (snapshot.hasError) {
-            return Center(child: Text("${snapshot.error}"));
           } else {
             return Center(child: CircularProgressIndicator());
           }
@@ -66,13 +76,17 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
     );
   }
 
-  Flexible buildPresciptionItem(
-      {required String patientId,
-      required String title,
-      required String illness,
-      required String description,
-      required String prescriptionId,
-      required bool isPharmacist}) {
+  Flexible buildPresciptionItem({
+    required MedicineModel medicine,
+    required bool isAvailable,
+    required String patientId,
+    required String title,
+    required String illness,
+    required String description,
+    required String prescriptionId,
+    required bool isPharmacist,
+    required String medicineId,
+  }) {
     return Flexible(
       child: Card(
         color: lightColorScheme.onPrimary,
@@ -96,55 +110,73 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
             ),
             //TODO: if is patient show provide feedback button,elseif user== pharmacist show approve availability
             buildUserActionButton(
+                isAvailable: isAvailable,
+                medicineId: medicineId,
                 patientId: patientId,
                 prescriptionId: prescriptionId,
                 illness: illness,
                 title: title,
-                isPharmacist: isPharmacist)
+                isPharmacist: isPharmacist),
           ],
         ),
       ),
     );
   }
 
-  OutlinedButton buildUserActionButton(
-      {String? patientId,
+  Widget buildUserActionButton(
+      {bool? isAvailable,
+      String? patientId,
       String? prescriptionId,
       String? illness,
       String? title,
-      required bool isPharmacist}) {
-    return isPharmacist
-        ? OutlinedButton(
-            onPressed: () {
-              //TODO: Update prescription isMedicineAvalable=true
-              PrescriptionRepository.approveMedicine(
-                  patientId: patientId, prescriptionId: prescriptionId);
-            },
-            style: OutlinedButton.styleFrom(
-              backgroundColor: lightColorScheme.onPrimary,
-            ),
-            child: KTextStyle(
-              text: 'Approve availability',
-              color: lightColorScheme.primary,
-              size: 14.0,
-            ),
-          )
-        : OutlinedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, "/rate-medicine", arguments: {
-                "prescriptionId": prescriptionId,
-                "illness": illness,
-                "medicineName": title
-              });
-            },
-            style: OutlinedButton.styleFrom(
-              backgroundColor: lightColorScheme.onPrimary,
-            ),
-            child: KTextStyle(
-              text: 'Provide Feedback',
-              color: lightColorScheme.primary,
-              size: 14.0,
-            ),
-          );
+      required bool isPharmacist,
+      required String medicineId}) {
+    if (isPharmacist && isAvailable == false) {
+      return OutlinedButton(
+        onPressed: () {
+          try {
+            PrescriptionRepository.approveMedicine(
+                patientId: patientId,
+                prescriptionId: prescriptionId,
+                medicineId: medicineId);
+            showAlert(context,
+                title: "Failed", desc: " This medicine is approved");
+          } catch ($e) {
+            showAlert(context, title: "Failed", desc: " Something went wrong");
+          }
+        },
+        style: OutlinedButton.styleFrom(
+          backgroundColor: lightColorScheme.onPrimary,
+        ),
+        child: KTextStyle(
+          text: 'Approve availability',
+          color: lightColorScheme.primary,
+          size: 14.0,
+        ),
+      );
+    } else if (isPharmacist && isAvailable == true) {
+      return Icon(
+        Icons.check,
+        color: lightColorScheme.primary,
+        size: 24,
+      );
+    }
+    return OutlinedButton(
+      onPressed: () {
+        Navigator.pushNamed(context, "/rate-medicine", arguments: {
+          "prescriptionId": prescriptionId,
+          "illness": illness,
+          "medicineName": title
+        });
+      },
+      style: OutlinedButton.styleFrom(
+        backgroundColor: lightColorScheme.onPrimary,
+      ),
+      child: KTextStyle(
+        text: 'Provide Feedback',
+        color: lightColorScheme.primary,
+        size: 14.0,
+      ),
+    );
   }
 }

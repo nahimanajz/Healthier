@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:healthier2/repositories/prescription.repository.dart';
+import 'package:healthier2/widgets/empty.list.dart';
 
 import '../main.dart';
 import '../utils/color_schemes.g.dart';
@@ -51,6 +52,9 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final prescriptions = snapshot.data!;
+            if (prescriptions.isEmpty) {
+              return buildEmptyList();
+            }
 
             return ListView.builder(
               itemCount: prescriptions.length,

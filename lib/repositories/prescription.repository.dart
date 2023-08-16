@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:healthier2/models/medicine.model.dart';
 import 'package:healthier2/utils/firebase.instance.dart';
 import '../models/prescription.model.dart';
 
@@ -51,17 +53,21 @@ final class PrescriptionRepository {
     return docsSnapshots;
   }
 
-  static Future<void> approveMedicine(
-      {String? patientId, String? prescriptionId}) async {
-    final prescriptionRef = db
+  static Future<String> approveMedicine(
+      {String? patientId, String? prescriptionId, String? medicineId}) async {
+    var message;
+    final prescriptionRef = await db
         .collection("patients")
         .doc(patientId)
         .collection("prescriptions")
-        .doc(prescriptionId);
-
-    prescriptionRef.update({"isMedicineAvailable": true}).then(
-        (documentSnapshot) => print(
-            "medicine is approved"), //TODO: THIS MESSAGE WILL BE SHOWN IN A DIALOG
-        onError: (e) => print("Error approving medicine availability $e"));
+        .doc(prescriptionId)
+        .collection("medicines")
+        .doc(medicineId);
+    prescriptionRef
+        .update({"isAvailable": true})
+        .then((value) => {message = "Successful approved medicine"})
+        .catchError((err) => message = err);
+    print("approve medicine===>$message");
+    return message;
   }
 }
