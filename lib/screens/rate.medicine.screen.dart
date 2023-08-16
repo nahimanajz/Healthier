@@ -24,16 +24,7 @@ class _RateMedicineScreenState extends State<RateMedicineScreen> {
   String? prescriptionId;
   String? medicineName;
   String? illness;
-
-  onSaveComment(BuildContext context) {
-    print(medicineName);
-//TODO: show toast once data are saved in db
-    var comment = CommentModel(
-        rate: rate, text: commentController.text, medicineName: medicineName);
-    CommentRepository.create(comment, "08", prescriptionId as String);
-    //TODO: SHOW ALERT MESSAGE
-    showAlert(context);
-  }
+  String? patientId;
 
   onChanged(value) {
     setState(() {
@@ -56,6 +47,7 @@ class _RateMedicineScreenState extends State<RateMedicineScreen> {
       prescriptionId = args?["prescriptionId"];
       medicineName = args?["medicineName"];
       illness = args?["illness"];
+      patientId = args?["patientId"];
     });
   }
 
@@ -162,7 +154,22 @@ class _RateMedicineScreenState extends State<RateMedicineScreen> {
                       ),
                     ),
                     FilledButton(
-                      onPressed: onSaveComment(context),
+                      onPressed: () async {
+                        print(commentController.text);
+                        try {
+                          var comment = CommentModel(
+                              rate: rate,
+                              text: commentController.text,
+                              medicineName: medicineName);
+                          await CommentRepository.create(comment,
+                              patientId as String, prescriptionId as String);
+                          showAlert(context);
+                        } catch (e) {
+                          showAlert(context,
+                              type: AlertType.error,
+                              desc: "Something went wrong");
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 64.0),
                         shape: RoundedRectangleBorder(

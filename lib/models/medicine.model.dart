@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 import 'obedience.model.dart';
 
@@ -63,7 +64,7 @@ class MedicineModel {
       "tobeTakenAt": tobeTakenAt,
       "repeat": repeat,
       "duration": duration,
-      "date": date,
+      "date": DateFormat('yyyy-MM-dd').format(date),
       "lostCounts": lostCounts,
       "endDate": endDate,
       "isAvailable": isAvailable

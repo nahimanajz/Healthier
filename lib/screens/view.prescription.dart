@@ -37,7 +37,6 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
         ),
         leading: IconButton(
           onPressed: () {
-            //TODO: this back works after implementing navigations
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios),
@@ -108,7 +107,6 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
               ),
               iconColor: lightColorScheme.primary,
             ),
-            //TODO: if is patient show provide feedback button,elseif user== pharmacist show approve availability
             buildUserActionButton(
                 isAvailable: isAvailable,
                 medicineId: medicineId,
@@ -165,6 +163,7 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
       onPressed: () {
         Navigator.pushNamed(context, "/rate-medicine", arguments: {
           "prescriptionId": prescriptionId,
+          "patientId": patientId,
           "illness": illness,
           "medicineName": title
         });

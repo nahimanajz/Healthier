@@ -12,4 +12,21 @@ class CommentRepository {
             toFirestore: (CommentModel comment, _) => comment.toFireStore())
         .add(comment);
   }
+
+  static Stream<List<CommentModel>> getPatientComments(
+      {String patientId = "08",
+      String prescriptionId = "0Zr5iCdlpjWJeAqnoF1V"}) {
+    final records = db
+        .collection("/patients")
+        .doc(patientId)
+        .collection("prescriptions")
+        .doc(prescriptionId)
+        .collection("comments")
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((document) => CommentModel.fromFireStore(document, null))
+            .toList());
+
+    return records;
+  }
 }

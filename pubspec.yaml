@@ -24,6 +24,9 @@ dependencies:
   intl: ^0.18.1
   rflutter_alert: ^2.0.7
   shared_preferences: ^2.2.0
+  syncfusion_flutter_datepicker: ^22.2.9
+  pdf: ^3.10.4
+  path_provider: ^2.1.0
 
 dev_dependencies:
   flutter_test:

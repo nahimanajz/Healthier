@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:healthier2/repositories/patient.repository.dart';
+import 'package:healthier2/screens/clinician/comment.table.dart';
 import 'package:healthier2/screens/clinician/dashboard.dart';
+import 'package:healthier2/screens/clinician/report.screen.dart';
 import 'package:healthier2/screens/dosage.screen.dart';
 import 'package:healthier2/screens/home.dart';
 import 'package:healthier2/screens/pharmacy.detail.screen.dart';
@@ -41,6 +43,8 @@ void main() async {
         '/prescription/detail': (context) => const ViewPrescriptionScreen(),
         '/rate-medicine': (context) => const RateMedicineScreen(),
         '/pharmacy/detail': (context) => const PharmacyDetailScreen(),
+        '/clinician/report': (context) => const ReportScreen(),
+        '/comments/table': (context) => CommentsTable()
       },
       theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
       darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),

@@ -57,3 +57,20 @@ Then pharmacist has to be saved in db
 Secondly, related prescriptions to given patient number  are retrieved from db 
 finally pharmacist can
 
+## Convert all lists into table or pdf for reports
+look into specific objectives
+
+patientId, prescriptionId, medicineId,  
+
+selecting between dates 
+
+```  
+let start = new Date('2017-01-01');
+let end = new Date('2018-01-01');
+
+this.afs.collection('invoices', ref => ref
+  .where('dueDate', '>', start)
+  .where('dueDate', '<', end)
+);
+
+```

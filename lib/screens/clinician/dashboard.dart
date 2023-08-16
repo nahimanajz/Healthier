@@ -93,9 +93,9 @@ class NavigationDrawer extends StatelessWidget {
 
   buildMenuItems(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(24),
+      padding: EdgeInsets.all(12),
       child: Wrap(
-        runSpacing: 16,
+        runSpacing: 2,
         children: [
           Divider(
             thickness: 1.0,
@@ -106,7 +106,7 @@ class NavigationDrawer extends StatelessWidget {
               color: Colors.black87,
               size: 16,
               text: "Home",
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w300,
             ),
             onTap: () {},
           ),
@@ -116,7 +116,7 @@ class NavigationDrawer extends StatelessWidget {
               color: Colors.black87,
               size: 16,
               text: "Prescribe",
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w300,
             ),
             onTap: () {
               Navigator.of(context).pushNamed("/patientInfo");
@@ -131,9 +131,36 @@ class NavigationDrawer extends StatelessWidget {
               fontWeight: FontWeight.w400,
             ),
             onTap: () {
+              Navigator.of(context).pushNamed("/clinician/report");
+            },
+          ),
+          Divider(
+            thickness: 1.0,
+          ),
+          ListTile(
+            leading: Icon(Icons.list),
+            title: KTextStyle(
+              color: Colors.black87,
+              size: 16,
+              text: "Feedback",
+              fontWeight: FontWeight.w300,
+            ),
+            onTap: () {
               // TODO: Download all records from firebase in pdf format
             },
-          )
+          ),
+          ListTile(
+            leading: Icon(Icons.list),
+            title: KTextStyle(
+              color: Colors.black87,
+              size: 16,
+              text: "Adherence",
+              fontWeight: FontWeight.w300,
+            ),
+            onTap: () {
+              // TODO: Download all records from firebase in pdf format
+            },
+          ),
         ],
       ),
     );
