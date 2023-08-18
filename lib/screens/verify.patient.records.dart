@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthier2/repositories/prescription.repository.dart';
+import 'package:healthier2/services/user.service.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 
 import '../widgets/back.to.home.button.dart';
@@ -22,6 +23,16 @@ class _VerifyPatientRecordsScreenState
   @override
   void initState() {
     super.initState();
+    getPatientId();
+  }
+
+  getPatientId() async {
+    var patientId = await getPatientIdnPreference();
+    if (patientId != null) {
+      setState(() {
+        _phoneNumberController.text = patientId;
+      });
+    }
   }
 
   @override

@@ -1,11 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:healthier2/services/user.service.dart';
+import 'package:healthier2/utils/background_service.dart';
 import 'package:healthier2/widgets/custom_icon_button.dart';
+import 'package:healthier2/widgets/custom_textFormField.dart';
+import 'package:healthier2/widgets/styles/KTextStyle.dart';
 
 import '../utils/color_schemes.g.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final _phoneTxtController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    //TODO: uncomment to accept background process
+
+    getSignedUser(context);
+    // initializeService();
+    //FlutterBackgroundService().invoke("setAsBackground");
+    //FlutterBackgroundService().invoke("setAsForeground");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +59,9 @@ class HomeScreen extends StatelessWidget {
                 color: lightColorScheme.primary,
               ),
               onNavigateTo: () {
+                //TODO: OPEN bottom sheet modal
+
+                onSaveUser(usertype: "pharmacist");
                 Navigator.pushNamed(context, "/pharmacy/detail");
               },
             ),
@@ -44,6 +70,7 @@ class HomeScreen extends StatelessWidget {
               icon: Icon(Icons.local_hospital,
                   color: lightColorScheme.primary, size: 90.0),
               onNavigateTo: () {
+                onSaveUser(usertype: "clinician");
                 Navigator.pushNamed(context, "/dashboard");
               },
             ),
@@ -52,12 +79,79 @@ class HomeScreen extends StatelessWidget {
               icon: Icon(Icons.hotel_sharp,
                   color: lightColorScheme.primary, size: 90.0),
               onNavigateTo: () {
-                Navigator.pushNamed(context, "/verifyPatient");
+                _showFullModal(context, "/verifyPatient", usertype: 'patient');
               },
             ),
           ],
         ),
       ),
+    );
+  }
+
+  _showFullModal(context, String route, {required String usertype}) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (builder) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: Center(
+            child: Container(
+              padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: lightColorScheme.scrim,
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: Wrap(
+                runSpacing: 20,
+                spacing: 20,
+                alignment: WrapAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      KTextStyle(
+                        text: usertype,
+                        size: 20,
+                        color: lightColorScheme.primary,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(Icons.close),
+                      ),
+                    ],
+                  ),
+                  buildTextFormField("Phone", _phoneTxtController),
+                  ElevatedButton(
+                    onPressed: () {
+                      onSaveUser(
+                          phone: _phoneTxtController.text, usertype: "patient");
+                      Navigator.pushNamed(context, route);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: lightColorScheme.primary,
+                      shape: StadiumBorder(
+                        side: BorderSide(color: lightColorScheme.primary),
+                      ),
+                    ),
+                    child: KTextStyle(
+                      text: "Sign in",
+                      color: lightColorScheme.onPrimary,
+                      size: 14.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -36,6 +36,7 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
     final Map<String, dynamic>? args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     bool isPharmacist = args?["pharmacyName"] != null ? true : false;
+    bool isAccessingReport = args?["isAccessingReport"] != null ? true : false;
 
     //TODO: add condition to check whether it is pharmacist or individual patient
     return Scaffold(
@@ -60,7 +61,9 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
               itemCount: prescriptions.length,
               itemBuilder: (context, index) {
                 return buildPrescriptionItem(context, prescriptions[index],
-                    patientId: args?["patientId"], isPharmacist: isPharmacist);
+                    patientId: args?["patientId"],
+                    isPharmacist: isPharmacist,
+                    isAccessingReport: isAccessingReport);
               },
             );
           } else {

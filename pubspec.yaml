@@ -15,7 +15,7 @@ dependencies:
   font_awesome_flutter: ^10.5.0
   flutter_svg: ^2.0.7
   select_form_field: ^2.2.0
-  firebase_auth: ^4.7.2
+  firebase_auth: ^4.7.3
   cloud_firestore: ^4.8.4
   firebase_core: ^2.15.0
   flutter_local_notifications: ^15.1.0+1
@@ -27,6 +27,9 @@ dependencies:
   syncfusion_flutter_datepicker: ^22.2.9
   pdf: ^3.10.4
   path_provider: ^2.1.0
+  flutter_background_service: ^2.1.1
+  device_info_plus: ^9.0.3
+  flutter_speed_dial: ^7.0.0
 
 dev_dependencies:
   flutter_test:

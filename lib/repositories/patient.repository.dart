@@ -52,4 +52,13 @@ class PatientRepository {
         .then((documentSnapshot) => documentSnapshot,
             onError: (e) => throw Exception("something went wrong $e"));
   }
+
+  static Future<QuerySnapshot<Object?>> getPatientPrescriptions(
+      {String patientId = "08"}) async {
+    return await db
+        .collection('patients')
+        .doc(patientId)
+        .collection('prescriptions')
+        .get();
+  }
 }

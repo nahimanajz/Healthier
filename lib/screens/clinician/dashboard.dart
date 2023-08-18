@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:healthier2/repositories/patient.repository.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/widgets/back.to.home.button.dart';
@@ -23,7 +24,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
           title: const Text("Quick Prescription"),
-          backgroundColor: const Color.fromARGB(255, 98, 80, 27)),
+          backgroundColor: lightColorScheme.secondary),
       body: Container(
         decoration: gradientDecoration,
         padding: EdgeInsets.all(20),
@@ -32,21 +33,45 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ),
       drawer: const NavigationDrawer(),
-      floatingActionButton: buildFaButton(
-        context,
-        () async {
-          //TODO: HANDLE search,
-          var patient = await PatientRepository.getPhoneNumber(phoneTxt.text);
-          if (patient?.name != null) {
-            debugPrint("patient not found");
-          }
-          print(patient?.name);
-          Navigator.pushNamed(context, "/prescribe", arguments: {
-            "patientName": patient?.name,
-            "patientPhoneNumber": patient?.phone
-          });
-        },
-        Icon(Icons.arrow_forward, color: lightColorScheme.background),
+      floatingActionButton: SpeedDial(
+        child: Icon(Icons.menu),
+        children: [
+          SpeedDialChild(
+            backgroundColor: lightColorScheme.primary,
+            shape: CircleBorder(),
+            child: Icon(Icons.book, color: lightColorScheme.background),
+            label: 'Reports',
+            onTap: () async {
+              var patient =
+                  await PatientRepository.getPhoneNumber(phoneTxt.text);
+              //TODO: navigate to prescriprions list with person id parameter
+              // from prescriptions navigate back to report customizer
+              if (patient?.phone != null) {
+                Navigator.pushNamed(context, '/prescriptionsList', arguments: {
+                  "patientId": patient?.phone,
+                  "isAccessingReport": true
+                });
+              }
+              ;
+            },
+          ),
+          SpeedDialChild(
+            backgroundColor: lightColorScheme.primary,
+            shape: CircleBorder(),
+            child: Icon(Icons.arrow_forward, color: lightColorScheme.secondary),
+            label: 'Prescribe',
+            onTap: () async {
+              var patient =
+                  await PatientRepository.getPhoneNumber(phoneTxt.text);
+
+              Navigator.pushNamed(context, '/prescribe', arguments: {
+                "patientName": patient?.name,
+                "patientPhoneNumber": patient?.phone
+              });
+            },
+          ),
+          // Add more SpeedDialChild widgets for other routes
+        ],
       ),
     );
   }
@@ -106,7 +131,7 @@ class NavigationDrawer extends StatelessWidget {
               color: Colors.black87,
               size: 16,
               text: "Home",
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.w400,
             ),
             onTap: () {},
           ),
@@ -116,14 +141,14 @@ class NavigationDrawer extends StatelessWidget {
               color: Colors.black87,
               size: 16,
               text: "Prescribe",
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.w400,
             ),
             onTap: () {
               Navigator.of(context).pushNamed("/patientInfo");
             },
           ),
           ListTile(
-            leading: Icon(Icons.download),
+            leading: Icon(Icons.report_outlined),
             title: KTextStyle(
               color: Colors.black87,
               size: 16,
@@ -132,33 +157,6 @@ class NavigationDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.of(context).pushNamed("/clinician/report");
-            },
-          ),
-          Divider(
-            thickness: 1.0,
-          ),
-          ListTile(
-            leading: Icon(Icons.list),
-            title: KTextStyle(
-              color: Colors.black87,
-              size: 16,
-              text: "Feedback",
-              fontWeight: FontWeight.w300,
-            ),
-            onTap: () {
-              // TODO: Download all records from firebase in pdf format
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.list),
-            title: KTextStyle(
-              color: Colors.black87,
-              size: 16,
-              text: "Adherence",
-              fontWeight: FontWeight.w300,
-            ),
-            onTap: () {
-              // TODO: Download all records from firebase in pdf format
             },
           ),
         ],

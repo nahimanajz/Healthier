@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:healthier2/models/medicine.model.dart';
+import 'package:healthier2/models/obedience.model.dart';
 
 import 'comment.model.dart';
 
@@ -8,13 +9,14 @@ class PrescriptionModel {
   String? illness;
   List<MedicineModel>? medicines;
   List<CommentModel>? comments;
+  List<ObedienceModel>? obediences;
 
-  PrescriptionModel({
-    this.documentId = "",
-    this.illness,
-    this.comments,
-    this.medicines,
-  });
+  PrescriptionModel(
+      {this.documentId = "",
+      this.illness,
+      this.comments,
+      this.medicines,
+      this.obediences});
 
   factory PrescriptionModel.fromFireStore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -28,6 +30,9 @@ class PrescriptionModel {
           data?["comments"] is Iterable ? List.from(data?["comments"]) : null,
       medicines:
           data?["medicines"] is Iterable ? List.from(data?["medicines"]) : null,
+      obediences: data?["obediences"] is Iterable
+          ? List.from(data?["obediences"])
+          : null,
     );
   }
 

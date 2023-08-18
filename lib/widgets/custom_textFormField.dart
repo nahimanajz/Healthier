@@ -4,10 +4,12 @@ import 'package:select_form_field/select_form_field.dart';
 import '../utils/color_schemes.g.dart';
 
 TextFormField buildTextFormField(String title, TextEditingController controller,
-    {TextInputType? keyboardType = TextInputType.text}) {
+    {TextInputType? keyboardType = TextInputType.text,
+    Function(String)? onChanged}) {
   return TextFormField(
     keyboardType: keyboardType,
     controller: controller,
+    onChanged: onChanged,
     decoration: InputDecoration(
       filled: true,
       fillColor: lightColorScheme.background,

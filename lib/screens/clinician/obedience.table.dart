@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:healthier2/models/comment.model.dart';
+import 'package:healthier2/models/obedience.model.dart';
 import 'package:healthier2/services/report.service.dart';
 
-class CommentsTable extends StatelessWidget {
+class ObedienceTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args =
@@ -11,13 +10,14 @@ class CommentsTable extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          leading: IconButton(
-        onPressed: () => Navigator.pop(context),
-        icon: Icon(Icons.arrow_back_ios),
-      )),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back_ios),
+        ),
+      ),
       body: SingleChildScrollView(
         child: StreamBuilder(
-          stream: ReportService.getFeebackReports(
+          stream: ReportService.getObedience(
               endDate: args?["endDate"],
               startDate: args?["startDate"],
               phoneNumber: args?["phoneNumber"],
@@ -29,11 +29,12 @@ class CommentsTable extends StatelessWidget {
             final dataList = snapshot.data!;
 
             return PaginatedDataTable(
-              header: Text('Bits of feedbacks '),
+              header: Text('Obedience '),
               columns: [
-                DataColumn(label: Text("Medicine")),
-                DataColumn(label: Text("Text")),
-                DataColumn(label: Text("Rate")),
+                DataColumn(label: Text("date")),
+                DataColumn(label: Text("status")),
+                DataColumn(label: Text("medicine")),
+                DataColumn(label: Text("period")),
               ],
               source: FirestoreDataTableSource(dataList),
               rowsPerPage: 5,
@@ -48,7 +49,7 @@ class CommentsTable extends StatelessWidget {
 class FirestoreDataTableSource extends DataTableSource {
   FirestoreDataTableSource(this.dataList);
 
-  final List<CommentModel> dataList;
+  final List<ObedienceModel> dataList;
 
   @override
   DataRow? getRow(int index) {
@@ -59,9 +60,10 @@ class FirestoreDataTableSource extends DataTableSource {
     final data = dataList[index];
 
     return DataRow(cells: [
+      DataCell(Text(data.date as String)),
+      DataCell(Text(data.status as String)),
       DataCell(Text(data.medicineName as String)),
-      DataCell(Text(data.text as String)),
-      DataCell(Text(data.rate as String)),
+      DataCell(Text(data.period as String))
       // Add more DataCells for each column
     ]);
   }

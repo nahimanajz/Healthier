@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthier2/models/patient.model.dart';
@@ -18,16 +20,13 @@ class PatientInfoScreen extends StatefulWidget {
 }
 
 class _PrescribeInfoScreenState extends State<PatientInfoScreen> {
-  final _formKeyOne = GlobalKey<FormState>();
-
   final _fullNamesController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _residencyCityController = TextEditingController();
-  final _residenceTempController = TextEditingController();
 
   String prescriptionTitle = "Patient Address";
   String districtQuery = "";
-  double residenceTemp = 0.0;
+  int residenceTemp = 0;
 
   @override
   void initState() {
@@ -53,45 +52,37 @@ class _PrescribeInfoScreenState extends State<PatientInfoScreen> {
         backgroundColor: lightColorScheme.secondary,
         centerTitle: true,
       ),
-      body: ListView(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(20.0),
-            decoration: gradientDecoration,
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Flexible(
-                  flex: 1,
-                  child: Center(
-                    child: SvgPicture.asset('assets/images/clinic.svg'),
-                  ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          decoration: gradientDecoration,
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Flexible(
+                flex: 1,
+                child: Center(
+                  child: SvgPicture.asset('assets/images/clinic.svg'),
                 ),
-                buildPatientAddressForm(),
-                buildStepperButton(() async {
-                  /**
-                    *  TODO: 1. get temperature
-                    *  2. save this record in database
-                      3. navigate to prescription form
-                    *
-                    */
-                  var patient = PatientModel(
-                    addressCity: _residencyCityController.text,
-                    name: _fullNamesController.text,
-                    phone: _phoneNumberController.text,
-                    temp: residenceTemp.toInt(),
-                  );
+              ),
+              buildPatientAddressForm(),
+              buildStepperButton(() async {
+                var patient = PatientModel(
+                  addressCity: _residencyCityController.text,
+                  name: _fullNamesController.text,
+                  phone: _phoneNumberController.text,
+                  temp: residenceTemp.toInt(),
+                );
 
-                  await PatientRepository.create(patient);
+                await PatientRepository.create(patient);
 
-                  // await Navigator.pushNamed(context, "/dosage");
-                })
-              ],
-            ),
+                await Navigator.pushNamed(context, "/dashboard");
+              })
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -101,34 +92,29 @@ class _PrescribeInfoScreenState extends State<PatientInfoScreen> {
       flex: 3,
       child: Padding(
         padding: EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKeyOne,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              KTextStyle(
-                text: prescriptionTitle,
-                color: lightColorScheme.onSurface,
-                size: 16.0,
-                fontWeight: FontWeight.w500,
-              ),
-              buildTextFormField("Full Names", _fullNamesController),
-              buildTextFormField("Phone Number", _phoneNumberController,
-                  keyboardType: TextInputType.phone),
-              buildSelectFormField(_residencyCityController, districtsData,
-                  labelText: 'Districts',
-                  searchHint: 'Search District',
-                  dialogTitle: 'Residence City', onChanged: (value) async {
-                double temp = await CountryService.getTemperature(city: value);
-                if (temp == 0.0) {
-                  temp = await CountryService.getTemperature();
-                }
-                setState(() {
-                  residenceTemp = temp;
-                });
-              })
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            KTextStyle(
+              text: prescriptionTitle,
+              color: lightColorScheme.onSurface,
+              size: 16.0,
+              fontWeight: FontWeight.w500,
+            ),
+            buildTextFormField("Full Names", _fullNamesController),
+            buildTextFormField("Phone Number", _phoneNumberController,
+                keyboardType: TextInputType.phone),
+            buildTextFormField("Residence District", _residencyCityController,
+                onChanged: (value) async {
+              int temp = await CountryService.getTemperature(city: value);
+              if (temp == 0) {
+                temp = await CountryService.getTemperature();
+              }
+              setState(() {
+                residenceTemp = temp;
+              });
+            }),
+          ],
         ),
       ),
     );

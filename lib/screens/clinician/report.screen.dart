@@ -17,7 +17,7 @@ class ReportScreen extends StatefulWidget {
 }
 
 class _ReportScreenState extends State<ReportScreen> {
-  ReportType? _report = ReportType.feedback;
+  ReportType? _report;
   final startDateCtr = TextEditingController();
   final endDateCtr = TextEditingController();
   final patientIdCtr = TextEditingController();
@@ -35,23 +35,30 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic>? args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    String prescriptionId = args?['prescriptionId'];
+
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back_ios),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back_ios),
+        ),
         title: Text("Reports"),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(12.0),
-            child: buildForm(context),
+            child: buildForm(context, prescriptionId),
           ),
         ),
       ),
     );
   }
 
-  Column buildForm(BuildContext context) {
+  Column buildForm(BuildContext context, String prescriptionId) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -151,14 +158,25 @@ class _ReportScreenState extends State<ReportScreen> {
         ),
         ElevatedButton.icon(
           onPressed: () async {
+            print(
+                "Report happens${_report}===> ${_report == ReportType.obedience}");
             //TODO: get data and transform them into report
-            // Todo: search for how you can call this person to data and passthem in parameters too.
-
-            Navigator.pushNamed(context, "/comments/table", arguments: {
-              "startDate": startDateCtr.text,
-              "endDate": endDateCtr.text,
-              "phoneNumber": patientIdCtr.text
-            });
+            // TODO: search for how you can call this person to data and passthem in parameters too.
+            if (_report == ReportType.feedback) {
+              Navigator.pushNamed(context, "/comments/table", arguments: {
+                "startDate": startDateCtr.text,
+                "endDate": endDateCtr.text,
+                "phoneNumber": patientIdCtr.text,
+                "prescriptionId": prescriptionId
+              });
+            } else {
+              Navigator.pushNamed(context, "/obedience/table", arguments: {
+                "startDate": startDateCtr.text,
+                "endDate": endDateCtr.text,
+                "phoneNumber": patientIdCtr.text,
+                "prescriptionId": prescriptionId
+              });
+            }
           },
           icon: Icon(
             // <-- Icon

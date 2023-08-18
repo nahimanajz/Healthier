@@ -10,7 +10,9 @@ import '../utils/color_schemes.g.dart';
 
 Widget buildPrescriptionItem(
     BuildContext context, PrescriptionModel prescription,
-    {required String patientId, bool isPharmacist = false}) {
+    {required String patientId,
+    bool isPharmacist = false,
+    bool isAccessingReport = false}) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
     decoration: BoxDecoration(
@@ -28,12 +30,18 @@ Widget buildPrescriptionItem(
             size: 14),
         IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, "/prescription/detail", arguments: {
-                "prescriptionId": prescription.documentId,
-                "illness": prescription.illness,
-                "patientId": patientId,
-                "isPharmacist": isPharmacist
-              });
+              if (isAccessingReport == true) {
+                Navigator.pushNamed(context, "/clinician/report",
+                    arguments: {"prescriptionId": prescription.documentId});
+              } else {
+                Navigator.pushNamed(context, "/prescription/detail",
+                    arguments: {
+                      "prescriptionId": prescription.documentId,
+                      "illness": prescription.illness,
+                      "patientId": patientId,
+                      "isPharmacist": isPharmacist
+                    });
+              }
             },
             icon: Icon(Icons.info, color: lightColorScheme.surfaceTint))
       ],

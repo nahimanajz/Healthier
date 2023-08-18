@@ -4,6 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:healthier2/repositories/patient.repository.dart';
 import 'package:healthier2/screens/clinician/comment.table.dart';
 import 'package:healthier2/screens/clinician/dashboard.dart';
+import 'package:healthier2/screens/clinician/obedience.table.dart';
 import 'package:healthier2/screens/clinician/report.screen.dart';
 import 'package:healthier2/screens/dosage.screen.dart';
 import 'package:healthier2/screens/home.dart';
@@ -14,6 +15,7 @@ import 'package:healthier2/screens/prescriptions.list.screen.dart';
 import 'package:healthier2/screens/rate.medicine.screen.dart';
 import 'package:healthier2/screens/verify.patient.records.dart';
 import 'package:healthier2/screens/view.prescription.dart';
+import 'package:healthier2/utils/background_service.dart';
 
 import 'utils/color_schemes.g.dart';
 
@@ -24,7 +26,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  PatientRepository.getAllPatients();
+  //PatientRepository.getAllPatients();
 
   // // initialize notifications
   // LocalNotification.initialize(flutterLocalNotificationsPlugin);
@@ -44,7 +46,8 @@ void main() async {
         '/rate-medicine': (context) => const RateMedicineScreen(),
         '/pharmacy/detail': (context) => const PharmacyDetailScreen(),
         '/clinician/report': (context) => const ReportScreen(),
-        '/comments/table': (context) => CommentsTable()
+        '/comments/table': (context) => CommentsTable(),
+        '/obedience/table': (context) => ObedienceTable()
       },
       theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
       darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
