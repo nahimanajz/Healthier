@@ -4,6 +4,7 @@ import 'package:healthier2/repositories/medicine.repository.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/utils/data/medicines.dart';
 import 'package:healthier2/utils/main.util.dart';
+import 'package:healthier2/utils/toast.dart';
 import 'package:healthier2/widgets/custom_textFormField.dart';
 import 'package:healthier2/widgets/styles/gradient.decoration.dart';
 
@@ -267,6 +268,7 @@ class _DosageState extends State<DosageScreen> {
                             ElevatedButton(
                               onPressed: () {
                                 onAddMedicine(arguments, dailyTimes);
+                                showSuccessToast(context);
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: lightColorScheme.primary,

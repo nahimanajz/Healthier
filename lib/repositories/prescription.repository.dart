@@ -67,7 +67,7 @@ final class PrescriptionRepository {
         .update({"isAvailable": true})
         .then((value) => {message = "Successful approved medicine"})
         .catchError((err) => message = err);
-    print("approve medicine===>$message");
+
     return message;
   }
 }

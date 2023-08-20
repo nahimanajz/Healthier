@@ -2,12 +2,19 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:healthier2/main.dart';
 import 'package:healthier2/models/medicine.model.dart';
+import 'package:healthier2/models/obedience.model.dart';
 import 'package:healthier2/repositories/medicine.repository.dart';
+import 'package:healthier2/repositories/obedience.repository.dart';
 import 'package:healthier2/repositories/prescription.repository.dart';
 import 'package:healthier2/utils/data/medicines.dart';
+import 'package:healthier2/utils/local.notification.dart';
+import 'package:healthier2/utils/main.util.dart';
+import 'package:healthier2/utils/toast.dart';
 import 'package:healthier2/widgets/alert.dart';
 import 'package:healthier2/widgets/empty.list.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/color_schemes.g.dart';
@@ -23,6 +30,56 @@ class ViewPrescriptionScreen extends StatefulWidget {
 }
 
 class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    // ---->
+    //TODO: check this precription for delayed and call method to set it to delayed missed
+    //doInvestigateDelays();
+    // and show notification about "we have update this medicine to be delayed to be taken"
+  }
+
+  // this method is for investing delays that a patient might have donw
+  doInvestigateDelays() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? prescriptionId = prefs.getString("NofitiablePrescriptionId");
+    String? patientId = prefs.getString("NofitiablePatientId");
+
+    //
+    Stream<List<MedicineModel>> medStream = MedicineRepository.getAll(
+        phone: patientId as String, prescriptionId: prescriptionId as String);
+    List<MedicineModel> medicinesList = await medStream
+        .asyncExpand((list) => Stream.fromIterable(list))
+        .toList();
+    DateTime startDate;
+    DateTime endDate;
+    DateTime currentTime = DateTime.now();
+
+    for (MedicineModel element in medicinesList) {
+      startDate = DateTime.parse(element.date as String);
+      endDate = DateTime.parse(element.endDate as String);
+
+      if (currentTime.isAfter(startDate) && currentTime.isBefore(endDate)) {
+        String status = checkStatus(element.timeOfTheDay);
+        String period = checkPeriod(element.timeOfTheDay);
+        if (period.isNotEmpty && period != "on time") {
+          ObedienceModel obedience = ObedienceModel(
+              period: period,
+              status: status,
+              date: currentTime.toIso8601String(),
+              medicineName: element.name);
+
+          ObedienceRepository.createMissedDoses(
+              obedience, patientId, prescriptionId);
+          prefs.setBool("hasToNotify", true);
+
+          break;
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args =
@@ -108,6 +165,7 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
               iconColor: lightColorScheme.primary,
             ),
             buildUserActionButton(
+                medicine: medicine,
                 isAvailable: isAvailable,
                 medicineId: medicineId,
                 patientId: patientId,
@@ -122,7 +180,8 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
   }
 
   Widget buildUserActionButton(
-      {bool? isAvailable,
+      {MedicineModel? medicine,
+      bool? isAvailable,
       String? patientId,
       String? prescriptionId,
       String? illness,
@@ -137,8 +196,7 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
                 patientId: patientId,
                 prescriptionId: prescriptionId,
                 medicineId: medicineId);
-            showAlert(context,
-                title: "Failed", desc: " This medicine is approved");
+            showMedicineApprovedToast(context);
           } catch ($e) {
             showAlert(context, title: "Failed", desc: " Something went wrong");
           }
@@ -159,23 +217,49 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
         size: 24,
       );
     }
-    return OutlinedButton(
-      onPressed: () {
-        Navigator.pushNamed(context, "/rate-medicine", arguments: {
-          "prescriptionId": prescriptionId,
-          "patientId": patientId,
-          "illness": illness,
-          "medicineName": title
-        });
-      },
-      style: OutlinedButton.styleFrom(
-        backgroundColor: lightColorScheme.onPrimary,
-      ),
-      child: KTextStyle(
-        text: 'Provide Feedback',
-        color: lightColorScheme.primary,
-        size: 14.0,
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        OutlinedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, "/rate-medicine", arguments: {
+              "prescriptionId": prescriptionId,
+              "patientId": patientId,
+              "illness": illness,
+              "medicineName": title
+            });
+          },
+          style: OutlinedButton.styleFrom(
+            backgroundColor: lightColorScheme.onPrimary,
+          ),
+          child: KTextStyle(
+            text: 'Provide Feedback',
+            color: lightColorScheme.primary,
+            size: 14.0,
+          ),
+        ),
+        OutlinedButton(
+          onPressed: () {
+            String period = checkPeriod(medicine?.timeOfTheDay);
+            ObedienceModel obedience = ObedienceModel(
+                date: DateTime.now().toIso8601String(),
+                period: period,
+                status: "Taken",
+                medicineName: medicine?.name);
+            ObedienceRepository.create(
+                obedience, patientId as String, prescriptionId as String);
+            showMedicineTakenToast(context);
+          },
+          style: OutlinedButton.styleFrom(
+            backgroundColor: lightColorScheme.onPrimary,
+          ),
+          child: KTextStyle(
+            text: 'Take',
+            color: lightColorScheme.primary,
+            size: 14.0,
+          ),
+        ),
+      ],
     );
   }
 }

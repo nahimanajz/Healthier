@@ -28,8 +28,6 @@ Future<void> initializeService() async {
 // run app from xcode, then from xcode menu, select Simulate Background Fetch
 bool onIosBackground(ServiceInstance service) {
   WidgetsFlutterBinding.ensureInitialized();
-  print('FLUTTER BACKGROUND FETCH');
-
   return true;
 }
 
@@ -51,24 +49,17 @@ void onStart(ServiceInstance service) async {
     service.stopSelf();
   });
 
-  final patientId = preferences.getString("patientId");
-  if (patientId != null) {
-    // bring to foreground
-    Timer.periodic(const Duration(seconds: 10000000000000), (timer) async {
-      print("patient signed data$patientId");
-      doHandleObedienceCheck(patientId as String);
+  final isNotifying = preferences.getBool("hasToNotify");
+  final isTesting = true;
+  if (isNotifying != null || isTesting) {
+    Timer.periodic(Duration(minutes: 1), (timer) {
       if (service is AndroidServiceInstance) {
         service.setForegroundNotificationInfo(
           title: "Hi there",
-          content: "Kindly take your medical dose",
+          content: "Get healthy by taking your medical dose",
         );
+        preferences.setBool("hasToNotify", false);
       }
     });
   }
-}
-
-// all firestore data
-doHandleObedienceCheck(String patientId) async {
-  var medicines = await ObedienceService.getPatientMedicines(patientId);
-  ObedienceService.scheduleDoseReminder(medicines);
 }

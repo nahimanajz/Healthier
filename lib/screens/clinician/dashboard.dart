@@ -3,8 +3,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:healthier2/repositories/patient.repository.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
+import 'package:healthier2/utils/toast.dart';
 import 'package:healthier2/widgets/back.to.home.button.dart';
 import 'package:healthier2/widgets/custom_textFormField.dart';
 import 'package:healthier2/widgets/styles/KTextStyle.dart';
@@ -18,9 +20,18 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final phoneTxt = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic>? args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    phoneTxt.text = phoneTxt.text ?? args?["patientId"];
+    print(phoneTxt.text);
     return Scaffold(
       appBar: AppBar(
           title: const Text("Quick Prescription"),
@@ -44,8 +55,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             onTap: () async {
               var patient =
                   await PatientRepository.getPhoneNumber(phoneTxt.text);
-              //TODO: navigate to prescriprions list with person id parameter
-              // from prescriptions navigate back to report customizer
+
               if (patient?.phone != null) {
                 Navigator.pushNamed(context, '/prescriptionsList', arguments: {
                   "patientId": patient?.phone,
@@ -64,10 +74,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               var patient =
                   await PatientRepository.getPhoneNumber(phoneTxt.text);
 
-              Navigator.pushNamed(context, '/prescribe', arguments: {
-                "patientName": patient?.name,
-                "patientPhoneNumber": patient?.phone
-              });
+              if (patient?.phone != null) {
+                Navigator.pushNamed(context, '/prescribe', arguments: {
+                  "patientName": patient?.name,
+                  "patientPhoneNumber": patient?.phone
+                });
+              }
             },
           ),
           // Add more SpeedDialChild widgets for other routes
@@ -145,18 +157,6 @@ class NavigationDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.of(context).pushNamed("/patientInfo");
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.report_outlined),
-            title: KTextStyle(
-              color: Colors.black87,
-              size: 16,
-              text: "Reports",
-              fontWeight: FontWeight.w400,
-            ),
-            onTap: () {
-              Navigator.of(context).pushNamed("/clinician/report");
             },
           ),
         ],

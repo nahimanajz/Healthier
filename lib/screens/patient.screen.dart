@@ -78,7 +78,8 @@ class _PrescribeInfoScreenState extends State<PatientInfoScreen> {
 
                 await PatientRepository.create(patient);
 
-                await Navigator.pushNamed(context, "/dashboard");
+                await Navigator.pushNamed(context, "/dashboard",
+                    arguments: {"patientId": patient.phone});
               })
             ],
           ),

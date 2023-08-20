@@ -1,5 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalNotification {
   static Future initialize(
@@ -19,16 +20,20 @@ class LocalNotification {
       required String body,
       var payload,
       required FlutterLocalNotificationsPlugin fln}) async {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    //bool? hasNofitification = prefs.getBool("hasToNotify");
     AndroidNotificationDetails androidChannelSpecifics =
         AndroidNotificationDetails("Pill_Reminder", "channel_name",
             playSound: true,
-            //sound: RawResourceAndroidNotificationSound('notification'), TODO: works on real device only
             importance: Importance.max,
             priority: Priority.high,
             color: lightColorScheme.secondaryContainer);
 
     var notification = NotificationDetails(
         android: androidChannelSpecifics, iOS: DarwinNotificationDetails());
+
+    //if (hasNofitification != null) {
     await fln.show(0, title, body, notification);
+    //}
   }
 }

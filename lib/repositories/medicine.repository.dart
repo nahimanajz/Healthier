@@ -19,10 +19,7 @@ class MedicineRepository {
             fromFirestore: MedicineModel.fromFireStore,
             toFirestore: (MedicineModel medicine, _) => medicine.toFireStore())
         .add(medicineData)
-        .then(
-            (documentSnapshot) =>
-                debugPrint("Medicine Id===>${documentSnapshot.id}"),
-            onError: (e) => debugPrint("saving medicine error${e}"));
+        .then((documentSnapshot) => documentSnapshot, onError: (e) => e);
 
     return document;
   }

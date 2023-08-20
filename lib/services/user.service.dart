@@ -13,7 +13,6 @@ Future<void> onSaveUser({String? phone, String usertype = "clinician"}) async {
 Future<dynamic> getSignedUser(BuildContext context) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   String? userType = preferences.getString("userType");
-  print("user type$userType");
 
   switch (userType) {
     case "clinician":

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:healthier2/models/prescription.model.dart';
 
 import 'package:healthier2/widgets/styles/KTextStyle.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/color_schemes.g.dart';
 
@@ -29,7 +30,14 @@ Widget buildPrescriptionItem(
             color: lightColorScheme.scrim,
             size: 14),
         IconButton(
-            onPressed: () {
+            onPressed: () async {
+              if (!isAccessingReport && !isPharmacist) {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString("NofitiablePrescriptionId",
+                    prescription.documentId as String);
+                prefs.setString("NofitiablePatientId", patientId);
+              }
+
               if (isAccessingReport == true) {
                 Navigator.pushNamed(context, "/clinician/report",
                     arguments: {"prescriptionId": prescription.documentId});

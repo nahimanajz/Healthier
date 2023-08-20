@@ -1,12 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:healthier2/repositories/prescription.repository.dart';
 import 'package:healthier2/widgets/empty.list.dart';
 
-import '../main.dart';
 import '../utils/color_schemes.g.dart';
-import '../utils/local.notification.dart';
 import '../widgets/prescription.item.dart';
 import '../widgets/styles/KTextStyle.dart';
 
@@ -23,12 +19,6 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
   void initState() {
     // TODO: implement local notification
     super.initState();
-    /*
-    LocalNotification.showNotification(
-        title: "Pill reminder",
-        body: "Please remember to take your medicine",
-        fln: flutterLocalNotificationsPlugin);
-        */
   }
 
   @override

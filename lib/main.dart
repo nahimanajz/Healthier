@@ -16,6 +16,7 @@ import 'package:healthier2/screens/rate.medicine.screen.dart';
 import 'package:healthier2/screens/verify.patient.records.dart';
 import 'package:healthier2/screens/view.prescription.dart';
 import 'package:healthier2/utils/background_service.dart';
+import 'package:healthier2/utils/local.notification.dart';
 
 import 'utils/color_schemes.g.dart';
 
@@ -25,13 +26,11 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
-  //PatientRepository.getAllPatients();
-
-  // // initialize notifications
-  // LocalNotification.initialize(flutterLocalNotificationsPlugin);
-  // HOW CAN I hot reload?
-
+  LocalNotification.initialize(flutterLocalNotificationsPlugin);
+  LocalNotification.showNotification(
+      body: "Reminder",
+      title: "Expect reminder notification",
+      fln: flutterLocalNotificationsPlugin);
   runApp(
     MaterialApp(
       routes: {

@@ -22,12 +22,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    //TODO: uncomment to accept background process
 
     getSignedUser(context);
-    // initializeService();
-    //FlutterBackgroundService().invoke("setAsBackground");
-    //FlutterBackgroundService().invoke("setAsForeground");
+    initializeService();
+    FlutterBackgroundService().invoke("setAsBackground");
+    FlutterBackgroundService().invoke("setAsForeground");
   }
 
   @override
