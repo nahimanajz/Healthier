@@ -2,8 +2,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:healthier2/models/comment.model.dart';
 import 'package:healthier2/services/report.service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CommentsTable extends StatelessWidget {
+class CommentsTable extends StatefulWidget {
+  @override
+  State<CommentsTable> createState() => _CommentsTableState();
+}
+
+class _CommentsTableState extends State<CommentsTable> {
+  String? patientInfo;
+
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
+
+  _getData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    patientInfo = prefs.getString("patientInfo");
+  }
+
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args =
@@ -29,7 +48,7 @@ class CommentsTable extends StatelessWidget {
             final dataList = snapshot.data!;
 
             return PaginatedDataTable(
-              header: Text('Bits of feedbacks '),
+              header: Text('Bits of feedback  ${patientInfo ?? " "} '),
               columns: [
                 DataColumn(label: Text("Medicine")),
                 DataColumn(label: Text("Text")),

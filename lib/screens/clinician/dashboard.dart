@@ -6,6 +6,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:healthier2/repositories/patient.repository.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
+import 'package:healthier2/utils/preferences.dart';
 import 'package:healthier2/utils/toast.dart';
 import 'package:healthier2/widgets/back.to.home.button.dart';
 import 'package:healthier2/widgets/custom_textFormField.dart';
@@ -31,7 +32,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final Map<String, dynamic>? args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     phoneTxt.text = phoneTxt.text ?? args?["patientId"];
-    print(phoneTxt.text);
     return Scaffold(
       appBar: AppBar(
           title: const Text("Quick Prescription"),
@@ -74,7 +74,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               var patient =
                   await PatientRepository.getPhoneNumber(phoneTxt.text);
 
-              if (patient?.phone != null) {
+              if (patient != null) {
+                savePatientPrefs(patient);
                 Navigator.pushNamed(context, '/prescribe', arguments: {
                   "patientName": patient?.name,
                   "patientPhoneNumber": patient?.phone

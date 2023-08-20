@@ -158,24 +158,19 @@ class _ReportScreenState extends State<ReportScreen> {
         ),
         ElevatedButton.icon(
           onPressed: () async {
-            print(
-                "Report happens${_report}===> ${_report == ReportType.obedience}");
-            //TODO: get data and transform them into report
-            // TODO: search for how you can call this person to data and passthem in parameters too.
+            var arguments = {
+              "startDate": startDateCtr.text,
+              "endDate": endDateCtr.text,
+              "phoneNumber": patientIdCtr.text,
+              "prescriptionId": prescriptionId
+            };
+
             if (_report == ReportType.feedback) {
-              Navigator.pushNamed(context, "/comments/table", arguments: {
-                "startDate": startDateCtr.text,
-                "endDate": endDateCtr.text,
-                "phoneNumber": patientIdCtr.text,
-                "prescriptionId": prescriptionId
-              });
+              Navigator.pushNamed(context, "/comments/table",
+                  arguments: arguments);
             } else {
-              Navigator.pushNamed(context, "/obedience/table", arguments: {
-                "startDate": startDateCtr.text,
-                "endDate": endDateCtr.text,
-                "phoneNumber": patientIdCtr.text,
-                "prescriptionId": prescriptionId
-              });
+              Navigator.pushNamed(context, "/obedience/table",
+                  arguments: arguments);
             }
           },
           icon: Icon(

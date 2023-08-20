@@ -33,22 +33,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  barcode:
-    dependency: transitive
-    description:
-      name: barcode
-      sha256: "789f898eef0bd88312470bdb2cc996f895ad7dd5f89e9adde84b204546a90b45"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.4"
-  bidi:
-    dependency: transitive
-    description:
-      name: bidi
-      sha256: "6794b226bc939731308b8539c49bb6c2fdbf0e78c3a65e9b9e81e727c256dfe6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.7"
   boolean_selector:
     dependency: transitive
     description:
@@ -270,6 +254,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.0"
+  flutter_launcher_icons:
+    dependency: "direct dev"
+    description:
+      name: flutter_launcher_icons
+      sha256: "559c600f056e7c704bd843723c21e01b5fba47e8824bd02422165bcc02a5de1d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.3"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -364,10 +356,10 @@ packages:
     dependency: transitive
     description:
       name: image
-      sha256: a72242c9a0ffb65d03de1b7113bc4e189686fc07c7147b8b41811d0dd0e0d9bf
+      sha256: "8e9d133755c3e84c73288363e6343157c383a0c6c56fc51afcc5d4d7180306d6"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.17"
+    version: "3.3.0"
   intl:
     dependency: "direct main"
     description:
@@ -432,30 +424,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-  path_provider:
-    dependency: "direct main"
-    description:
-      name: path_provider
-      sha256: "909b84830485dbcd0308edf6f7368bc8fd76afa26a270420f34cabea2a6467a0"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
-  path_provider_android:
-    dependency: transitive
-    description:
-      name: path_provider_android
-      sha256: "5d44fc3314d969b84816b569070d7ace0f1dea04bd94a83f74c4829615d22ad8"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
-  path_provider_foundation:
-    dependency: transitive
-    description:
-      name: path_provider_foundation
-      sha256: "1b744d3d774e5a879bb76d6cd1ecee2ba2c6960c03b1020cd35212f6aa267ac5"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.0"
   path_provider_linux:
     dependency: transitive
     description:
@@ -480,14 +448,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
-  pdf:
-    dependency: "direct main"
-    description:
-      name: pdf
-      sha256: "9f75fc7f5580ea5e635b5724de58fb27f684c9ad03ed46fdc1aac768e4557315"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.10.4"
   petitparser:
     dependency: transitive
     description:
@@ -520,14 +480,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.7.3"
-  qr:
-    dependency: transitive
-    description:
-      name: qr
-      sha256: "64957a3930367bf97cc211a5af99551d630f2f4625e38af10edd6b19131b64b3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.1"
   rflutter_alert:
     dependency: "direct main"
     description:
@@ -757,6 +709,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.3.0"
+  yaml:
+    dependency: transitive
+    description:
+      name: yaml
+      sha256: "75769501ea3489fca56601ff33454fe45507ea3bfb014161abc3b43ae25989d5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
 sdks:
   dart: ">=3.0.6 <4.0.0"
   flutter: ">=3.7.0-0"
