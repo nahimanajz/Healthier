@@ -155,7 +155,6 @@ class _RateMedicineScreenState extends State<RateMedicineScreen> {
                     ),
                     FilledButton(
                       onPressed: () async {
-                        print(commentController.text);
                         try {
                           var comment = CommentModel(
                               rate: rate,

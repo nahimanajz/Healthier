@@ -186,7 +186,7 @@ class _DosageState extends State<DosageScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context, 2);
+            Navigator.pushNamed(context, "/dashboard");
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),

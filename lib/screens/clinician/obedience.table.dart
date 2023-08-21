@@ -7,7 +7,6 @@ class ObedienceTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

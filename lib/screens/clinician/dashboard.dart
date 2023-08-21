@@ -34,8 +34,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
     phoneTxt.text = phoneTxt.text ?? args?["patientId"];
     return Scaffold(
       appBar: AppBar(
-          title: const Text("Quick Prescription"),
-          backgroundColor: lightColorScheme.secondary),
+        title: const Text("Quick Prescription"),
+        backgroundColor: lightColorScheme.secondary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.close_rounded),
+            tooltip: 'Open shopping cart',
+            onPressed: () {
+              Navigator.pushNamed(context, "/");
+            },
+          ),
+        ],
+      ),
       body: Container(
         decoration: gradientDecoration,
         padding: EdgeInsets.all(20),
@@ -83,7 +93,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               }
             },
           ),
-          // Add more SpeedDialChild widgets for other routes
         ],
       ),
     );

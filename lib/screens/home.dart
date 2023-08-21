@@ -22,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
     getSignedUser(context);
     initializeService();
     FlutterBackgroundService().invoke("setAsBackground");
@@ -33,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: lightColorScheme.primary,
         title: const Text(
           "Mention who you are to continue",

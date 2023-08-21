@@ -242,8 +242,8 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
           onPressed: () {
             String period = checkPeriod(medicine?.timeOfTheDay);
             ObedienceModel obedience = ObedienceModel(
-                date: DateTime.now().toIso8601String(),
                 period: period,
+                date: DateTime.now().toIso8601String(),
                 status: "Taken",
                 medicineName: medicine?.name);
             ObedienceRepository.create(

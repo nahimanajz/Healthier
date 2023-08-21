@@ -25,7 +25,7 @@ class ObedienceModel {
     return {
       if (status != null) "status": status,
       if (medicineName != null) "medicineName": medicineName,
-      if (date != null) "medicineName": date,
+      if (date != null) "date": date,
       if (period != null) "period": period,
     };
   }
