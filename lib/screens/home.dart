@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                 color: lightColorScheme.primary,
               ),
               onNavigateTo: () {
-                debugPrint("Navigating to a screen 1...");
+                Navigator.pushNamed(context, "/pharmacy/detail");
               },
             ),
             CustomIconButton(
@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
               icon: Icon(Icons.local_hospital,
                   color: lightColorScheme.primary, size: 90.0),
               onNavigateTo: () {
-                print("Navigating to a screen 2...");
+                Navigator.pushNamed(context, "/prescribe");
               },
             ),
             CustomIconButton(
@@ -52,7 +52,7 @@ class HomeScreen extends StatelessWidget {
               icon: Icon(Icons.hotel_sharp,
                   color: lightColorScheme.primary, size: 90.0),
               onNavigateTo: () {
-                print("Navigating to a screen 3...");
+                Navigator.pushNamed(context, "/verifyPatient");
               },
             ),
           ],

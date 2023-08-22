@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "377298794002",
+    "firebase_url": "https://majestic-trail-239422-default-rtdb.firebaseio.com",
+    "project_id": "majestic-trail-239422",
+    "storage_bucket": "majestic-trail-239422.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377298794002:android:8f748fc37dad1234ea4acb",
+        "android_client_info": {
+          "package_name": "app.netlify.janvierdev.flash_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "377298794002-3a4vrp10qglbeu56j7klq6n4ms5piv62.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACediwGSj5meKtk157Yc9msepzSABSyMY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "377298794002-3a4vrp10qglbeu56j7klq6n4ms5piv62.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377298794002:android:6720b2615a603148ea4acb",
+        "android_client_info": {
+          "package_name": "janvierna.netlify.app.healthier"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "377298794002-3a4vrp10qglbeu56j7klq6n4ms5piv62.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACediwGSj5meKtk157Yc9msepzSABSyMY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "377298794002-3a4vrp10qglbeu56j7klq6n4ms5piv62.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
