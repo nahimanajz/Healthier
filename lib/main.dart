@@ -6,6 +6,7 @@ import 'package:healthier2/screens/clinician/dashboard.dart';
 import 'package:healthier2/screens/clinician/obedience.table.dart';
 import 'package:healthier2/screens/clinician/report.screen.dart';
 import 'package:healthier2/screens/dosage.screen.dart';
+import 'package:healthier2/screens/edit.patient.screen.dart';
 import 'package:healthier2/screens/home.dart';
 import 'package:healthier2/screens/patient/consulation.screen.dart';
 import 'package:healthier2/screens/patient/patient.dashbord.Screen.dart';
@@ -46,6 +47,7 @@ void main() async {
         '/patient/consultation': (context) => const ConsultationScreen(),
         '/dashboard': (context) => const DashboardScreen(),
         '/patientInfo': (context) => const PatientInfoScreen(),
+        '/edit/patientInfo': (context) => const EditPatientScreen(),
         '/prescribe': (context) => const PrescribeScreen(),
         '/dosage': (context) => const DosageScreen(),
         '/prescriptionsList': (context) => const PrescriptionsListScreen(),

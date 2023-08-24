@@ -15,7 +15,6 @@ void savePatientPrefs(PatientModel patient) async {
 
   String info =
       "${patient.name as String} from ${patient.addressCity as String}   ${patient.temp as int} °C";
-
   await prefs.setString("patientInfo", info);
 }
 

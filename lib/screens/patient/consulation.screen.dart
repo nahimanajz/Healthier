@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthier2/models/consultation.model.dart';
-import 'package:healthier2/repositories/consultation.repository.dart';
 import 'package:healthier2/services/consultation.service.dart';
 
 import 'package:healthier2/utils/color_schemes.g.dart';

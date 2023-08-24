@@ -80,4 +80,11 @@ class PatientRepository {
     final patient = await snapshot.get();
     return patient.docs.first.data();
   }
+
+  static Future<void> update(PatientModel patient) async {
+    await db
+        .collection("patients")
+        .doc(patient.phone)
+        .update(patient.toFireStore());
+  }
 }

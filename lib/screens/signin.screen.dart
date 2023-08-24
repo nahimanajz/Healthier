@@ -76,17 +76,17 @@ class _SignInScreen extends State<SignInScreen> {
                             user.email as String)
                         ? Navigator.pushNamed(context, "/patient/dashboard")
                         : Navigator.pushNamed(context, "/patientInfo");
-                  }
-                  //else if (user?.userType == "pharmacist") {
-                  //   //Navigate to pharmacy dashboard
-                  // } else {
-                  //   // navigate to clinician dashboard
+                  } else if (user?.userType == "clinician") {
+                    Navigator.pushNamed(context, "/dashboard");
+                  } else {
+                    /*  //   // navigate to clinician dashboard
                   // }
                   // print(user);
-/*
+
                   await Navigator.pushNamed(context, "/signin",
                       arguments: {"user": user});
                       */
+                  }
                 } catch (e) {
                   print(e.toString());
                   showErrorToast(context, msg: e.toString());
