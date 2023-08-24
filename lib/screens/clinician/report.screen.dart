@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:healthier2/models/comment.model.dart';
 import 'package:healthier2/services/report.service.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
+import 'package:healthier2/utils/toast.dart';
 import 'package:intl/intl.dart';
 
 enum ReportType {
@@ -43,9 +43,9 @@ class _ReportScreenState extends State<ReportScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
         ),
-        title: Text("Reports"),
+        title: const Text("Reports"),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -63,7 +63,7 @@ class _ReportScreenState extends State<ReportScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ListTile(
-          title: Text("Feedback"),
+          title: const Text("Feedback"),
           leading: Radio<ReportType>(
               value: ReportType.feedback,
               groupValue: _report,
@@ -74,7 +74,7 @@ class _ReportScreenState extends State<ReportScreen> {
               }),
         ),
         ListTile(
-          title: Text("Obedience"),
+          title: const Text("Obedience"),
           leading: Radio<ReportType>(
               value: ReportType.obedience,
               groupValue: _report,
@@ -104,12 +104,12 @@ class _ReportScreenState extends State<ReportScreen> {
               Icons.calendar_today,
               color: lightColorScheme.primary,
             ),
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
             hintText: 'Start date',
             labelText: "End date",
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         TextField(
@@ -132,12 +132,12 @@ class _ReportScreenState extends State<ReportScreen> {
               Icons.calendar_today,
               color: lightColorScheme.primary,
             ),
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
             hintText: 'EndDate date',
             labelText: "End date",
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         TextField(
@@ -148,37 +148,44 @@ class _ReportScreenState extends State<ReportScreen> {
               Icons.phone_android_outlined,
               color: lightColorScheme.primary,
             ),
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
             hintText: ' Phone',
             labelText: "Phone Number ",
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         ElevatedButton.icon(
           onPressed: () async {
-            var arguments = {
-              "startDate": startDateCtr.text,
-              "endDate": endDateCtr.text,
-              "phoneNumber": patientIdCtr.text,
-              "prescriptionId": prescriptionId
-            };
-
-            if (_report == ReportType.feedback) {
-              Navigator.pushNamed(context, "/comments/table",
-                  arguments: arguments);
+            if (startDateCtr.text.isEmpty ||
+                endDateCtr.text.isEmpty ||
+                prescriptionId.isEmpty ||
+                patientIdCtr.text.isEmpty) {
+              showErroroast(context);
             } else {
-              Navigator.pushNamed(context, "/obedience/table",
-                  arguments: arguments);
+              var arguments = {
+                "startDate": startDateCtr.text,
+                "endDate": endDateCtr.text,
+                "phoneNumber": patientIdCtr.text,
+                "prescriptionId": prescriptionId
+              };
+
+              if (_report == ReportType.feedback) {
+                Navigator.pushNamed(context, "/comments/table",
+                    arguments: arguments);
+              } else {
+                Navigator.pushNamed(context, "/obedience/table",
+                    arguments: arguments);
+              }
             }
           },
-          icon: Icon(
+          icon: const Icon(
             // <-- Icon
             Icons.picture_as_pdf,
             size: 24.0,
           ),
-          label: Text('Get it'), //
+          label: const Text('Get it'), //
         ),
       ],
     );

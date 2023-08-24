@@ -1,10 +1,8 @@
-import 'dart:io';
 import 'dart:ui';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
-import 'package:healthier2/services/obedience.service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> initializeService() async {
@@ -50,9 +48,9 @@ void onStart(ServiceInstance service) async {
   });
 
   final isNotifying = preferences.getBool("hasToNotify");
-  final isTesting = true;
+  const isTesting = true;
   if (isNotifying != null || isTesting) {
-    Timer.periodic(Duration(minutes: 1), (timer) {
+    Timer.periodic(const Duration(minutes: 1), (timer) {
       if (service is AndroidServiceInstance) {
         service.setForegroundNotificationInfo(
           title: "Hi there",

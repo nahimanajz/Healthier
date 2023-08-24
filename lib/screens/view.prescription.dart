@@ -1,20 +1,16 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:healthier2/main.dart';
 import 'package:healthier2/models/medicine.model.dart';
 import 'package:healthier2/models/obedience.model.dart';
 import 'package:healthier2/repositories/medicine.repository.dart';
 import 'package:healthier2/repositories/obedience.repository.dart';
 import 'package:healthier2/repositories/prescription.repository.dart';
 import 'package:healthier2/utils/data/medicines.dart';
-import 'package:healthier2/utils/local.notification.dart';
 import 'package:healthier2/utils/main.util.dart';
 import 'package:healthier2/utils/toast.dart';
 import 'package:healthier2/widgets/alert.dart';
 import 'package:healthier2/widgets/empty.list.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/color_schemes.g.dart';
@@ -120,12 +116,12 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
                     prescriptionId: args?["prescriptionId"],
                     illness: args?["illness"],
                     description: formatDescription(medicines[index]),
-                    title: "${medicines[index].name as String ?? " "}",
+                    title: medicines[index].name as String ?? " ",
                     isPharmacist: args?["isPharmacist"]);
               },
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),
@@ -150,7 +146,7 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: FaIcon(FontAwesomeIcons.pills),
+              leading: const FaIcon(FontAwesomeIcons.pills),
               title: KTextStyle(
                 text: title,
                 color: lightColorScheme.scrim,

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:healthier2/repositories/patient.repository.dart';
-import 'package:healthier2/utils/firebase.instance.dart';
 
 class ObedienceService {
   static Future<String?> scheduleDoseReminder(
@@ -9,8 +8,7 @@ class ObedienceService {
     DateTime currentTime = DateTime.now();
 
     for (var medicine in medicines) {
-      if (medicine is Map<String, dynamic> &&
-          medicine.containsKey('date') &&
+      if (medicine.containsKey('date') &&
           medicine.containsKey('endDate') &&
           medicine.containsKey('timeOfTheDay')) {
         DateTime startDate = DateTime.parse(medicine['date']);
@@ -24,6 +22,7 @@ class ObedienceService {
         }
       }
     }
+    return null;
   }
 
   static Future<List<Map<String, dynamic>>> getPatientMedicines(

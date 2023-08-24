@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:healthier2/utils/firebase.instance.dart';
 
 import '../models/patient.model.dart';
@@ -27,6 +26,15 @@ class PatientRepository {
     final querySnapshot = await ref.get();
     final patient = querySnapshot.docs.first;
     return patient.data();
+  }
+
+  static Future<bool> isPatientExist(String email) async {
+    final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+        .instance
+        .collection("patients")
+        .where("email", isEqualTo: email)
+        .get();
+    return snapshot.docs.isNotEmpty;
   }
 
   static Future<List<Map<String, dynamic>>> getAllPatients() async {
@@ -60,5 +68,16 @@ class PatientRepository {
         .doc(patientId)
         .collection('prescriptions')
         .get();
+  }
+
+  static Future<PatientModel> getPatientByEmail({String? email}) async {
+    final snapshot = FirebaseFirestore.instance
+        .collection("patients")
+        .where("email", isEqualTo: email)
+        .withConverter(
+            fromFirestore: PatientModel.fromFireStore,
+            toFirestore: (PatientModel patient, _) => patient.toFireStore());
+    final patient = await snapshot.get();
+    return patient.docs.first.data();
   }
 }

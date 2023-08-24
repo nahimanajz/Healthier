@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:352384205015:android:dc458674c5afbf758e7092",
         "android_client_info": {
-          "package_name": "com.example.healthier2"
+          "package_name": "app.netflify.janvierna.healthier"
         }
       },
       "oauth_client": [

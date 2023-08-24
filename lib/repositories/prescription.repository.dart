@@ -1,8 +1,4 @@
-import 'dart:developer';
-import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:healthier2/models/medicine.model.dart';
 import 'package:healthier2/utils/firebase.instance.dart';
 import '../models/prescription.model.dart';
 
@@ -56,7 +52,7 @@ final class PrescriptionRepository {
   static Future<String> approveMedicine(
       {String? patientId, String? prescriptionId, String? medicineId}) async {
     var message;
-    final prescriptionRef = await db
+    final prescriptionRef = db
         .collection("patients")
         .doc(patientId)
         .collection("prescriptions")

@@ -1,14 +1,13 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalNotification {
   static Future initialize(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
     var androidInitialize =
-        const AndroidInitializationSettings('@drawable/icons8pill50');
+        const AndroidInitializationSettings('@drawable/logo');
     // Initialize iOS settings
-    var iOSInitialize = DarwinInitializationSettings();
+    var iOSInitialize = const DarwinInitializationSettings();
     var initializationsSettings =
         InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
     await flutterLocalNotificationsPlugin.initialize(initializationsSettings);
@@ -30,7 +29,8 @@ class LocalNotification {
             color: lightColorScheme.secondaryContainer);
 
     var notification = NotificationDetails(
-        android: androidChannelSpecifics, iOS: DarwinNotificationDetails());
+        android: androidChannelSpecifics,
+        iOS: const DarwinNotificationDetails());
 
     //if (hasNofitification != null) {
     await fln.show(0, title, body, notification);

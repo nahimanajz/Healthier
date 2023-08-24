@@ -5,11 +5,13 @@ import '../utils/color_schemes.g.dart';
 
 TextFormField buildTextFormField(String title, TextEditingController controller,
     {TextInputType? keyboardType = TextInputType.text,
+    bool isHidden = false,
     Function(String)? onChanged}) {
   return TextFormField(
     keyboardType: keyboardType,
     controller: controller,
     onChanged: onChanged,
+    obscureText: isHidden,
     decoration: InputDecoration(
       filled: true,
       fillColor: lightColorScheme.background,

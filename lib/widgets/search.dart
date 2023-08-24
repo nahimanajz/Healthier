@@ -21,7 +21,7 @@ class _SearchWidgetState extends State<SearchWidget> {
   @override
   Widget build(BuildContext context) {
     final styleActive = TextStyle(color: lightColorScheme.scrim);
-    final styleHint = TextStyle(color: Colors.black54);
+    const styleHint = TextStyle(color: Colors.black54);
     final style = widget.text.isEmpty ? styleHint : styleActive;
 
     return TextFormField(

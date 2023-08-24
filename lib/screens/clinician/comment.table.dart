@@ -1,10 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:healthier2/models/comment.model.dart';
 import 'package:healthier2/services/report.service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CommentsTable extends StatefulWidget {
+  const CommentsTable({super.key});
+
   @override
   State<CommentsTable> createState() => _CommentsTableState();
 }
@@ -32,7 +33,7 @@ class _CommentsTableState extends State<CommentsTable> {
       appBar: AppBar(
           leading: IconButton(
         onPressed: () => Navigator.pop(context),
-        icon: Icon(Icons.arrow_back_ios),
+        icon: const Icon(Icons.arrow_back_ios),
       )),
       body: SingleChildScrollView(
         child: StreamBuilder(
@@ -49,7 +50,7 @@ class _CommentsTableState extends State<CommentsTable> {
 
             return PaginatedDataTable(
               header: Text('Bits of feedback  ${patientInfo ?? " "} '),
-              columns: [
+              columns: const [
                 DataColumn(label: Text("Medicine")),
                 DataColumn(label: Text("Text")),
                 DataColumn(label: Text("Rate")),

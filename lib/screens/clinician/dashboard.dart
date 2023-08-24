@@ -1,14 +1,8 @@
-import 'dart:math';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:healthier2/repositories/patient.repository.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/utils/preferences.dart';
-import 'package:healthier2/utils/toast.dart';
-import 'package:healthier2/widgets/back.to.home.button.dart';
 import 'package:healthier2/widgets/custom_textFormField.dart';
 import 'package:healthier2/widgets/styles/KTextStyle.dart';
 import '../../widgets/styles/gradient.decoration.dart';
@@ -39,7 +33,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.close_rounded),
-            tooltip: 'Open shopping cart',
             onPressed: () {
               Navigator.pushNamed(context, "/");
             },
@@ -48,18 +41,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       body: Container(
         decoration: gradientDecoration,
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Center(
           child: buildTextFormField("Phone Number", phoneTxt),
         ),
       ),
-      drawer: const NavigationDrawer(),
+      drawer: const ClinicianNavDrawer(),
       floatingActionButton: SpeedDial(
-        child: Icon(Icons.menu),
         children: [
           SpeedDialChild(
             backgroundColor: lightColorScheme.primary,
-            shape: CircleBorder(),
+            shape: const CircleBorder(),
             child: Icon(Icons.book, color: lightColorScheme.background),
             label: 'Reports',
             onTap: () async {
@@ -72,12 +64,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   "isAccessingReport": true
                 });
               }
-              ;
             },
           ),
           SpeedDialChild(
             backgroundColor: lightColorScheme.primary,
-            shape: CircleBorder(),
+            shape: const CircleBorder(),
             child: Icon(Icons.arrow_forward, color: lightColorScheme.secondary),
             label: 'Prescribe',
             onTap: () async {
@@ -87,25 +78,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
               if (patient != null) {
                 savePatientPrefs(patient);
                 Navigator.pushNamed(context, '/prescribe', arguments: {
-                  "patientName": patient?.name,
-                  "patientPhoneNumber": patient?.phone
+                  "patientName": patient.name,
+                  "patientPhoneNumber": patient.phone
                 });
               }
             },
           ),
         ],
+        child: const Icon(Icons.menu),
       ),
     );
   }
 }
 
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({Key? key}) : super(key: key);
+class ClinicianNavDrawer extends StatelessWidget {
+  const ClinicianNavDrawer({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Color(0xFFFFFFFFF),
-      surfaceTintColor: Color(0xFFFFFFFFF),
+      backgroundColor: const Color(0xfffffffff),
+      surfaceTintColor: const Color(0xfffffffff),
       width: 200,
       child: SingleChildScrollView(
         child: Column(
@@ -140,16 +132,16 @@ class NavigationDrawer extends StatelessWidget {
 
   buildMenuItems(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       child: Wrap(
         runSpacing: 2,
         children: [
-          Divider(
+          const Divider(
             thickness: 1.0,
           ),
           ListTile(
-            leading: Icon(Icons.home_filled),
-            title: KTextStyle(
+            leading: const Icon(Icons.home_filled),
+            title: const KTextStyle(
               color: Colors.black87,
               size: 16,
               text: "Home",
@@ -158,8 +150,8 @@ class NavigationDrawer extends StatelessWidget {
             onTap: () {},
           ),
           ListTile(
-            leading: Icon(Icons.wrap_text),
-            title: KTextStyle(
+            leading: const Icon(Icons.wrap_text),
+            title: const KTextStyle(
               color: Colors.black87,
               size: 16,
               text: "Prescribe",

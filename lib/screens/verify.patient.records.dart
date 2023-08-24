@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:healthier2/repositories/prescription.repository.dart';
 import 'package:healthier2/services/user.service.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 
@@ -28,11 +27,9 @@ class _VerifyPatientRecordsScreenState
 
   getPatientId() async {
     var patientId = await getPatientIdnPreference();
-    if (patientId != null) {
-      setState(() {
-        _phoneNumberController.text = patientId;
-      });
-    }
+    setState(() {
+      _phoneNumberController.text = patientId;
+    });
   }
 
   @override
@@ -64,7 +61,7 @@ class _VerifyPatientRecordsScreenState
   }
 
   Widget buildCard() => Card(
-        margin: EdgeInsets.only(left: 0.0, top: 70.0, right: 0.0, bottom: 0.0),
+        margin: const EdgeInsets.only(left: 0.0, top: 70.0, right: 0.0, bottom: 0.0),
         elevation: 2,
         color: lightColorScheme.surface,
         shape: const RoundedRectangleBorder(
@@ -76,7 +73,7 @@ class _VerifyPatientRecordsScreenState
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                   color: lightColorScheme.primary,
@@ -84,7 +81,7 @@ class _VerifyPatientRecordsScreenState
                     top: Radius.circular(16),
                   )),
               child: const Text(
-                "Let\'s Verify your records",
+                "Let's Verify your records",
                 textAlign: TextAlign.center,
               ),
             ),

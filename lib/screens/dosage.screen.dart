@@ -208,7 +208,7 @@ class _DosageState extends State<DosageScreen> {
                   padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
                   child: KTextStyle(
                     text:
-                        '''${dosage} ${arguments?["medicineType"]} everyday for ${duration} ${formatDuration(repeat)} in ${dailyTimes} ${formatTobeTaken(foodCorrelation)} ''',
+                        '''$dosage ${arguments?["medicineType"]} everyday for $duration ${formatDuration(repeat)} in $dailyTimes ${formatTobeTaken(foodCorrelation)} ''',
                     color: lightColorScheme.surface,
                     fontWeight: FontWeight.w700,
                     size: 16.0,
@@ -228,12 +228,12 @@ class _DosageState extends State<DosageScreen> {
                         children: [
                           buildColumn(
                               "Dosage",
-                              '${dosage} ${formatDoseMeasure(arguments?["medicineType"])}',
+                              '$dosage ${formatDoseMeasure(arguments?["medicineType"])}',
                               onDosageDecrement,
                               onDosageIncrement),
                           buildColumn(
                               "Duration",
-                              '${duration} ${formatDuration(repeat)}',
+                              '$duration ${formatDuration(repeat)}',
                               onDurationDecrement,
                               onDurationIncrement)
                         ],
@@ -304,7 +304,7 @@ class _DosageState extends State<DosageScreen> {
       spacing: 4.0,
       direction: Axis.horizontal,
       children: [
-        KTextStyle(text: title, color: Color(0xFF333333), size: 14.0),
+        KTextStyle(text: title, color: const Color(0xFF333333), size: 14.0),
         Wrap(
           spacing: 4.0,
           runSpacing: 4.0,
@@ -335,7 +335,7 @@ class _DosageState extends State<DosageScreen> {
       children: [
         KTextStyle(
           text: label,
-          color: Color(0xFF333333),
+          color: const Color(0xFF333333),
           fontWeight: FontWeight.w400,
           size: 14.0,
         ),
@@ -348,7 +348,7 @@ class _DosageState extends State<DosageScreen> {
             ),
             KTextStyle(
               text: medValueAndType,
-              color: Color(0xFF333333),
+              color: const Color(0xFF333333),
               fontWeight: FontWeight.w300,
               size: 16.0,
             ),
@@ -372,7 +372,7 @@ class _DosageState extends State<DosageScreen> {
           backgroundColor: Colors.white,
           body: Center(
             child: Container(
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(

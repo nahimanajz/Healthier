@@ -57,7 +57,7 @@ class _PharmacyDetailScreenState extends State<PharmacyDetailScreen> {
                 Flexible(
                   flex: 3,
                   child: Padding(
-                    padding: EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Form(
                       key: _pharmacyFormKey,
                       child: Column(

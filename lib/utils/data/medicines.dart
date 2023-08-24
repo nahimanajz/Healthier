@@ -11,7 +11,7 @@ final List<Map<String, dynamic>> medicines = [
   {
     'value': 'Liquid',
     'label': 'Liquid',
-    'icon': Icon(Icons.medication_liquid_outlined),
+    'icon': const Icon(Icons.medication_liquid_outlined),
   },
   {
     'value': 'Drops',
@@ -26,13 +26,13 @@ String formatTimeOfDay(bool morning, bool noon, bool evening, bool night) {
     result = "Morning";
   }
   if (noon) {
-    result = result + ", Noon";
+    result = "$result, Noon";
   }
   if (evening) {
-    result = result + ", Evening";
+    result = "$result, Evening";
   }
   if (night) {
-    result = result + ", Night";
+    result = "$result, Night";
   }
   return result;
 }

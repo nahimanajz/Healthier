@@ -1,4 +1,4 @@
-package com.example.healthier2
+package app.netflify.janvierna.healthier
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -3,6 +3,8 @@ import 'package:healthier2/models/obedience.model.dart';
 import 'package:healthier2/services/report.service.dart';
 
 class ObedienceTable extends StatelessWidget {
+  const ObedienceTable({super.key});
+
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args =
@@ -11,7 +13,7 @@ class ObedienceTable extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
         ),
       ),
       body: SingleChildScrollView(
@@ -28,8 +30,8 @@ class ObedienceTable extends StatelessWidget {
             final dataList = snapshot.data!;
 
             return PaginatedDataTable(
-              header: Text('Obedience '),
-              columns: [
+              header: const Text('Obedience '),
+              columns: const [
                 DataColumn(label: Text("date")),
                 DataColumn(label: Text("status")),
                 DataColumn(label: Text("medicine")),

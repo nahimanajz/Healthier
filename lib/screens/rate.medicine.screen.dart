@@ -81,7 +81,7 @@ class _RateMedicineScreenState extends State<RateMedicineScreen> {
                   padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
                   child: Center(
                     child: KTextStyle(
-                      text: "Rate ${medicineName} for ${illness}",
+                      text: "Rate $medicineName for $illness",
                       color: lightColorScheme.surface,
                       fontWeight: FontWeight.w700,
                       size: 16.0,
@@ -131,7 +131,7 @@ class _RateMedicineScreenState extends State<RateMedicineScreen> {
                           hintText: 'How did you feel about this medicine?',
                           labelStyle:
                               TextStyle(color: lightColorScheme.primary),
-                          prefixIcon: Icon(Icons.comment),
+                          prefixIcon: const Icon(Icons.comment),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                                 width: 3, color: lightColorScheme.secondary),
@@ -198,7 +198,7 @@ class _RateMedicineScreenState extends State<RateMedicineScreen> {
       barrierDismissible:
           false, // should dialog be dismissed when tapped outside
       barrierLabel: "Modal", // label for barrier
-      transitionDuration: Duration(
+      transitionDuration: const Duration(
           milliseconds:
               500), // how long it takes to popup dialog after button click
       pageBuilder: (_, __, ___) {
@@ -208,14 +208,14 @@ class _RateMedicineScreenState extends State<RateMedicineScreen> {
               backgroundColor: Colors.white,
               centerTitle: true,
               leading: IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.close,
                     color: Colors.black,
                   ),
                   onPressed: () {
                     Navigator.pop(context);
                   }),
-              title: Text(
+              title: const Text(
                 "Modal",
                 style: TextStyle(
                     color: Colors.black87,
@@ -225,11 +225,11 @@ class _RateMedicineScreenState extends State<RateMedicineScreen> {
               elevation: 0.0),
           backgroundColor: Colors.white.withOpacity(0.90),
           body: Container(
-            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+            decoration: const BoxDecoration(
               border: Border(
                 top: BorderSide(
-                  color: const Color(0xfff8f8f8),
+                  color: Color(0xfff8f8f8),
                   width: 1,
                 ),
               ),
@@ -239,7 +239,7 @@ class _RateMedicineScreenState extends State<RateMedicineScreen> {
               children: [
                 RichText(
                   textAlign: TextAlign.justify,
-                  text: TextSpan(
+                  text: const TextSpan(
                       text:
                           "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?",
                       style: TextStyle(
@@ -248,7 +248,7 @@ class _RateMedicineScreenState extends State<RateMedicineScreen> {
                           color: Colors.black,
                           wordSpacing: 1)),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
               ],

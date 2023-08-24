@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:healthier2/models/medicine.model.dart';
-import 'package:healthier2/models/patient.model.dart';
 import 'package:healthier2/models/prescription.model.dart';
 import 'package:healthier2/repositories/prescription.repository.dart';
 

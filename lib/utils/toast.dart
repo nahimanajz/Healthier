@@ -28,6 +28,22 @@ void showMedicineTakenToast(BuildContext context) {
     Overlay.of(context),
     const CustomSnackBar.success(
         message:
-            "Good job, you\'ve informed your clinician how keen you are on this precription"),
+            "Good job, you've informed your clinician how keen you are on this precription"),
   );
 }
+
+void showErroroast(BuildContext context) {
+  showTopSnackBar(
+    Overlay.of(context),
+    const CustomSnackBar.error(message: "Please fill required fields"),
+  );
+}
+
+void showErrorToast(BuildContext context,
+    {String msg = "Something went wrong"}) {
+  showTopSnackBar(
+    Overlay.of(context),
+    CustomSnackBar.error(message: msg),
+  );
+}
+// app.netlify.janvierna

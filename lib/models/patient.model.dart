@@ -7,10 +7,12 @@ class PatientModel {
   final String? phone;
   final int? temp;
   final String? documentId;
+  final String? email;
   final List<PrescriptionModel>? prescriptions;
 
   PatientModel(
-      {this.addressCity,
+      {this.email,
+      this.addressCity,
       this.name,
       this.phone,
       this.temp,
@@ -25,6 +27,7 @@ class PatientModel {
     return PatientModel(
       documentId: snapshot.id,
       name: data?["name"],
+      email: data?["email"],
       phone: data?["phone"],
       temp: data?["temp"],
       addressCity: data?["addressCity"],
@@ -37,6 +40,7 @@ class PatientModel {
   Map<String, dynamic> toFireStore() {
     return {
       if (name != null) "name": name,
+      if (email != null) "email": email,
       if (phone != null) "phone": phone,
       if (temp != null) "temp": temp,
       if (addressCity != null) "addressCity": addressCity,

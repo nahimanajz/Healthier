@@ -57,7 +57,7 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
               },
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),

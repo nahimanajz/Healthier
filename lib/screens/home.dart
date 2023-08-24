@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.white,
           body: Center(
             child: Container(
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(
@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: Icon(Icons.close),
+                        icon: const Icon(Icons.close),
                       ),
                     ],
                   ),

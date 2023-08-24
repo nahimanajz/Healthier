@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthier2/models/patient.model.dart';
@@ -7,8 +5,8 @@ import 'package:healthier2/repositories/patient.repository.dart';
 import 'package:healthier2/services/country.service.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/widgets/styles/gradient.decoration.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utils/data/data.dart';
 import '../widgets/custom_textFormField.dart';
 import '../widgets/styles/KTextStyle.dart';
 
@@ -69,16 +67,19 @@ class _PrescribeInfoScreenState extends State<PatientInfoScreen> {
               ),
               buildPatientAddressForm(),
               buildStepperButton(() async {
+                final pref = await SharedPreferences.getInstance();
+                String? patientEmail = pref.getString("signedInUserName");
+
                 var patient = PatientModel(
-                  addressCity: _residencyCityController.text,
-                  name: _fullNamesController.text,
-                  phone: _phoneNumberController.text,
-                  temp: residenceTemp.toInt(),
-                );
+                    addressCity: _residencyCityController.text,
+                    name: _fullNamesController.text,
+                    phone: _phoneNumberController.text,
+                    temp: residenceTemp.toInt(),
+                    email: patientEmail as String);
 
                 await PatientRepository.create(patient);
 
-                await Navigator.pushNamed(context, "/dashboard",
+                await Navigator.pushNamed(context, "/patient/dashboard",
                     arguments: {"patientId": patient.phone});
               })
             ],
@@ -92,7 +93,7 @@ class _PrescribeInfoScreenState extends State<PatientInfoScreen> {
     return Flexible(
       flex: 3,
       child: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
