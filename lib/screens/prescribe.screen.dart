@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:healthier2/models/consultation.model.dart';
+import 'package:healthier2/models/patient.model.dart';
 import 'package:healthier2/models/prescription.model.dart';
+import 'package:healthier2/repositories/consultation.repository.dart';
 import 'package:healthier2/repositories/prescription.repository.dart';
 
 import 'package:healthier2/utils/color_schemes.g.dart';
@@ -38,8 +41,10 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic>? patientArgs =
+    final Map<String, dynamic>? args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final patientArgs = args?["patient"] as PatientModel?;
+    final consultationArgs = args?["consultation"] as ConsultationModel?;
 
     return Scaffold(
       appBar: AppBar(
@@ -73,15 +78,18 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                   var presciption =
                       PrescriptionModel(illness: _illnessText.text);
                   var createdPres = await PrescriptionRepository.create(
-                      phone: patientArgs?["patientPhoneNumber"],
+                      phone: patientArgs?.phone as String,
                       prescriptionData: presciption);
+                  ConsultationRepository.markAsPrescribed(
+                      consultationId: consultationArgs?.documentId as String,
+                      patientId: patientArgs?.phone as String);
 
                   await Navigator.pushNamed(context, "/dosage", arguments: {
                     "prescriptionId": createdPres?.id,
                     "medicineName": _medicineNameController.text,
                     "medicineType": _medicineTypeController.text,
                     "illness": _illnessText.text,
-                    "phone": patientArgs?["patientPhoneNumber"]
+                    "phone": patientArgs?.phone as String
                   });
                 })
               ],

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:healthier2/models/consultation.model.dart';
 import 'package:healthier2/models/prescription.model.dart';
 
 class PatientModel {
@@ -9,6 +10,7 @@ class PatientModel {
   final String? documentId;
   final String? email;
   final List<PrescriptionModel>? prescriptions;
+  final List<ConsultationModel>? consultations;
 
   PatientModel(
       {this.email,
@@ -17,6 +19,7 @@ class PatientModel {
       this.phone,
       this.temp,
       this.prescriptions,
+      this.consultations,
       this.documentId});
 
   factory PatientModel.fromFireStore(
@@ -33,6 +36,9 @@ class PatientModel {
       addressCity: data?["addressCity"],
       prescriptions: data?["prescriptions"] is Iterable
           ? List.from(data?["prescriptions"])
+          : null,
+      consultations: data?["consultations"] is Iterable
+          ? List.from(data?["consultations"])
           : null,
     );
   }

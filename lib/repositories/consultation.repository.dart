@@ -18,6 +18,7 @@ class ConsultationRepository {
         .collection("patients")
         .doc(patientId)
         .collection("consultations")
+        .orderBy('isPrescribed', descending: false)
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((consultation) =>
@@ -37,7 +38,7 @@ class ConsultationRepository {
         .doc(consultationId);
 
     prescriptionRef
-        .update({"isAvailable": true})
+        .update({"isPrescribed": true})
         .then((value) => {message = "Successful approved medicine"})
         .catchError((err) => message = err);
     return message;

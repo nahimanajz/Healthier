@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:healthier2/screens/clinician/comment.table.dart';
+import 'package:healthier2/screens/clinician/consultations.screen.dart';
 import 'package:healthier2/screens/clinician/dashboard.dart';
 import 'package:healthier2/screens/clinician/obedience.table.dart';
 import 'package:healthier2/screens/clinician/report.screen.dart';
@@ -45,6 +46,7 @@ void main() async {
         //'/pharmacist/addMedicine': (context) => const AddMedicineScreen(),
         '/patient/dashboard': (context) => const PatientDashboardScreen(),
         '/patient/consultation': (context) => const ConsultationScreen(),
+        '/clinician/consultations': (context) => const ConsultationListScreen(),
         '/dashboard': (context) => const DashboardScreen(),
         '/patientInfo': (context) => const PatientInfoScreen(),
         '/edit/patientInfo': (context) => const EditPatientScreen(),

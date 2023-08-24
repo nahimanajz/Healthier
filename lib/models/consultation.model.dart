@@ -5,8 +5,10 @@ class ConsultationModel {
   String? feelings;
   DateTime date = DateTime.now();
   bool? isPrescribed;
+  String? documentId;
 
-  ConsultationModel({this.feelings, this.isPrescribed = false});
+  ConsultationModel(
+      {this.feelings, this.documentId, this.isPrescribed = false});
 
   factory ConsultationModel.fromFireStore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -14,7 +16,9 @@ class ConsultationModel {
     final data = snapshot.data();
 
     return ConsultationModel(
-        feelings: data?["feelings"], isPrescribed: data?["isPrescribed"]);
+        documentId: snapshot.id,
+        feelings: data?["feelings"],
+        isPrescribed: data?["isPrescribed"]);
   }
 
   Map<String, dynamic> toFireStore() {

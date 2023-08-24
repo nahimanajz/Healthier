@@ -100,6 +100,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
               }
             },
           ),
+          SpeedDialChild(
+            backgroundColor: lightColorScheme.primary,
+            shape: const CircleBorder(),
+            child: Icon(Icons.question_mark, color: lightColorScheme.secondary),
+            label: 'Consultations',
+            onTap: () async {
+              var patient =
+                  await PatientRepository.getPhoneNumber(phoneTxt.text);
+
+              if (patient != null) {
+                savePatientPrefs(patient);
+                Navigator.pushNamed(context, '/clinician/consultations',
+                    arguments: {"patient": patient});
+              }
+            },
+          ),
         ],
         child: const Icon(Icons.menu),
       ),
