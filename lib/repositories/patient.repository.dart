@@ -87,4 +87,8 @@ class PatientRepository {
         .doc(patient.phone)
         .update(patient.toFireStore());
   }
+
+  static Future<void> delete(String phone) async {
+    await db.collection("patients").doc(phone).delete();
+  }
 }

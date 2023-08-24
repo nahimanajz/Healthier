@@ -32,29 +32,37 @@ class _EditInfoScreenState extends State<EditPatientScreen> {
     super.initState();
   }
 
-  getData(BuildContext context) {
-    final Map<String, PatientModel>? args = ModalRoute.of(context)
-        ?.settings
-        .arguments as Map<String, PatientModel>?;
-    //args.values.first;
-    setState(() {
-      _fullNamesController.text = args?["patient"]?.name as String;
-      _phoneNumberController.text = args?["patient"]?.phone as String;
-      // _residencyCityController.text = args?["patient"]?.addressCity as String;
-      residenceTemp = args?["patient"]?.temp as int;
-    });
-  }
-
   @override
   void dispose() {
     super.dispose();
   }
 
+  onDelete(BuildContext context, phone) async {
+    try {
+      await PatientRepository.delete(phone);
+      Navigator.pushNamed(context, "/dashboard");
+    } catch (e) {
+      showErrorToast(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    getData(context);
+    final Map<String, PatientModel>? args = ModalRoute.of(context)
+        ?.settings
+        .arguments as Map<String, PatientModel>?;
+    var currentPatient = args?["patient"];
+
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              onDelete(context, currentPatient?.phone as String);
+            },
+            icon: Icon(Icons.delete, color: lightColorScheme.primary),
+          )
+        ],
         leading: IconButton(
           onPressed: () {
             //TODO: this back works after implementing navigations
@@ -76,22 +84,26 @@ class _EditInfoScreenState extends State<EditPatientScreen> {
             children: [
               Flexible(
                 flex: 1,
-                child: Center(
-                  child: SvgPicture.asset('assets/images/clinic.svg'),
-                ),
+                child: KTextStyle(
+                    text:
+                        "    ${currentPatient?.name as String} from ${currentPatient?.addressCity as String} where \n     temperature is ${currentPatient?.temp} °C",
+                    color: lightColorScheme.scrim,
+                    size: 16),
               ),
               buildPatientAddressForm(),
               buildStepperButton(() async {
                 try {
                   var patient = PatientModel(
-                    addressCity: _residencyCityController.text,
-                    name: _fullNamesController.text,
-                    phone: _phoneNumberController.text,
-                    temp: residenceTemp.toInt(),
+                    addressCity: _residencyCityController.text ??
+                        currentPatient?.addressCity as String,
+                    name: _fullNamesController.text ??
+                        currentPatient?.name as String,
+                    phone: _phoneNumberController.text ??
+                        currentPatient?.phone as String,
+                    temp: residenceTemp.toInt() ?? currentPatient?.temp,
                   );
-                  print("objected temperature===>${residenceTemp}");
-                  //  await PatientRepository.update(patient);
-                  //Navigator.pop(context);
+                  await PatientRepository.update(patient);
+                  Navigator.pop(context);
                 } catch (e) {
                   print(e);
                   showErrorToast(context);
