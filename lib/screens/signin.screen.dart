@@ -71,21 +71,15 @@ class _SignInScreen extends State<SignInScreen> {
                       password: _passwordController.text);
                   saveSignedInUser(user as UserModel);
                   if (user?.userType == "patient") {
-                    // check address then navigate to patient address or
                     return await PatientRepository.isPatientExist(
                             user.email as String)
                         ? Navigator.pushNamed(context, "/patient/dashboard")
                         : Navigator.pushNamed(context, "/patientInfo");
                   } else if (user?.userType == "clinician") {
                     Navigator.pushNamed(context, "/dashboard");
-                  } else {
-                    /*  //   // navigate to clinician dashboard
-                  // }
-                  // print(user);
-
-                  await Navigator.pushNamed(context, "/signin",
-                      arguments: {"user": user});
-                      */
+                  } else if (user.userType == "pharmacist") {
+                    await Navigator.pushNamed(context, "/pharmacist/dashboard",
+                        arguments: {"user": user});
                   }
                 } catch (e) {
                   print(e.toString());

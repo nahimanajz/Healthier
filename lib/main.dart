@@ -8,10 +8,11 @@ import 'package:healthier2/screens/clinician/obedience.table.dart';
 import 'package:healthier2/screens/clinician/report.screen.dart';
 import 'package:healthier2/screens/dosage.screen.dart';
 import 'package:healthier2/screens/edit.patient.screen.dart';
-import 'package:healthier2/screens/home.dart';
 import 'package:healthier2/screens/patient/consulation.screen.dart';
 import 'package:healthier2/screens/patient/patient.dashbord.Screen.dart';
-import 'package:healthier2/screens/pharmacist/dashboard.dart';
+import 'package:healthier2/screens/pharmacist/medicines.screen.dart';
+import 'package:healthier2/screens/pharmacist/pharmacist.dashboard.dart';
+import 'package:healthier2/screens/pharmacist/drugstore.screen.dart';
 import 'package:healthier2/screens/pharmacy.detail.screen.dart';
 import 'package:healthier2/screens/patient.screen.dart';
 import 'package:healthier2/screens/prescribe.screen.dart';
@@ -59,7 +60,9 @@ void main() async {
         '/pharmacy/detail': (context) => const PharmacyDetailScreen(),
         '/clinician/report': (context) => const ReportScreen(),
         '/comments/table': (context) => const CommentsTable(),
-        '/obedience/table': (context) => const ObedienceTable()
+        '/obedience/table': (context) => const ObedienceTable(),
+        '/pharmacist/drugStore': (context) => const DrugStoreScreen(),
+        '/pharmacist/medicines': (context) => const MedicinesScreen()
       },
       theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
       darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),

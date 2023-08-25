@@ -1,86 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:healthier2/models/drugstore.model.dart';
 import 'package:healthier2/models/patient.model.dart';
+import 'package:healthier2/models/user.model.dart';
 import 'package:healthier2/repositories/consultation.repository.dart';
+import 'package:healthier2/repositories/drugstore.repository.dart';
+import 'package:healthier2/repositories/medicine.repository.dart';
+import 'package:healthier2/services/drugstore.service.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/widgets/empty.list.dart';
 import 'package:healthier2/widgets/styles/KTextStyle.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ConsultationListScreen extends StatefulWidget {
-  const ConsultationListScreen({super.key});
-
-  @override
-  State<ConsultationListScreen> createState() => _ConsultationsState();
-}
-
-class _ConsultationsState extends State<ConsultationListScreen> {
-  @override
-  void initState() {
-    // TODO: implement local notification
-    super.initState();
-  }
+class MedicinesScreen extends StatelessWidget {
+  const MedicinesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, PatientModel>? args = ModalRoute.of(context)
-        ?.settings
-        .arguments as Map<String, PatientModel>?;
-
     //TODO: add condition to check whether it is pharmacist or individual patient
+    final Map<String, UserModel>? userArgs =
+        ModalRoute.of(context)?.settings.arguments as Map<String, UserModel>?;
+    print("user args ${userArgs?.values.first.email}");
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: lightColorScheme.primary,
         title: KTextStyle(
-            text: "Consultations",
+            text: "Medicines",
             color: lightColorScheme.surface,
             fontWeight: FontWeight.w700,
             size: 20),
       ),
       body: StreamBuilder(
-        stream: ConsultationRepository.getAll(
-            patientId: args?["patient"]?.phone as String),
+        stream: DrugStoreRepository.getByPharmacyId(
+            pharmacyId: userArgs?["user"]?.documentId as String),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final clinicians = snapshot.data!;
-            if (clinicians.isEmpty) {
+            final drugs = snapshot.data!;
+            if (drugs.isEmpty) {
               return buildEmptyList();
             }
 
             return ListView.builder(
-              itemCount: clinicians.length,
+              itemCount: drugs.length,
               itemBuilder: (context, index) {
                 return Card(
                   color: lightColorScheme.onPrimary,
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ListTile(
-                        leading: clinicians[index].isPrescribed == true
-                            ? Icon(Icons.visibility)
-                            : Icon(Icons.visibility_off),
+                        horizontalTitleGap: 20,
+                        minVerticalPadding: 30,
+                        selectedColor: lightColorScheme.secondary,
+                        onTap: () => Navigator.pushNamed(
+                            context, "/pharmacist/drugStore", arguments: {
+                          "drugstore": drugs[index],
+                          "isEditing": true
+                        }),
+                        dense: true,
+                        leading: drugs[index].quantity as int < 1
+                            ? Text("out of stock")
+                            : Text("available"),
                         title: KTextStyle(
-                          text: '${index}',
+                          text: drugs[index].medicineName as String,
                           color: lightColorScheme.scrim,
                           fontWeight: FontWeight.bold,
                           size: 20.0,
                         ),
                         subtitle: KTextStyle(
-                          text: clinicians[index].feelings as String,
+                          text: drugs[index].quantity.toString(),
                           color: lightColorScheme.scrim,
                           size: 14.0,
                         ),
                         iconColor: lightColorScheme.primary,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          //TODO: -
-                          Navigator.pushNamed(context, "/prescribe",
-                              arguments: {
-                                "consultation": clinicians[index],
-                                "patient": args?["patient"]
-                              });
-                        },
-                        child: Text("Prescribe"),
-                      )
                     ],
                   ),
                 );

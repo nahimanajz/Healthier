@@ -21,5 +21,7 @@ void savePatientPrefs(PatientModel patient) async {
 Future<void> saveSignedInUser(UserModel user) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString("signedInUserName", user.email as String);
+  await prefs.setString("signedInUserId", user.documentId as String);
+
   await prefs.setString("signedInUsertype", user.userType as String);
 }

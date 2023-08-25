@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:healthier2/models/user.model.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/widgets/styles/KTextStyle.dart';
 import '../../widgets/styles/gradient.decoration.dart';
@@ -21,12 +23,23 @@ class _PharmacistDashboardScreenState extends State<PharmacistDashboardScreen> {
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-    phoneTxt.text = phoneTxt.text ?? args?["patientId"];
+    final userArgs = args?["user"] as UserModel?;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Welcome Pharmacist"),
         backgroundColor: lightColorScheme.secondary,
         actions: [
+          IconButton(
+            tooltip: "Add medicine",
+            icon: Icon(
+              Icons.add_rounded,
+              color: lightColorScheme.primary,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, "/pharmacist/drugStore");
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.close_rounded),
             onPressed: () {
@@ -43,19 +56,20 @@ class _PharmacistDashboardScreenState extends State<PharmacistDashboardScreen> {
           child: Text("pharmacist"),
         ),
       ),
-      drawer: const PharmacistNavDrawer(),
+      drawer: PharmacistNavDrawer(user: userArgs as UserModel),
     );
   }
 }
 
 class PharmacistNavDrawer extends StatelessWidget {
-  const PharmacistNavDrawer({Key? key}) : super(key: key);
+  final UserModel user;
+  PharmacistNavDrawer({Key? key, required this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: const Color(0xfffffffff),
       surfaceTintColor: const Color(0xfffffffff),
-      width: 200,
+      width: 250,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -86,21 +100,24 @@ class PharmacistNavDrawer extends StatelessWidget {
             thickness: 1.0,
           ),
           ListTile(
-            leading: const Icon(Icons.add_rounded),
+            leading: const FaIcon(FontAwesomeIcons.pills),
             title: const KTextStyle(
               color: Colors.black87,
               size: 16,
-              text: "Medicine",
+              text: "Medicines",
               fontWeight: FontWeight.w400,
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, "/pharmacist/medicines",
+                  arguments: {"user": user});
+            },
           ),
           ListTile(
             leading: const Icon(Icons.wrap_text),
             title: const KTextStyle(
               color: Colors.black87,
               size: 16,
-              text: "Prescriptions",
+              text: "patient",
               fontWeight: FontWeight.w400,
             ),
             onTap: () {
