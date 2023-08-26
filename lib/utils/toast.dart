@@ -9,10 +9,11 @@ void showNotFoundToast(BuildContext context) {
   );
 }
 
-void showSuccessToast(BuildContext context) {
+void showSuccessToast(BuildContext context,
+    {String? msg = "Medicine added succesfully"}) {
   showTopSnackBar(
     Overlay.of(context),
-    const CustomSnackBar.success(message: "Medicine added succesfully"),
+    CustomSnackBar.success(message: msg as String),
   );
 }
 

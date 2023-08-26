@@ -39,7 +39,29 @@ class _DrugStoreScreenState extends State<DrugStoreScreen> {
     await DrugStoreRepository.delete(documentId);
   }
 
-  onUpdate() async {}
+  onUpdate(DrugStoreModel currentMedicine) async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final userId = await prefs.getString("signedInUserId");
+
+      var quantity = _QuantityController.text.isNotEmpty
+          ? int.parse(_QuantityController.text)
+          : currentMedicine.quantity;
+
+      final drugStore = DrugStoreModel(
+          documentId: currentMedicine.documentId,
+          medicineName:
+              _medicineNameController.text ?? currentMedicine.medicineName,
+          quantity: quantity,
+          userId: userId);
+
+      DrugStoreRepository.update(drugStore);
+      showSuccessToast(context, msg: "medicine store is updated succesful");
+    } catch (e) {
+      print(e);
+      showErrorToast(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +82,7 @@ class _DrugStoreScreenState extends State<DrugStoreScreen> {
               : IconButton(
                   onPressed: () {
                     onDelete(drug?.documentId as String);
+                    Navigator.pop(context);
                   },
                   icon: Icon(Icons.delete, color: lightColorScheme.primary),
                 )
@@ -95,8 +118,8 @@ class _DrugStoreScreenState extends State<DrugStoreScreen> {
                   padding: const EdgeInsets.all(10.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      if (isEditing as bool == true) {
-                        onUpdate();
+                      if (isEditing != null) {
+                        onUpdate(drug as DrugStoreModel);
                       } else {
                         onSaveDrug();
                       }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:healthier2/models/patient.model.dart';
 import 'package:healthier2/screens/patient/consulation.screen.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/widgets/styles/KTextStyle.dart';
@@ -23,6 +24,7 @@ class _PatientDashboardScreenState extends State<PatientDashboardScreen> {
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final patientInfo = args?["patientInfo"] as PatientModel?;
 
     return Scaffold(
       appBar: AppBar(
@@ -63,13 +65,14 @@ class _PatientDashboardScreenState extends State<PatientDashboardScreen> {
           child: Text("patients list of medicine"),
         ),
       ),
-      drawer: const PatientNavDrawer(),
+      drawer: PatientNavDrawer(patient: patientInfo),
     );
   }
 }
 
 class PatientNavDrawer extends StatelessWidget {
-  const PatientNavDrawer({Key? key}) : super(key: key);
+  final PatientModel? patient;
+  PatientNavDrawer({Key? key, this.patient}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -124,7 +127,9 @@ class PatientNavDrawer extends StatelessWidget {
               fontWeight: FontWeight.w400,
             ),
             onTap: () {
-              // Navigator.of(context).pushNamed("/patientInfo");
+              print("patient id${patient?.addressCity as String}");
+              Navigator.of(context).pushNamed("/prescriptionsList",
+                  arguments: {"patientId": patient?.phone as String});
             },
           ),
         ],

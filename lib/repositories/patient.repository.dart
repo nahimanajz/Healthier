@@ -28,13 +28,15 @@ class PatientRepository {
     return patient.data();
   }
 
-  static Future<bool> isPatientExist(String email) async {
-    final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
-        .instance
+  static Future<PatientModel?> getByEmail(String email) async {
+    var snapshot = await db
         .collection("patients")
         .where("email", isEqualTo: email)
+        .withConverter(
+            fromFirestore: PatientModel.fromFireStore,
+            toFirestore: (PatientModel patient, _) => patient.toFireStore())
         .get();
-    return snapshot.docs.isNotEmpty;
+    return snapshot.docs.first.data();
   }
 
   static Future<List<Map<String, dynamic>>> getAllPatients() async {

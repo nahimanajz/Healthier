@@ -16,10 +16,8 @@ class MedicinesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: add condition to check whether it is pharmacist or individual patient
     final Map<String, UserModel>? userArgs =
         ModalRoute.of(context)?.settings.arguments as Map<String, UserModel>?;
-    print("user args ${userArgs?.values.first.email}");
 
     return Scaffold(
       appBar: AppBar(

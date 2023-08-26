@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:healthier2/models/medicine.model.dart';
@@ -194,7 +193,7 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
                 medicineId: medicineId);
             showMedicineApprovedToast(context);
           } catch ($e) {
-            showAlert(context, title: "Failed", desc: " Something went wrong");
+            showErrorToast(context);
           }
         },
         style: OutlinedButton.styleFrom(
@@ -234,27 +233,34 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
             size: 14.0,
           ),
         ),
-        OutlinedButton(
-          onPressed: () {
-            String period = checkPeriod(medicine?.timeOfTheDay);
-            ObedienceModel obedience = ObedienceModel(
-                period: period,
-                date: DateTime.now().toIso8601String(),
-                status: "Taken",
-                medicineName: medicine?.name);
-            ObedienceRepository.create(
-                obedience, patientId as String, prescriptionId as String);
-            showMedicineTakenToast(context);
-          },
-          style: OutlinedButton.styleFrom(
-            backgroundColor: lightColorScheme.onPrimary,
-          ),
-          child: KTextStyle(
-            text: 'Take',
-            color: lightColorScheme.primary,
-            size: 14.0,
-          ),
-        ),
+        isAvailable == true
+            ? OutlinedButton(
+                onPressed: () {
+                  String period = checkPeriod(medicine?.timeOfTheDay);
+                  ObedienceModel obedience = ObedienceModel(
+                      period: period,
+                      date: DateTime.now().toIso8601String(),
+                      status: "Taken",
+                      medicineName: medicine?.name);
+                  ObedienceRepository.create(
+                      obedience, patientId as String, prescriptionId as String);
+                  showMedicineTakenToast(context);
+                },
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: lightColorScheme.onPrimary,
+                ),
+                child: KTextStyle(
+                  text: 'Take',
+                  color: lightColorScheme.primary,
+                  size: 14.0,
+                ),
+              )
+            : KTextStyle(
+                text: 'Waiting for approval',
+                color: lightColorScheme.primary,
+                size: 14.0,
+                fontWeight: FontWeight.normal,
+              ),
       ],
     );
   }

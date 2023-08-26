@@ -23,8 +23,6 @@ class _SignInScreen extends State<SignInScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  //final _residencyCityController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -70,11 +68,22 @@ class _SignInScreen extends State<SignInScreen> {
                       email: _emailController.text,
                       password: _passwordController.text);
                   saveSignedInUser(user as UserModel);
+
                   if (user?.userType == "patient") {
-                    return await PatientRepository.isPatientExist(
-                            user.email as String)
-                        ? Navigator.pushNamed(context, "/patient/dashboard")
-                        : Navigator.pushNamed(context, "/patientInfo");
+                    var patientInfo = await PatientRepository.getByEmail(
+                        user.email as String);
+                    String address = patientInfo?.addressCity as String;
+
+                    if (address.isNotEmpty || address != null) {
+                      // ignore: use_build_context_synchronously
+                      return Navigator.pushNamed(context, "/patient/dashboard",
+                          arguments: {
+                            "patientInfo": patientInfo,
+                            "anotherAg": "Another value"
+                          });
+                    } else {
+                      return Navigator.pushNamed(context, "/patientInfo");
+                    }
                   } else if (user?.userType == "clinician") {
                     Navigator.pushNamed(context, "/dashboard");
                   } else if (user.userType == "pharmacist") {
