@@ -69,24 +69,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           SpeedDialChild(
             backgroundColor: lightColorScheme.primary,
             shape: const CircleBorder(),
-            child: Icon(Icons.arrow_forward, color: lightColorScheme.secondary),
-            label: 'Prescribe',
-            onTap: () async {
-              var patient =
-                  await PatientRepository.getPhoneNumber(phoneTxt.text);
-
-              if (patient != null) {
-                savePatientPrefs(patient);
-                Navigator.pushNamed(context, '/prescribe', arguments: {
-                  "patientName": patient.name,
-                  "patientPhoneNumber": patient.phone
-                });
-              }
-            },
-          ),
-          SpeedDialChild(
-            backgroundColor: lightColorScheme.primary,
-            shape: const CircleBorder(),
             child: Icon(Icons.location_city, color: lightColorScheme.secondary),
             label: 'Edit info',
             onTap: () async {

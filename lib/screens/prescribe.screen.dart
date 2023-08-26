@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthier2/models/consultation.model.dart';
 import 'package:healthier2/models/patient.model.dart';
@@ -9,6 +11,7 @@ import 'package:healthier2/repositories/prescription.repository.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/widgets/styles/gradient.decoration.dart';
 import '../utils/data/medicines.dart';
+import '../utils/firebase.instance.dart';
 import '../widgets/custom_textFormField.dart';
 import '../widgets/styles/KTextStyle.dart';
 
@@ -77,6 +80,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                 buildStepperButton(() async {
                   var presciption =
                       PrescriptionModel(illness: _illnessText.text);
+
                   var createdPres = await PrescriptionRepository.create(
                       phone: patientArgs?.phone as String,
                       prescriptionData: presciption);
@@ -101,6 +105,9 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
   }
 
   Flexible buildMedicineInfoForm() {
+    final CollectionReference drugstoresCollection =
+        db.collection('drugstores');
+
     return Flexible(
       flex: 3,
       child: Padding(
@@ -117,7 +124,46 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                 fontWeight: FontWeight.w500,
               ),
               buildTextFormField("Illness", _illnessText),
-              buildTextFormField("Medicine Name", _medicineNameController),
+              Center(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: drugstoresCollection.snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    }
+
+                    final List<QueryDocumentSnapshot> documents =
+                        snapshot.data!.docs;
+                    final List<String> medicineNames = documents
+                        .map((doc) => doc['medicineName'] as String)
+                        .toList();
+
+                    return FormBuilderDropdown(
+                      name: 'medicineName',
+                      decoration: InputDecoration(
+                        labelText: "Select medicine",
+                        filled: true,
+                        fillColor: lightColorScheme.background,
+                        labelStyle: TextStyle(
+                            color: lightColorScheme.scrim,
+                            fontSize: 14,
+                            decorationColor: lightColorScheme.scrim),
+                      ),
+                      items: medicineNames
+                          .map((name) => DropdownMenuItem(
+                                value: name,
+                                child: Text(name),
+                              ))
+                          .toList(),
+                    );
+                  },
+                ),
+              ),
               buildSelectFormField(
                 _medicineTypeController,
                 medicines,
