@@ -38,10 +38,9 @@ class _VerifyPatientRecordsScreenState
   }
 
   handleVerify() {
-    //TODO: handle verify from database then redirect to view list with all related prescriptions
-
     Navigator.pushNamed(context, "/prescriptionsList", arguments: {
       "patientId": _phoneNumberController.text,
+      "isPharmacist": true
     });
   }
 
@@ -61,7 +60,8 @@ class _VerifyPatientRecordsScreenState
   }
 
   Widget buildCard() => Card(
-        margin: const EdgeInsets.only(left: 0.0, top: 70.0, right: 0.0, bottom: 0.0),
+        margin: const EdgeInsets.only(
+            left: 0.0, top: 70.0, right: 0.0, bottom: 0.0),
         elevation: 2,
         color: lightColorScheme.surface,
         shape: const RoundedRectangleBorder(

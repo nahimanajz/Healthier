@@ -27,8 +27,10 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     bool isPharmacist = args?["pharmacyName"] != null ? true : false;
     bool isAccessingReport = args?["isAccessingReport"] != null ? true : false;
+    if (args?["isPharmacist"] != null) {
+      isPharmacist = true;
+    }
 
-    //TODO: add condition to check whether it is pharmacist or individual patient
     return Scaffold(
       appBar: AppBar(
         backgroundColor: lightColorScheme.primary,

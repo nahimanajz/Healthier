@@ -5,6 +5,7 @@ import 'obedience.model.dart';
 
 class MedicineModel {
   String? documentId;
+  String? quantity;
   String? medicineType;
   String? name;
   bool? isAvailable;
@@ -20,6 +21,7 @@ class MedicineModel {
 
   MedicineModel(
       {this.documentId = "",
+      this.quantity,
       this.medicineType,
       this.name,
       this.isAvailable = false,
@@ -41,6 +43,7 @@ class MedicineModel {
       documentId: snapshot.id,
       medicineType: data?["medicineType"],
       name: data?["name"],
+      quantity: data?["quantity"],
       dosage: data?["dosage"],
       duration: data?["duration"],
       timeOfTheDay: data?["timeOfTheDay"],
@@ -58,6 +61,7 @@ class MedicineModel {
   Map<String, dynamic> toFireStore() {
     return {
       "name": name,
+      "quantity": quantity,
       "medicineType": medicineType,
       "dosage": dosage,
       "timeOfTheDay": timeOfTheDay,

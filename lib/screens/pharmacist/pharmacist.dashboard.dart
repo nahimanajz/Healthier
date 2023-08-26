@@ -113,15 +113,15 @@ class PharmacistNavDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.wrap_text),
+            leading: const Icon(Icons.check),
             title: const KTextStyle(
               color: Colors.black87,
               size: 16,
-              text: "patient",
+              text: "Approve",
               fontWeight: FontWeight.w400,
             ),
             onTap: () {
-              // Navigator.of(context).pushNamed("/patientInfo");
+              Navigator.of(context).pushNamed("/verifyPatient");
             },
           ),
         ],

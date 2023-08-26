@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:healthier2/helpers/main.helper.dart';
+import 'package:healthier2/models/drugstore.model.dart';
 import 'package:healthier2/models/medicine.model.dart';
 import 'package:healthier2/models/obedience.model.dart';
+import 'package:healthier2/repositories/drugstore.repository.dart';
 import 'package:healthier2/repositories/medicine.repository.dart';
 import 'package:healthier2/repositories/obedience.repository.dart';
 import 'package:healthier2/repositories/prescription.repository.dart';
+import 'package:healthier2/services/prescription.service.dart';
 import 'package:healthier2/utils/data/medicines.dart';
 import 'package:healthier2/utils/main.util.dart';
 import 'package:healthier2/utils/toast.dart';
@@ -72,6 +76,39 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
           break;
         }
       }
+    }
+  }
+
+  onApprove(
+      {MedicineModel? medicine,
+      String? patientId,
+      String? prescriptionId}) async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final pharmacyId = prefs.getString("signedInUserId");
+      int reducableQuantity = extractAmount(medicine?.quantity as String);
+      DrugStoreModel drug =
+          await DrugStoreRepository.getByPharmacyIdAndDrugName(
+              medicineName: medicine?.name as String,
+              pharmacyId: pharmacyId as String) as DrugStoreModel;
+
+      int stockQuantity = drug.quantity as int;
+      if (stockQuantity < reducableQuantity) {
+        showErrorToast(context,
+            msg: "Oops, you no longer have this medicine in your stock");
+      } else {
+        drug.quantity = stockQuantity - reducableQuantity;
+
+        await DrugStoreRepository.update(drug);
+        await PrescriptionRepository.approveMedicine(
+            patientId: patientId,
+            prescriptionId: prescriptionId,
+            medicineId: medicine?.documentId);
+        showMedicineApprovedToast(context);
+      }
+    } catch (e) {
+      print(e);
+      showErrorToast(context);
     }
   }
 
@@ -186,15 +223,10 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
     if (isPharmacist && isAvailable == false) {
       return OutlinedButton(
         onPressed: () {
-          try {
-            PrescriptionRepository.approveMedicine(
-                patientId: patientId,
-                prescriptionId: prescriptionId,
-                medicineId: medicineId);
-            showMedicineApprovedToast(context);
-          } catch ($e) {
-            showErrorToast(context);
-          }
+          onApprove(
+              medicine: medicine,
+              patientId: patientId,
+              prescriptionId: prescriptionId);
         },
         style: OutlinedButton.styleFrom(
           backgroundColor: lightColorScheme.onPrimary,

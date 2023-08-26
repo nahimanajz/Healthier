@@ -39,6 +39,21 @@ class DrugStoreRepository {
         .update(drug.toFireStore());
   }
 
+  static Future<DrugStoreModel?> getByPharmacyIdAndDrugName(
+      {required String medicineName, required String pharmacyId}) async {
+    var snapshot = db
+        .collection("drugstores")
+        .where("userId", isEqualTo: pharmacyId)
+        .where("medicineName", isEqualTo: medicineName)
+        .limit(1)
+        .withConverter(
+            fromFirestore: DrugStoreModel.fromFireStore,
+            toFirestore: (DrugStoreModel drugstore, _) =>
+                drugstore.toFireStore());
+    final medicine = await snapshot.get();
+    return medicine.docs.first.data();
+  }
+
   static Future<void> delete(String drugId) async {
     await db.collection("drugstores").doc(drugId).delete();
   }
