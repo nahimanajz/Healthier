@@ -1,17 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthier2/models/consultation.model.dart';
 import 'package:healthier2/models/patient.model.dart';
 import 'package:healthier2/models/prescription.model.dart';
 import 'package:healthier2/repositories/consultation.repository.dart';
 import 'package:healthier2/repositories/prescription.repository.dart';
-
 import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/widgets/styles/gradient.decoration.dart';
+
 import '../utils/data/medicines.dart';
-import '../utils/firebase.instance.dart';
 import '../widgets/custom_textFormField.dart';
 import '../widgets/styles/KTextStyle.dart';
 
@@ -28,6 +25,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
   final _medicineNameController = TextEditingController();
   final _illnessText = TextEditingController();
   final _medicineTypeController = TextEditingController();
+  final _medicineQtyController = TextEditingController();
 
   String prescriptionTitle = "Prescribe";
   String districtQuery = "kigali";
@@ -92,6 +90,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                     "prescriptionId": createdPres?.id,
                     "medicineName": _medicineNameController.text,
                     "medicineType": _medicineTypeController.text,
+                    "medicineQuantity": _medicineQtyController.text,
                     "illness": _illnessText.text,
                     "phone": patientArgs?.phone as String
                   });
@@ -105,9 +104,6 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
   }
 
   Flexible buildMedicineInfoForm() {
-    final CollectionReference drugstoresCollection =
-        db.collection('drugstores');
-
     return Flexible(
       flex: 3,
       child: Padding(
@@ -124,53 +120,17 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                 fontWeight: FontWeight.w500,
               ),
               buildTextFormField("Illness", _illnessText),
-              Center(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: drugstoresCollection.snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
-                    }
-
-                    final List<QueryDocumentSnapshot> documents =
-                        snapshot.data!.docs;
-                    final List<String> medicineNames = documents
-                        .map((doc) => doc['medicineName'] as String)
-                        .toList();
-
-                    return FormBuilderDropdown(
-                      name: 'medicineName',
-                      decoration: InputDecoration(
-                        labelText: "Select medicine",
-                        filled: true,
-                        fillColor: lightColorScheme.background,
-                        labelStyle: TextStyle(
-                            color: lightColorScheme.scrim,
-                            fontSize: 14,
-                            decorationColor: lightColorScheme.scrim),
-                      ),
-                      items: medicineNames
-                          .map((name) => DropdownMenuItem(
-                                value: name,
-                                child: Text(name),
-                              ))
-                          .toList(),
-                    );
-                  },
-                ),
-              ),
+              buildMedicineStreamBuilder(onChanged: (value) {
+                _medicineNameController.text = value as String;
+              }),
               buildSelectFormField(
                 _medicineTypeController,
                 medicines,
                 labelText: 'Medicine Type',
                 dialogTitle: ' Medicine type',
                 searchHint: 'Search medicine',
-              )
+              ),
+              buildTextFormField("Quantity", _medicineQtyController),
             ],
           ),
         ),

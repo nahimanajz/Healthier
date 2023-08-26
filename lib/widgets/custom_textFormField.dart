@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:select_form_field/select_form_field.dart';
 
 import '../utils/color_schemes.g.dart';
+import '../utils/firebase.instance.dart';
 
 TextFormField buildTextFormField(String title, TextEditingController controller,
     {TextInputType? keyboardType = TextInputType.text,
@@ -50,5 +53,46 @@ SelectFormField buildSelectFormField(
           decorationColor: lightColorScheme.scrim),
     ),
     onChanged: onChanged,
+  );
+}
+
+StreamBuilder<QuerySnapshot<Object?>> buildMedicineStreamBuilder(
+    {required void Function(String?) onChanged}) {
+  final CollectionReference drugstoresCollection = db.collection('drugstores');
+  return StreamBuilder<QuerySnapshot>(
+    stream: drugstoresCollection.snapshots(),
+    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      }
+
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return CircularProgressIndicator();
+      }
+
+      final List<QueryDocumentSnapshot> documents = snapshot.data!.docs;
+      final List<String> medicineNames =
+          documents.map((doc) => doc['medicineName'] as String).toList();
+
+      return FormBuilderDropdown(
+        onChanged: onChanged,
+        name: 'medicineName',
+        decoration: InputDecoration(
+          labelText: "Select medicine",
+          filled: true,
+          fillColor: lightColorScheme.background,
+          labelStyle: TextStyle(
+              color: lightColorScheme.scrim,
+              fontSize: 14,
+              decorationColor: lightColorScheme.scrim),
+        ),
+        items: medicineNames
+            .map((name) => DropdownMenuItem(
+                  value: name,
+                  child: Text(name),
+                ))
+            .toList(),
+      );
+    },
   );
 }

@@ -30,6 +30,7 @@ class _DosageState extends State<DosageScreen> {
   int repeat = 0;
   final _medicineTxtController = TextEditingController();
   final _medicineTypeController = TextEditingController();
+  final _medicineQtyController = TextEditingController();
 
   setDailyRepeat() {
     setState(() {
@@ -141,11 +142,13 @@ class _DosageState extends State<DosageScreen> {
     if (arguments?["medicineType"] != null) {
       _medicineTxtController.text = arguments?["medicineName"];
       _medicineTypeController.text = arguments?["medicineType"];
+      _medicineQtyController.text = arguments?["medicineQuantity"];
     }
 
     var medicine = MedicineModel(
         medicineType: _medicineTypeController.text,
         name: _medicineTxtController.text,
+        quantity: _medicineQtyController.text,
         dosage: dosage.toString(),
         timeOfTheDay: dailyTimes,
         tobeTakenAt: formatTobeTaken(foodCorrelation),
@@ -405,7 +408,9 @@ class _DosageState extends State<DosageScreen> {
                       )
                     ],
                   ),
-                  buildTextFormField("Medicine Name", _medicineTxtController),
+                  buildMedicineStreamBuilder(onChanged: (value) {
+                    _medicineTxtController.text = value as String;
+                  }),
                   buildSelectFormField(
                     _medicineTypeController,
                     medicines,
@@ -413,6 +418,7 @@ class _DosageState extends State<DosageScreen> {
                     dialogTitle: ' Medicine type',
                     searchHint: 'Search medicine',
                   ),
+                  buildTextFormField("Quantity", _medicineQtyController),
                 ],
               ),
             ),
