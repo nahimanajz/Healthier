@@ -1,10 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:select_form_field/select_form_field.dart';
 
 import '../utils/color_schemes.g.dart';
 import '../utils/firebase.instance.dart';
+
+InputDecoration kInputDecoration(String title) {
+  return InputDecoration(
+    filled: true,
+    fillColor: lightColorScheme.background,
+    labelText: title,
+    labelStyle: TextStyle(
+        color: lightColorScheme.scrim,
+        fontSize: 14,
+        decorationColor: lightColorScheme.scrim),
+  );
+}
 
 TextFormField buildTextFormField(String title, TextEditingController controller,
     {TextInputType? keyboardType = TextInputType.text,
@@ -15,16 +28,24 @@ TextFormField buildTextFormField(String title, TextEditingController controller,
     controller: controller,
     onChanged: onChanged,
     obscureText: isHidden,
-    decoration: InputDecoration(
-      filled: true,
-      fillColor: lightColorScheme.background,
-      labelText: title,
-      labelStyle: TextStyle(
-          color: lightColorScheme.scrim,
-          fontSize: 14,
-          decorationColor: lightColorScheme.scrim),
-    ),
+    decoration: kInputDecoration(title),
   );
+}
+
+TextFormField buildPhoneField(TextEditingController controller) {
+  return TextFormField(
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(10),
+      ],
+      keyboardType: TextInputType.phone,
+      controller: controller,
+      validator: (value) {
+        if (value == null || value.isEmpty || value.length != 10) {
+          return 'Phone must be 10 digits';
+        }
+        return null;
+      },
+      decoration: kInputDecoration("Phone Number"));
 }
 
 SelectFormField buildSelectFormField(

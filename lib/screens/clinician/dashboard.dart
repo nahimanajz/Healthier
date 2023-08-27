@@ -15,6 +15,8 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final phoneTxt = TextEditingController();
+  final _formKeyThree = GlobalKey<FormState>();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -40,14 +42,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ],
       ),
       body: Container(
-        decoration: gradientDecoration,
-        padding: const EdgeInsets.all(20),
-        child: Center(
-          child: buildTextFormField("Phone Number", phoneTxt),
-        ),
-      ),
+          decoration: gradientDecoration,
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _formKeyThree,
+            child: Center(
+              child: buildPhoneField(phoneTxt),
+            ),
+          )),
       drawer: const ClinicianNavDrawer(),
       floatingActionButton: SpeedDial(
+        onOpen: () {
+          _formKeyThree.currentState!.validate();
+        },
         children: [
           SpeedDialChild(
             backgroundColor: lightColorScheme.primary,
@@ -162,18 +169,6 @@ class ClinicianNavDrawer extends StatelessWidget {
               fontWeight: FontWeight.w400,
             ),
             onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.wrap_text),
-            title: const KTextStyle(
-              color: Colors.black87,
-              size: 16,
-              text: "Prescribe",
-              fontWeight: FontWeight.w400,
-            ),
-            onTap: () {
-              Navigator.of(context).pushNamed("/patientInfo");
-            },
           ),
         ],
       ),

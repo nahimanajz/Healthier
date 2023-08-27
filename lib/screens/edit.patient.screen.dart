@@ -26,6 +26,7 @@ class _EditInfoScreenState extends State<EditPatientScreen> {
   String prescriptionTitle = "Patient Address";
   String districtQuery = "";
   int residenceTemp = 0;
+  final _formKeyTwo = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -91,22 +92,24 @@ class _EditInfoScreenState extends State<EditPatientScreen> {
                     size: 16),
               ),
               buildPatientAddressForm(),
-              buildStepperButton(() async {
-                try {
-                  var patient = PatientModel(
-                    addressCity: _residencyCityController.text ??
-                        currentPatient?.addressCity as String,
-                    name: _fullNamesController.text ??
-                        currentPatient?.name as String,
-                    phone: _phoneNumberController.text ??
-                        currentPatient?.phone as String,
-                    temp: residenceTemp.toInt() ?? currentPatient?.temp,
-                  );
-                  await PatientRepository.update(patient);
-                  Navigator.pop(context);
-                } catch (e) {
-                  print(e);
-                  showErrorToast(context);
+              buildSubmitButton(() async {
+                if (_formKeyTwo.currentState!.validate()) {
+                  try {
+                    var patient = PatientModel(
+                      addressCity: _residencyCityController.text ??
+                          currentPatient?.addressCity as String,
+                      name: _fullNamesController.text ??
+                          currentPatient?.name as String,
+                      phone: _phoneNumberController.text ??
+                          currentPatient?.phone as String,
+                      temp: residenceTemp.toInt() ?? currentPatient?.temp,
+                    );
+                    await PatientRepository.update(patient);
+                    Navigator.pop(context);
+                  } catch (e) {
+                    print(e);
+                    showErrorToast(context);
+                  }
                 }
               })
             ],
@@ -119,38 +122,40 @@ class _EditInfoScreenState extends State<EditPatientScreen> {
   Flexible buildPatientAddressForm() {
     return Flexible(
       flex: 3,
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            KTextStyle(
-              text: prescriptionTitle,
-              color: lightColorScheme.onSurface,
-              size: 16.0,
-              fontWeight: FontWeight.w500,
-            ),
-            buildTextFormField("Full Names", _fullNamesController),
-            buildTextFormField("Phone Number", _phoneNumberController,
-                keyboardType: TextInputType.phone),
-            buildTextFormField("Residence District", _residencyCityController,
-                onChanged: (value) async {
-              int temp = await CountryService.getTemperature(city: value);
-              if (temp == 0) {
-                temp = await CountryService.getTemperature();
-              }
-              print("retrieved temp===>$temp");
-              setState(() {
-                residenceTemp = temp;
-              });
-            }),
-          ],
+      child: Form(
+        key: _formKeyTwo,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              KTextStyle(
+                text: prescriptionTitle,
+                color: lightColorScheme.onSurface,
+                size: 16.0,
+                fontWeight: FontWeight.w500,
+              ),
+              buildTextFormField("Full Names", _fullNamesController),
+              buildPhoneField(_phoneNumberController),
+              buildTextFormField("Residence District", _residencyCityController,
+                  onChanged: (value) async {
+                int temp = await CountryService.getTemperature(city: value);
+                if (temp == 0) {
+                  temp = await CountryService.getTemperature();
+                }
+                print("retrieved temp===>$temp");
+                setState(() {
+                  residenceTemp = temp;
+                });
+              }),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Flexible buildStepperButton(Function() onPressed, {String title = 'Update'}) {
+  Flexible buildSubmitButton(Function() onPressed, {String title = 'Update'}) {
     return Flexible(
       flex: 1,
       child: Padding(
