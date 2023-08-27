@@ -8,11 +8,9 @@ import 'package:healthier2/repositories/drugstore.repository.dart';
 import 'package:healthier2/repositories/medicine.repository.dart';
 import 'package:healthier2/repositories/obedience.repository.dart';
 import 'package:healthier2/repositories/prescription.repository.dart';
-import 'package:healthier2/services/prescription.service.dart';
 import 'package:healthier2/utils/data/medicines.dart';
 import 'package:healthier2/utils/main.util.dart';
 import 'package:healthier2/utils/toast.dart';
-import 'package:healthier2/widgets/alert.dart';
 import 'package:healthier2/widgets/empty.list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,51 +30,6 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
   @override
   void initState() {
     super.initState();
-
-    // ---->
-    //TODO: check this precription for delayed and call method to set it to delayed missed
-    //doInvestigateDelays();
-    // and show notification about "we have update this medicine to be delayed to be taken"
-  }
-
-  // this method is for investing delays that a patient might have donw
-  doInvestigateDelays() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? prescriptionId = prefs.getString("NofitiablePrescriptionId");
-    String? patientId = prefs.getString("NofitiablePatientId");
-
-    //
-    Stream<List<MedicineModel>> medStream = MedicineRepository.getAll(
-        phone: patientId as String, prescriptionId: prescriptionId as String);
-    List<MedicineModel> medicinesList = await medStream
-        .asyncExpand((list) => Stream.fromIterable(list))
-        .toList();
-    DateTime startDate;
-    DateTime endDate;
-    DateTime currentTime = DateTime.now();
-
-    for (MedicineModel element in medicinesList) {
-      startDate = DateTime.parse(element.date as String);
-      endDate = DateTime.parse(element.endDate as String);
-
-      if (currentTime.isAfter(startDate) && currentTime.isBefore(endDate)) {
-        String status = checkStatus(element.timeOfTheDay);
-        String period = checkPeriod(element.timeOfTheDay);
-        if (period.isNotEmpty && period != "on time") {
-          ObedienceModel obedience = ObedienceModel(
-              period: period,
-              status: status,
-              date: currentTime.toIso8601String(),
-              medicineName: element.name);
-
-          ObedienceRepository.createMissedDoses(
-              obedience, patientId, prescriptionId);
-          prefs.setBool("hasToNotify", true);
-
-          break;
-        }
-      }
-    }
   }
 
   onApprove(

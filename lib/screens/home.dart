@@ -23,9 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     getSignedUser(context);
-    initializeService();
-    FlutterBackgroundService().invoke("setAsBackground");
-    FlutterBackgroundService().invoke("setAsForeground");
   }
 
   @override

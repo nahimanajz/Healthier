@@ -1,4 +1,3 @@
-
 DateTime calculateEndDate(DateTime startDate, int duration, String unit) {
   switch (unit) {
     case 'days':
@@ -14,6 +13,7 @@ DateTime calculateEndDate(DateTime startDate, int duration, String unit) {
 }
 
 String checkPeriod(timeOfTheDay) {
+  timeOfTheDay.toString().toLowerCase();
   DateTime currentTime = DateTime.now();
   String period = "morning";
   if (timeOfTheDay.contains('morning') && currentTime.hour < 12) {
@@ -35,6 +35,7 @@ String checkPeriod(timeOfTheDay) {
 }
 
 String checkStatus(timeOfTheDay) {
+  timeOfTheDay.toString().toLowerCase();
   DateTime currentTime = DateTime.now();
   String status = "";
 

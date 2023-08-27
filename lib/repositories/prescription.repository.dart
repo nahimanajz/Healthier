@@ -1,4 +1,4 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:healthier2/utils/firebase.instance.dart';
 import '../models/prescription.model.dart';
 
@@ -47,6 +47,20 @@ final class PrescriptionRepository {
             .toList());
 
     return docsSnapshots;
+  }
+
+  static Future<List<PrescriptionModel>> getAllForNotification(
+      {String? patientId}) async {
+    var docsSnapshots = await db
+        .collection("patients")
+        .doc(patientId)
+        .collection("prescriptions")
+        .get();
+
+    List<PrescriptionModel> prescriptions = docsSnapshots.docs
+        .map((doc) => PrescriptionModel.fromFireStore(doc, null))
+        .toList();
+    return prescriptions;
   }
 
   static Future<String> approveMedicine(

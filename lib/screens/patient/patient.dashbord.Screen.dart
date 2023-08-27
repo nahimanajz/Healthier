@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:healthier2/models/patient.model.dart';
-import 'package:healthier2/screens/patient/consulation.screen.dart';
+import 'package:healthier2/utils/background_service.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/widgets/styles/KTextStyle.dart';
 import '../../widgets/styles/gradient.decoration.dart';
@@ -18,6 +19,10 @@ class _PatientDashboardScreenState extends State<PatientDashboardScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    //TODO: run background service, if notification doesn't work then add button to record, missed, delayed dosse
+    initializeService();
+    FlutterBackgroundService().invoke("setAsBackground");
+    FlutterBackgroundService().invoke("setAsForeground");
   }
 
   @override
@@ -107,16 +112,6 @@ class PatientNavDrawer extends StatelessWidget {
         children: [
           const Divider(
             thickness: 1.0,
-          ),
-          ListTile(
-            leading: const Icon(Icons.add_rounded),
-            title: const KTextStyle(
-              color: Colors.black87,
-              size: 16,
-              text: "Consultation",
-              fontWeight: FontWeight.w400,
-            ),
-            onTap: () {},
           ),
           ListTile(
             leading: const Icon(Icons.wrap_text),

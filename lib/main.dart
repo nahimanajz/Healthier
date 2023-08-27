@@ -22,21 +22,12 @@ import 'package:healthier2/screens/signin.screen.dart';
 import 'package:healthier2/screens/signup.screen.dart';
 import 'package:healthier2/screens/verify.patient.records.dart';
 import 'package:healthier2/screens/view.prescription.dart';
-import 'package:healthier2/utils/local.notification.dart';
-
 import 'utils/color_schemes.g.dart';
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  LocalNotification.initialize(flutterLocalNotificationsPlugin);
-  LocalNotification.showNotification(
-      body: "Reminder",
-      title: "Expect reminder notification",
-      fln: flutterLocalNotificationsPlugin);
+
   runApp(
     MaterialApp(
       routes: {
