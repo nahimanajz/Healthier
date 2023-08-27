@@ -153,7 +153,8 @@ class _DosageState extends State<DosageScreen> {
         timeOfTheDay: dailyTimes,
         tobeTakenAt: formatTobeTaken(foodCorrelation),
         repeat: repeatType,
-        endDate: calculateEndDate(DateTime.now(), duration, repeatType));
+        endDate: calculateEndDate(DateTime.now(), duration, repeatType)
+            .toIso8601String());
 
     //MedicineR
     MedicineRepository.create(

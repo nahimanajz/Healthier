@@ -1,4 +1,3 @@
-
 import 'package:healthier2/models/medicine.model.dart';
 import 'package:healthier2/utils/firebase.instance.dart';
 
@@ -35,5 +34,21 @@ class MedicineRepository {
             .map((document) => MedicineModel.fromFireStore(document, null))
             .toList());
     return docsSnapshot;
+  }
+
+  static Future<List<MedicineModel>> getAllForNotification(
+      {required String phone, required prescriptionId}) async {
+    var docsSnapshot = await db
+        .collection("patients")
+        .doc(phone)
+        .collection("prescriptions")
+        .doc(prescriptionId)
+        .collection("medicines")
+        .get();
+
+    List<MedicineModel> medicines = docsSnapshot.docs
+        .map((doc) => MedicineModel.fromFireStore(doc, null))
+        .toList();
+    return medicines;
   }
 }

@@ -15,8 +15,8 @@ class MedicineModel {
   String? timeOfTheDay;
   String? tobeTakenAt;
   String? repeat;
-  DateTime date = DateTime.now();
-  DateTime? endDate;
+  String? date;
+  String? endDate;
   List<ObedienceModel>? obediences;
 
   MedicineModel(
@@ -32,6 +32,7 @@ class MedicineModel {
       this.tobeTakenAt,
       this.repeat,
       this.obediences,
+      this.date,
       this.endDate});
 
   factory MedicineModel.fromFireStore(
@@ -51,7 +52,8 @@ class MedicineModel {
       repeat: data?["repeat"],
       isAvailable: data?["isAvailable"],
       lostCounts: data?["lostCounts"],
-      //endDate: data?["endDate"],
+      date: data?["date"],
+      endDate: data?["endDate"],
       obediences: data?["obediences"] is Iterable
           ? List.from(data?["obediences"])
           : null,
@@ -68,9 +70,10 @@ class MedicineModel {
       "tobeTakenAt": tobeTakenAt,
       "repeat": repeat,
       "duration": duration,
-      "date": DateFormat('yyyy-MM-dd').format(date),
+      "date": DateFormat('yyyy-MM-dd').format(DateTime.parse(date as String)),
       "lostCounts": lostCounts,
-      "endDate": endDate,
+      "endDate":
+          DateFormat('yyyy-MM-dd').format(DateTime.parse(endDate as String)),
       "isAvailable": isAvailable
     };
   }

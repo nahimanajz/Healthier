@@ -33,26 +33,3 @@ String checkPeriod(timeOfTheDay) {
   }
   return period;
 }
-
-String checkStatus(timeOfTheDay) {
-  timeOfTheDay.toString().toLowerCase();
-  DateTime currentTime = DateTime.now();
-  String status = "";
-
-  if (timeOfTheDay.contains('morning') && currentTime.hour < 13) {
-    status = "delayed in morning";
-  } else if (timeOfTheDay.contains('noon') &&
-      currentTime.hour > 13 &&
-      currentTime.hour < 18) {
-    status = "delayed at noon ";
-  } else if (timeOfTheDay.contains('evening') &&
-      currentTime.hour > 18 &&
-      currentTime.hour < 21) {
-    status = "delayed during evening";
-  } else if (timeOfTheDay.contains('night') &&
-      currentTime.hour > 21 &&
-      currentTime.hour < 23) {
-    status = "delayed night";
-  }
-  return status;
-}

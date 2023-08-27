@@ -1,13 +1,16 @@
 import 'dart:ui';
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:healthier2/models/medicine.model.dart';
 import 'package:healthier2/models/obedience.model.dart';
+import 'package:healthier2/models/prescription.model.dart';
 
 import 'package:healthier2/repositories/obedience.repository.dart';
 import 'package:healthier2/services/notification.service.dart';
+import 'package:healthier2/utils/firebase.instance.dart';
 import 'package:healthier2/utils/main.util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -53,26 +56,33 @@ void onStart(ServiceInstance service) async {
     service.stopSelf();
   });
 
-  Timer.periodic(const Duration(seconds: 1), (timer) async {
-    String petientId = await preferences.getString("signedInUserId") as String;
-    if (service is AndroidServiceInstance) {
-      service.setForegroundNotificationInfo(
-        title: "Hi",
-        content: "you have  prescriptions ",
-      );
-      // finally notify user
-    }
-    var prescriptions = await NotificationService.getNotifiableMedicines();
-    print("testing");
+  Timer.periodic(const Duration(hours: 4), (timer) async {
+    // change to minute to test functionality
+    try {
+      await Firebase.initializeApp();
+      String patientId =
+          await preferences.getString("signedInUserId") as String;
 
-    for (var prescription in prescriptions) {
-      if (prescription.medicines != null) {
-        for (var medicine in prescription.medicines as List<MedicineModel>) {
-          //medicine
+      var prescriptions =
+          await NotificationService.getNotifiablePrescriptions();
+      if (service is AndroidServiceInstance) {
+        service.setForegroundNotificationInfo(
+          title: "Hi",
+          content: "you have  prescriptions ${prescriptions.length} ",
+        );
+        // finally notify user
+      }
+
+      for (var prescription in prescriptions) {
+        var medicines = await NotificationService.getNotifiableMedicines(
+            prescription.documentId as String);
+        for (var medicine in medicines) {
           setObedience(
-              medicine, petientId, prescription.documentId as String, service);
+              medicine, patientId, prescription.documentId as String, service);
         }
       }
+    } catch (e) {
+      print("errro is this one $e");
     }
   });
 }
@@ -87,9 +97,9 @@ setObedience(MedicineModel medicine, String patientId, String prescriptionId,
   endDate = DateTime.parse(medicine.endDate as String);
 
   if (currentTime.isAfter(startDate) && currentTime.isBefore(endDate)) {
-    String status = checkStatus(medicine.timeOfTheDay);
     String period = checkPeriod(medicine.timeOfTheDay);
-    print("status==>${status}");
+    String status = "Missed " + checkPeriod(medicine.timeOfTheDay) + " Dose";
+    // TODO | FIXME: check if medicine is not yet taken
     ObedienceModel obedience = ObedienceModel(
         period: period,
         status: status,
@@ -102,7 +112,7 @@ setObedience(MedicineModel medicine, String patientId, String prescriptionId,
     if (service is AndroidServiceInstance) {
       service.setForegroundNotificationInfo(
         title: "Hi there",
-        content: "Get healthy by taking your medical dose",
+        content: "Get healthy by taking your ${period} medical dose",
       );
     }
   }
