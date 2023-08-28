@@ -99,29 +99,35 @@ setObedience(MedicineModel medicine, String patientId, String prescriptionId,
   if (currentTime.isAfter(startDate) && currentTime.isBefore(endDate)) {
     String period = checkPeriod(medicine.timeOfTheDay);
     String status = "Missed " + checkPeriod(medicine.timeOfTheDay) + " Dose";
-    // TODO | FIXME: check if medicine is not yet taken
-    print(
-        "start date ======> ${startDate.toIso8601String()} endDate =======> ${endDate.toIso8601String()}========>${currentTime.toIso8601String()}");
-    ObedienceModel obedience = ObedienceModel(
-        period: period,
-        status: status,
-        date: currentTime.toString(),
-        medicineName: medicine.name);
 
-    await NotificationService.createMissedDoses(
-        obedience: obedience,
+    bool isNotified = await NotificationService.isAlreadyNotified(
         patientEmail: patientId,
-        prescriptionId: prescriptionId);
+        prescriptionId: prescriptionId,
+        period: period);
 
-    print("patient id $patientId,  and prescription id $prescriptionId");
+    if (isNotified == true) {
+      ObedienceModel obedience = ObedienceModel(
+          period: period,
+          status: status,
+          date: currentTime.toString(),
+          medicineName: medicine.name);
 
-    // finally notify user
-    if (service is AndroidServiceInstance) {
-      service.setForegroundNotificationInfo(
-        title: "Hi there",
-        content:
-            "Get healthy by taking your ${medicine.name} in ${period} medical dose",
-      );
+      await NotificationService.createMissedDoses(
+          obedience: obedience,
+          patientEmail: patientId,
+          prescriptionId: prescriptionId);
+
+      print("patient id $patientId,  and prescription id $prescriptionId");
+
+      if (service is AndroidServiceInstance) {
+        service.setForegroundNotificationInfo(
+          title: "Hi there",
+          content:
+              "Get healthy by taking your ${medicine.name} in ${period} medical dose",
+        );
+      }
+    } else {
+      print("it is already notified");
     }
   }
 }

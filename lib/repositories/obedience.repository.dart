@@ -1,5 +1,6 @@
 import 'package:healthier2/models/obedience.model.dart';
 import 'package:healthier2/utils/firebase.instance.dart';
+import 'package:intl/intl.dart';
 
 class ObedienceRepository {
   static Future<void> create(
@@ -41,5 +42,22 @@ class ObedienceRepository {
             .toList());
 
     return records;
+  }
+
+  static Future<bool> isAlreadyNotified(
+      {required String patientId,
+      required String prescriptionId,
+      required String period}) async {
+    final records = await db
+        .collection("/patients")
+        .doc(patientId)
+        .collection("prescriptions")
+        .doc(prescriptionId)
+        .collection("obediences")
+        .where("date",
+            isEqualTo: DateFormat('yyyy-MM-dd').format(DateTime.now()))
+        .where("period", isEqualTo: period)
+        .get();
+    return records.docs.isEmpty;
   }
 }

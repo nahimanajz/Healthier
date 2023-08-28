@@ -50,4 +50,17 @@ class NotificationService {
     await ObedienceRepository.createMissedDoses(
         obedience, patient?.phone as String, prescriptionId);
   }
+
+  static Future<bool> isAlreadyNotified(
+      {required String patientEmail,
+      required String prescriptionId,
+      required String period}) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var patient = await PatientRepository.getByEmail(patientEmail);
+
+    return await ObedienceRepository.isAlreadyNotified(
+        patientId: patient?.phone as String,
+        prescriptionId: prescriptionId,
+        period: period);
+  }
 }
