@@ -56,7 +56,7 @@ void onStart(ServiceInstance service) async {
     service.stopSelf();
   });
 
-  Timer.periodic(const Duration(hours: 4), (timer) async {
+  Timer.periodic(const Duration(seconds: 15), (timer) async {
     // change to minute to test functionality
     try {
       await Firebase.initializeApp();
@@ -88,7 +88,7 @@ void onStart(ServiceInstance service) async {
 }
 
 setObedience(MedicineModel medicine, String patientId, String prescriptionId,
-    ServiceInstance service) {
+    ServiceInstance service) async {
   DateTime startDate;
   DateTime endDate;
   DateTime currentTime = DateTime.now();
@@ -100,19 +100,27 @@ setObedience(MedicineModel medicine, String patientId, String prescriptionId,
     String period = checkPeriod(medicine.timeOfTheDay);
     String status = "Missed " + checkPeriod(medicine.timeOfTheDay) + " Dose";
     // TODO | FIXME: check if medicine is not yet taken
+    print(
+        "start date ======> ${startDate.toIso8601String()} endDate =======> ${endDate.toIso8601String()}========>${currentTime.toIso8601String()}");
     ObedienceModel obedience = ObedienceModel(
         period: period,
         status: status,
-        date: currentTime.toIso8601String(),
+        date: currentTime.toString(),
         medicineName: medicine.name);
 
-    ObedienceRepository.createMissedDoses(obedience, patientId, prescriptionId);
+    await NotificationService.createMissedDoses(
+        obedience: obedience,
+        patientEmail: patientId,
+        prescriptionId: prescriptionId);
+
+    print("patient id $patientId,  and prescription id $prescriptionId");
 
     // finally notify user
     if (service is AndroidServiceInstance) {
       service.setForegroundNotificationInfo(
         title: "Hi there",
-        content: "Get healthy by taking your ${period} medical dose",
+        content:
+            "Get healthy by taking your ${medicine.name} in ${period} medical dose",
       );
     }
   }

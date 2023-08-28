@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:healthier2/models/medicine.model.dart';
+import 'package:healthier2/models/obedience.model.dart';
 import 'package:healthier2/models/prescription.model.dart';
 import 'package:healthier2/repositories/medicine.repository.dart';
+import 'package:healthier2/repositories/obedience.repository.dart';
 import 'package:healthier2/repositories/patient.repository.dart';
 import 'package:healthier2/repositories/prescription.repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,5 +38,16 @@ class NotificationService {
 
     return await MedicineRepository.getAllForNotification(
         phone: patient?.phone as String, prescriptionId: prescriptionId);
+  }
+
+  static Future<void> createMissedDoses(
+      {required ObedienceModel obedience,
+      required String patientEmail,
+      required String prescriptionId}) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var patient = await PatientRepository.getByEmail(patientEmail);
+
+    await ObedienceRepository.createMissedDoses(
+        obedience, patient?.phone as String, prescriptionId);
   }
 }

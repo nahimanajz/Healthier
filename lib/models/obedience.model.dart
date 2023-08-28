@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class ObedienceModel {
   String? status;
@@ -25,7 +26,8 @@ class ObedienceModel {
     return {
       if (status != null) "status": status,
       if (medicineName != null) "medicineName": medicineName,
-      if (date != null) "date": date,
+      if (date != null)
+        "date": DateFormat('yyyy-MM-dd').format(DateTime.parse(date as String)),
       if (period != null) "period": period,
     };
   }
