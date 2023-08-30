@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:healthier2/screens/clinician/comment.table.dart';
 import 'package:healthier2/screens/clinician/consultations.screen.dart';
 import 'package:healthier2/screens/clinician/dashboard.dart';
@@ -8,13 +7,13 @@ import 'package:healthier2/screens/clinician/obedience.table.dart';
 import 'package:healthier2/screens/clinician/report.screen.dart';
 import 'package:healthier2/screens/dosage.screen.dart';
 import 'package:healthier2/screens/edit.patient.screen.dart';
+import 'package:healthier2/screens/patient.screen.dart';
 import 'package:healthier2/screens/patient/consulation.screen.dart';
 import 'package:healthier2/screens/patient/patient.dashbord.Screen.dart';
+import 'package:healthier2/screens/pharmacist/drugstore.screen.dart';
 import 'package:healthier2/screens/pharmacist/medicines.screen.dart';
 import 'package:healthier2/screens/pharmacist/pharmacist.dashboard.dart';
-import 'package:healthier2/screens/pharmacist/drugstore.screen.dart';
 import 'package:healthier2/screens/pharmacy.detail.screen.dart';
-import 'package:healthier2/screens/patient.screen.dart';
 import 'package:healthier2/screens/prescribe.screen.dart';
 import 'package:healthier2/screens/prescriptions.list.screen.dart';
 import 'package:healthier2/screens/rate.medicine.screen.dart';
@@ -22,6 +21,7 @@ import 'package:healthier2/screens/signin.screen.dart';
 import 'package:healthier2/screens/signup.screen.dart';
 import 'package:healthier2/screens/verify.patient.records.dart';
 import 'package:healthier2/screens/view.prescription.dart';
+
 import 'utils/color_schemes.g.dart';
 
 void main() async {
@@ -31,7 +31,7 @@ void main() async {
   runApp(
     MaterialApp(
       routes: {
-        //'/': (context) => const HomeScreen(),
+        //'/': (context) => HomeScreen(),
         '/': (context) => const SignupScreen(),
         '/signin': (context) => const SignInScreen(),
         '/pharmacist/dashboard': (context) => const PharmacistDashboardScreen(),

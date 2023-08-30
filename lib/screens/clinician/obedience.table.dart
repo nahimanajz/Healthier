@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthier2/models/obedience.model.dart';
+import 'package:healthier2/services/excel_report.service.dart';
 import 'package:healthier2/services/report.service.dart';
 
 class ObedienceTable extends StatelessWidget {
@@ -30,6 +31,14 @@ class ObedienceTable extends StatelessWidget {
             final dataList = snapshot.data!;
 
             return PaginatedDataTable(
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    ExcelReportService.createObedienceReport(dataList);
+                  },
+                  child: const Icon(Icons.receipt),
+                ),
+              ],
               header: const Text('Obedience '),
               columns: const [
                 DataColumn(label: Text("date")),

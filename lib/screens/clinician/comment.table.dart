@@ -3,6 +3,8 @@ import 'package:healthier2/models/comment.model.dart';
 import 'package:healthier2/services/report.service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../services/excel_report.service.dart';
+
 class CommentsTable extends StatefulWidget {
   const CommentsTable({super.key});
 
@@ -49,6 +51,15 @@ class _CommentsTableState extends State<CommentsTable> {
             final dataList = snapshot.data!;
 
             return PaginatedDataTable(
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    ExcelReportService.createCommentsReport(
+                        dataList); //createObedienceReport(dataList);
+                  },
+                  child: const Icon(Icons.print),
+                ),
+              ],
               header: Text('Bits of feedback  ${patientInfo ?? " "} '),
               columns: const [
                 DataColumn(label: Text("Medicine")),
