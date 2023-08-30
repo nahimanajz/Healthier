@@ -24,10 +24,8 @@ class PrescriptionService {
         throw Exception("Oops, you no longer have this medicine in your stock");
       }
 
-      // await DrugStoreRepository.deductMedicine(
-      //     deductableQuantity: extractAmount(medQuantity),
-      //     pharmacyId: pharmacyId as String,
-      //     medicineName: medicineName);
+      drug.quantity = stockQuantity - reducableQuantity;
+      await DrugStoreRepository.update(drug);
     } catch (e) {
       print(e);
       throw Exception("You must be having low stock $e");

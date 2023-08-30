@@ -1,16 +1,13 @@
-import 'dart:ui';
 import 'dart:async';
+import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:healthier2/models/medicine.model.dart';
 import 'package:healthier2/models/obedience.model.dart';
-import 'package:healthier2/models/prescription.model.dart';
-
-import 'package:healthier2/repositories/obedience.repository.dart';
 import 'package:healthier2/services/notification.service.dart';
-import 'package:healthier2/utils/firebase.instance.dart';
 import 'package:healthier2/utils/main.util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -127,7 +124,7 @@ setObedience(MedicineModel medicine, String patientId, String prescriptionId,
         );
       }
     } else {
-      print("it is already notified");
+      debugPrint("it is already notified");
     }
   }
 }

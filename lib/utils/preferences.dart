@@ -12,7 +12,7 @@ Future<SharedPreferences> savePrescriptionPrefs(
 
 void savePatientPrefs(PatientModel patient) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-
+  await prefs.setString("reportedPhoneNumber", patient.phone as String);
   String info =
       "${patient.name as String} from ${patient.addressCity as String}   ${patient.temp as int} °C";
   await prefs.setString("patientInfo", info);

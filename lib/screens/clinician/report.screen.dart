@@ -3,6 +3,7 @@ import 'package:healthier2/services/report.service.dart';
 import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/utils/toast.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum ReportType {
   feedback,
@@ -20,9 +21,7 @@ class _ReportScreenState extends State<ReportScreen> {
   ReportType? _report;
   final startDateCtr = TextEditingController();
   final endDateCtr = TextEditingController();
-  final patientIdCtr = TextEditingController();
 
-  final _reportService = ReportService();
   bool showFeedbackReport = false;
 
   @override
@@ -140,19 +139,6 @@ class _ReportScreenState extends State<ReportScreen> {
         const SizedBox(
           height: 10,
         ),
-        TextField(
-          keyboardType: TextInputType.phone,
-          controller: patientIdCtr,
-          decoration: InputDecoration(
-            icon: Icon(
-              Icons.phone_android_outlined,
-              color: lightColorScheme.primary,
-            ),
-            border: const OutlineInputBorder(),
-            hintText: ' Phone',
-            labelText: "Phone Number ",
-          ),
-        ),
         const SizedBox(
           height: 10,
         ),
@@ -160,14 +146,19 @@ class _ReportScreenState extends State<ReportScreen> {
           onPressed: () async {
             if (startDateCtr.text.isEmpty ||
                 endDateCtr.text.isEmpty ||
-                prescriptionId.isEmpty ||
-                patientIdCtr.text.isEmpty) {
+                prescriptionId.isEmpty) {
               showErroroast(context);
             } else {
+              //get phone number
+
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              var phoneNumber = prefs.getString("reportedPhoneNumber");
+
               var arguments = {
                 "startDate": startDateCtr.text,
                 "endDate": endDateCtr.text,
-                "phoneNumber": patientIdCtr.text,
+                "phoneNumber": phoneNumber as String,
                 "prescriptionId": prescriptionId
               };
 

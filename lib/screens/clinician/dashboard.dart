@@ -5,6 +5,7 @@ import 'package:healthier2/utils/color_schemes.g.dart';
 import 'package:healthier2/utils/preferences.dart';
 import 'package:healthier2/widgets/custom_textFormField.dart';
 import 'package:healthier2/widgets/styles/KTextStyle.dart';
+
 import '../../widgets/styles/gradient.decoration.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -64,8 +65,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             onTap: () async {
               var patient =
                   await PatientRepository.getPhoneNumber(phoneTxt.text);
-
               if (patient?.phone != null) {
+                savePatientPrefs(patient!);
                 Navigator.pushNamed(context, '/prescriptionsList', arguments: {
                   "patientId": patient?.phone,
                   "isAccessingReport": true
