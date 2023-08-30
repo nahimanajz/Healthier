@@ -29,7 +29,9 @@ class ObedienceRepository {
 
   static Stream<List<ObedienceModel>> getObedience(
       {String patientId = "08",
-      String prescriptionId = "31G30nR7Qwy4r9aavhZn"}) {
+      String prescriptionId = "31G30nR7Qwy4r9aavhZn",
+      String? startDate,
+      String? endDate}) {
     final records = db
         .collection("/patients")
         .doc(patientId)

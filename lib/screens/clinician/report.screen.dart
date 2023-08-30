@@ -19,16 +19,13 @@ class ReportScreen extends StatefulWidget {
 
 class _ReportScreenState extends State<ReportScreen> {
   ReportType? _report;
-  final startDateCtr = TextEditingController();
-  final endDateCtr = TextEditingController();
 
   bool showFeedbackReport = false;
 
   @override
   void initState() {
     // TODO: implement initState
-    startDateCtr.text = "";
-    endDateCtr.text = "";
+
     super.initState();
   }
 
@@ -83,58 +80,8 @@ class _ReportScreenState extends State<ReportScreen> {
                 });
               }),
         ),
-        TextField(
-          controller: startDateCtr,
-          onTap: () async {
-            DateTime? pickedDate = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(1950),
-                lastDate: DateTime(2100));
-
-            if (pickedDate != null) {
-              setState(() {
-                startDateCtr.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-              });
-            }
-          },
-          decoration: InputDecoration(
-            icon: Icon(
-              Icons.calendar_today,
-              color: lightColorScheme.primary,
-            ),
-            border: const OutlineInputBorder(),
-            hintText: 'Start date',
-            labelText: "End date",
-          ),
-        ),
         const SizedBox(
           height: 10,
-        ),
-        TextField(
-          controller: endDateCtr,
-          onTap: () async {
-            DateTime? pickedDate = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(1950),
-                lastDate: DateTime(2100));
-
-            if (pickedDate != null) {
-              setState(() {
-                endDateCtr.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-              });
-            }
-          },
-          decoration: InputDecoration(
-            icon: Icon(
-              Icons.calendar_today,
-              color: lightColorScheme.primary,
-            ),
-            border: const OutlineInputBorder(),
-            hintText: 'EndDate date',
-            labelText: "End date",
-          ),
         ),
         const SizedBox(
           height: 10,
@@ -144,9 +91,7 @@ class _ReportScreenState extends State<ReportScreen> {
         ),
         ElevatedButton.icon(
           onPressed: () async {
-            if (startDateCtr.text.isEmpty ||
-                endDateCtr.text.isEmpty ||
-                prescriptionId.isEmpty) {
+            if (prescriptionId.isEmpty) {
               showErroroast(context);
             } else {
               //get phone number
@@ -156,8 +101,6 @@ class _ReportScreenState extends State<ReportScreen> {
               var phoneNumber = prefs.getString("reportedPhoneNumber");
 
               var arguments = {
-                "startDate": startDateCtr.text,
-                "endDate": endDateCtr.text,
                 "phoneNumber": phoneNumber as String,
                 "prescriptionId": prescriptionId
               };

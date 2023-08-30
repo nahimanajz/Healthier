@@ -9,20 +9,14 @@ class ReportService {
   // Report medicine obedience
 
   static Stream<List<CommentModel>> getFeebackReports(
-      {String? startDate,
-      String? endDate,
-      String? phoneNumber,
-      String? prescriptionId}) {
+      {String? phoneNumber, String? prescriptionId}) {
     return CommentRepository.getPatientComments(
         prescriptionId: prescriptionId as String,
         patientId: phoneNumber as String);
   }
 
   static Stream<List<ObedienceModel>> getObedience(
-      {String? startDate,
-      String? endDate,
-      String? phoneNumber,
-      String? prescriptionId}) {
+      {String? phoneNumber, String? prescriptionId}) {
     return ObedienceRepository.getObedience(
         patientId: phoneNumber as String,
         prescriptionId: prescriptionId as String);

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:healthier2/models/comment.model.dart';
 import 'package:healthier2/services/report.service.dart';
+import 'package:healthier2/utils/color_schemes.g.dart';
+import 'package:healthier2/widgets/styles/KTextStyle.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../services/excel_report.service.dart';
@@ -40,8 +42,6 @@ class _CommentsTableState extends State<CommentsTable> {
       body: SingleChildScrollView(
         child: StreamBuilder(
           stream: ReportService.getFeebackReports(
-              endDate: args?["endDate"],
-              startDate: args?["startDate"],
               phoneNumber: args?["phoneNumber"],
               prescriptionId: args?["prescriptionId"]),
           builder: (context, snapshot) {
@@ -54,13 +54,16 @@ class _CommentsTableState extends State<CommentsTable> {
               actions: [
                 ElevatedButton(
                   onPressed: () {
-                    ExcelReportService.createCommentsReport(
-                        dataList); //createObedienceReport(dataList);
+                    ExcelReportService.createCommentsReport(dataList);
                   },
                   child: const Icon(Icons.print),
                 ),
               ],
-              header: Text('Bits of feedback  ${patientInfo ?? " "} '),
+              header: KTextStyle(
+                text: 'Bits of feedback  ${patientInfo ?? " "} ',
+                size: 12,
+                color: lightColorScheme.scrim,
+              ),
               columns: const [
                 DataColumn(label: Text("Medicine")),
                 DataColumn(label: Text("Text")),

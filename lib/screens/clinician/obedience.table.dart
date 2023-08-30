@@ -20,8 +20,6 @@ class ObedienceTable extends StatelessWidget {
       body: SingleChildScrollView(
         child: StreamBuilder(
           stream: ReportService.getObedience(
-              endDate: args?["endDate"],
-              startDate: args?["startDate"],
               phoneNumber: args?["phoneNumber"],
               prescriptionId: args?["prescriptionId"]),
           builder: (context, snapshot) {
