@@ -15,7 +15,6 @@ class ConsultationService {
       await ConsultationRepository.create(consultation,
           patientId: patient.phone);
     } catch (e) {
-      print(e);
       throw Exception("something went wrong");
     }
   }

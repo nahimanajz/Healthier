@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:healthier2/helpers/main.helper.dart';
@@ -60,8 +62,8 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
         showMedicineApprovedToast(context);
       }
     } catch (e) {
-      print(e);
-      showErrorToast(context);
+      //print(e);
+      //TODO:ShowErrorCOntext
     }
   }
 

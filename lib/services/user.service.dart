@@ -28,6 +28,6 @@ Future<dynamic> getSignedUser(BuildContext context) async {
 
 Future<String> getPatientIdnPreference() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  String? userType = preferences.getString("patientId");
+  String? userType = await preferences.getString("patientId");
   return userType as String;
 }

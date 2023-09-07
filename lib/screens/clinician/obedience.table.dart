@@ -34,7 +34,7 @@ class ObedienceTable extends StatelessWidget {
                   onPressed: () {
                     ExcelReportService.createObedienceReport(dataList);
                   },
-                  child: const Icon(Icons.receipt),
+                  child: const Icon(Icons.print),
                 ),
               ],
               header: const Text('Obedience '),

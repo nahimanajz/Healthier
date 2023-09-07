@@ -30,7 +30,6 @@ class _DrugStoreScreenState extends State<DrugStoreScreen> {
       DrugStoreRepository.create(drugStore);
       showSuccessToast(context);
     } catch (e) {
-      print(e);
       showErrorToast(context);
     }
   }
@@ -58,7 +57,6 @@ class _DrugStoreScreenState extends State<DrugStoreScreen> {
       DrugStoreRepository.update(drugStore);
       showSuccessToast(context, msg: "medicine store is updated succesful");
     } catch (e) {
-      print(e);
       showErrorToast(context);
     }
   }

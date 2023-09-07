@@ -56,7 +56,16 @@ String formatDuration(int repeat) {
 }
 
 String formatDescription(MedicineModel medicine) {
-  return "${medicine.dosage} ${medicine.medicineType} for ${medicine.duration} ${medicine.repeat} in ${medicine.timeOfTheDay}  ${medicine.tobeTakenAt}";
+  return "${medicine.dosage} ${medicine.medicineType} for ${daysBtnDate(medicine)} ${medicine.repeat} in ${medicine.timeOfTheDay}  ${medicine.tobeTakenAt}";
+}
+
+int daysBtnDate(MedicineModel medicine) {
+  DateTime startDate = DateTime.parse(medicine.date as String);
+  DateTime endDate = DateTime.parse(medicine.endDate as String);
+
+  Duration difference = endDate.difference(startDate);
+
+  return difference.inDays;
 }
 
 String formatDoseMeasure(String medicineType) {

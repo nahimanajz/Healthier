@@ -18,8 +18,7 @@ class PrescriptionService {
               medicineName: medicineName,
               pharmacyId: pharmacyId as String) as DrugStoreModel;
       int stockQuantity = drug.quantity as int;
-      print(
-          "pharmacy===>${pharmacyId} reduced==>${stockQuantity < reducableQuantity}");
+
       if (drug == null || stockQuantity < reducableQuantity) {
         throw Exception("Oops, you no longer have this medicine in your stock");
       }
@@ -27,7 +26,6 @@ class PrescriptionService {
       drug.quantity = stockQuantity - reducableQuantity;
       await DrugStoreRepository.update(drug);
     } catch (e) {
-      print(e);
       throw Exception("You must be having low stock $e");
     }
   }

@@ -2,7 +2,7 @@ import 'package:healthier2/models/medicine.model.dart';
 import 'package:healthier2/utils/firebase.instance.dart';
 
 class MedicineRepository {
-  static Future<dynamic> create(
+  static Future<void> create(
       {required String phone,
       required String prescriptionId,
       required MedicineModel medicineData}) async {
@@ -15,10 +15,7 @@ class MedicineRepository {
         .withConverter(
             fromFirestore: MedicineModel.fromFireStore,
             toFirestore: (MedicineModel medicine, _) => medicine.toFireStore())
-        .add(medicineData)
-        .then((documentSnapshot) => documentSnapshot, onError: (e) => e);
-
-    return document;
+        .add(medicineData);
   }
 
   static Stream<List<MedicineModel>> getAll(

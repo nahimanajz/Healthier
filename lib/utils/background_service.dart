@@ -53,7 +53,7 @@ void onStart(ServiceInstance service) async {
     service.stopSelf();
   });
 
-  Timer.periodic(const Duration(seconds: 15), (timer) async {
+  Timer.periodic(const Duration(minutes: 1), (timer) async {
     // change to minute to test functionality
     try {
       await Firebase.initializeApp();
@@ -113,8 +113,6 @@ setObedience(MedicineModel medicine, String patientId, String prescriptionId,
           obedience: obedience,
           patientEmail: patientId,
           prescriptionId: prescriptionId);
-
-      print("patient id $patientId,  and prescription id $prescriptionId");
 
       if (service is AndroidServiceInstance) {
         service.setForegroundNotificationInfo(

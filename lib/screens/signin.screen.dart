@@ -91,7 +91,6 @@ class _SignInScreen extends State<SignInScreen> {
                         arguments: {"user": user});
                   }
                 } catch (e) {
-                  print(e.toString());
                   showErrorToast(context, msg: e.toString());
                 }
               }),

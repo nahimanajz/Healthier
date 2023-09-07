@@ -122,7 +122,6 @@ class PatientNavDrawer extends StatelessWidget {
               fontWeight: FontWeight.w400,
             ),
             onTap: () {
-              print("patient id${patient?.addressCity as String}");
               Navigator.of(context).pushNamed("/prescriptionsList",
                   arguments: {"patientId": patient?.phone as String});
             },

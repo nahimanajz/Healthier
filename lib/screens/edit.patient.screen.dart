@@ -107,7 +107,6 @@ class _EditInfoScreenState extends State<EditPatientScreen> {
                     await PatientRepository.update(patient);
                     Navigator.pop(context);
                   } catch (e) {
-                    print(e);
                     showErrorToast(context);
                   }
                 }
@@ -143,7 +142,7 @@ class _EditInfoScreenState extends State<EditPatientScreen> {
                 if (temp == 0) {
                   temp = await CountryService.getTemperature();
                 }
-                print("retrieved temp===>$temp");
+
                 setState(() {
                   residenceTemp = temp;
                 });

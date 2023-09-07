@@ -94,6 +94,7 @@ class _VerifyPatientRecordsScreenState
                 children: [
                   buildTextFormField("Phone", _phoneNumberController,
                       keyboardType: TextInputType.phone),
+                  buildPhoneField(_phoneNumberController),
                   ElevatedButton(
                     onPressed: handleVerify,
                     style: ElevatedButton.styleFrom(

@@ -136,9 +136,9 @@ class _DosageState extends State<DosageScreen> {
     });
   }
 
-  onAddMedicine(Map<String, dynamic>? arguments, String dailyTimes) {
+  onAddMedicine(Map<String, dynamic>? arguments, String dailyTimes) async {
     var repeatType = formatDuration(repeat);
-    //
+
     if (arguments?["medicineType"] != null) {
       _medicineTxtController.text = arguments?["medicineName"];
       _medicineTypeController.text = arguments?["medicineType"];
@@ -153,11 +153,12 @@ class _DosageState extends State<DosageScreen> {
         timeOfTheDay: dailyTimes,
         tobeTakenAt: formatTobeTaken(foodCorrelation),
         repeat: repeatType,
+        date: DateTime.now().toIso8601String(),
         endDate: calculateEndDate(DateTime.now(), duration, repeatType)
             .toIso8601String());
 
     //MedicineR
-    MedicineRepository.create(
+    await MedicineRepository.create(
         phone: arguments?["phone"],
         prescriptionId: arguments?["prescriptionId"],
         medicineData: medicine);
