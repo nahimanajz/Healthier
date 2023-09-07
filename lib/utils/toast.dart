@@ -47,4 +47,11 @@ void showErrorToast(BuildContext context,
     CustomSnackBar.error(message: msg),
   );
 }
+
+void showWarningToast(BuildContext context, {String msg = "Approved"}) {
+  showTopSnackBar(
+    Overlay.of(context),
+    CustomSnackBar.info(message: msg),
+  );
+}
 // app.netlify.janvierna

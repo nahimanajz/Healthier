@@ -63,7 +63,7 @@ class _ViewPrescriptionState extends State<ViewPrescriptionScreen> {
       }
     } catch (e) {
       //print(e);
-      //TODO:ShowErrorCOntext
+      showWarningToast(context);
     }
   }
 

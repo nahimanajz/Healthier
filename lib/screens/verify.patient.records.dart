@@ -16,6 +16,7 @@ class VerifyPatientRecordsScreen extends StatefulWidget {
 class _VerifyPatientRecordsScreenState
     extends State<VerifyPatientRecordsScreen> {
   final _phoneNumberController = TextEditingController();
+  final _formKeyFour = GlobalKey<FormState>();
 
   var screenHeight;
 
@@ -38,10 +39,13 @@ class _VerifyPatientRecordsScreenState
   }
 
   handleVerify() {
-    Navigator.pushNamed(context, "/prescriptionsList", arguments: {
-      "patientId": _phoneNumberController.text,
-      "isPharmacist": true
-    });
+    if (_formKeyFour.currentState!.validate()) {
+      Navigator.pushNamed(context, "/prescriptionsList", arguments: {
+        "patientId": _phoneNumberController.text,
+        "isPharmacist": true
+      });
+    }
+    ;
   }
 
   @override
@@ -89,23 +93,24 @@ class _VerifyPatientRecordsScreenState
               padding: const EdgeInsets.all(24),
               color: lightColorScheme.surface,
               height: screenHeight - (screenHeight * 50 / 100),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  buildTextFormField("Phone", _phoneNumberController,
-                      keyboardType: TextInputType.phone),
-                  buildPhoneField(_phoneNumberController),
-                  ElevatedButton(
-                    onPressed: handleVerify,
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: lightColorScheme.primary,
-                        minimumSize: const Size.fromHeight(50)),
-                    child: Text(
-                      "Verify",
-                      style: TextStyle(color: lightColorScheme.surface),
+              child: Form(
+                key: _formKeyFour,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    buildPhoneField(_phoneNumberController),
+                    ElevatedButton(
+                      onPressed: handleVerify,
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: lightColorScheme.primary,
+                          minimumSize: const Size.fromHeight(50)),
+                      child: Text(
+                        "Verify",
+                        style: TextStyle(color: lightColorScheme.surface),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
