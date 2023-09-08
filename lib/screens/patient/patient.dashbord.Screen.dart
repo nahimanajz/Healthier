@@ -67,7 +67,7 @@ class _PatientDashboardScreenState extends State<PatientDashboardScreen> {
         padding: const EdgeInsets.all(20),
         child: Center(
           // TODO show list of medicine and and add button to add new medicine which opens bottom sheet form
-          child: Text("patients list of medicine"),
+          child: Text("patients dashboard"),
         ),
       ),
       drawer: PatientNavDrawer(patient: patientInfo),

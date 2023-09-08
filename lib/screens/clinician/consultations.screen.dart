@@ -48,6 +48,7 @@ class _ConsultationsState extends State<ConsultationListScreen> {
             return ListView.builder(
               itemCount: clinicians.length,
               itemBuilder: (context, index) {
+                int count = 1;
                 return Card(
                   color: lightColorScheme.onPrimary,
                   child: Column(
@@ -58,7 +59,7 @@ class _ConsultationsState extends State<ConsultationListScreen> {
                             ? Icon(Icons.visibility)
                             : Icon(Icons.visibility_off),
                         title: KTextStyle(
-                          text: '${index}',
+                          text: '${count + index}',
                           color: lightColorScheme.scrim,
                           fontWeight: FontWeight.bold,
                           size: 20.0,
@@ -70,17 +71,18 @@ class _ConsultationsState extends State<ConsultationListScreen> {
                         ),
                         iconColor: lightColorScheme.primary,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          //TODO: -
-                          Navigator.pushNamed(context, "/prescribe",
-                              arguments: {
-                                "consultation": clinicians[index],
-                                "patient": args?["patient"]
-                              });
-                        },
-                        child: Text("Prescribe"),
-                      )
+                      clinicians[index].isPrescribed == false
+                          ? ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, "/prescribe",
+                                    arguments: {
+                                      "consultation": clinicians[index],
+                                      "patient": args?["patient"]
+                                    });
+                              },
+                              child: Text("Prescribe"),
+                            )
+                          : Text("")
                     ],
                   ),
                 );

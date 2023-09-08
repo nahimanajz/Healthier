@@ -64,7 +64,7 @@ class ExcelReportService {
     workbook.dispose();
 
     final String path = (await getApplicationSupportDirectory()).path;
-    final String fileName = '$path/comments.pdf';
+    final String fileName = '$path/comments.xlsx';
     final file = File(fileName);
 
     await file.writeAsBytes(bytes, flush: true);
